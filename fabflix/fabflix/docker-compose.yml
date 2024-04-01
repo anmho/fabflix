@@ -1,0 +1,10 @@
+
+
+services:
+#  tomcat:
+#    build: .
+#    ports:
+#      - "5678:8080"
+#    container_name: tomcat
+  db:
+    image: mysql:8
