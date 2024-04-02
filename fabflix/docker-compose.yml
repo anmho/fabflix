@@ -1,12 +1,10 @@
 
-
 services:
-  fabflix:
-    build: .
-    ports:
-      - "5678:8080"
-    container_name: fabflix
   db:
     image: mysql:8
     ports:
       - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Alperenmysql1@
+    volumes:
+      - ./datafiles:/docker-entrypoint-initdb.d
