@@ -6,10 +6,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 public class AppConfig {
     private static final Configuration config;
     private static final Logger logger;
