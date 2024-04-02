@@ -1,27 +1,31 @@
 package com.cs122b.fabflix;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class AppConfig {
-    private static final Properties properties;
+    private static final Configuration config;
+    private static final Logger logger;
 
     static {
-        properties = new Properties();
-
-        // can use key manager etc for db url
-
+        logger = LogManager.getLogger(AppConfig.class);
         try {
-            InputStream input = AppConfig.class.getClassLoader().getResourceAsStream("application.properties");
+            config = new PropertiesConfiguration("application.properties");
 
-            properties.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ConfigurationException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public static String getProperty(String key) {
-        return properties.getProperty(key);
+        logger.info("getting", key);
+        return config.getString(key);
     }
 }

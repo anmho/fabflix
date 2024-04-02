@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Tomcat 10.1.201" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 10.1.201" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+  <configuration default="false" name="Tomcat 10.1.201" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 10.1.201" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true" show_console_on_std_err="true" show_console_on_std_out="true">
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
       <artifact name="fabflix:war">
@@ -33,6 +33,11 @@
         <option name="VM_PARAMETERS" value="" />
         <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
+      <EnvironmentVariables>
+        <option name="NAME" value="DATABASE_URL" />
+        <option name="VALUE" value="JOHN CENA" />
+        <option name="IS_PREDEFINED" value="false" />
+      </EnvironmentVariables>
     </ConfigurationWrapper>
     <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
       <option name="USE_ENV_VARIABLES" value="true" />
@@ -63,6 +68,11 @@
         <option name="VM_PARAMETERS" value="" />
         <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
+      <EnvironmentVariables>
+        <option name="NAME" value="DATABASE_URL" />
+        <option name="VALUE" value="JOHN CENA" />
+        <option name="IS_PREDEFINED" value="false" />
+      </EnvironmentVariables>
     </ConfigurationWrapper>
     <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
       <option name="USE_ENV_VARIABLES" value="true" />
@@ -78,6 +88,11 @@
         <option name="VM_PARAMETERS" value="" />
         <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
+      <EnvironmentVariables>
+        <option name="NAME" value="DATABASE_URL" />
+        <option name="VALUE" value="JOHN" />
+        <option name="IS_PREDEFINED" value="false" />
+      </EnvironmentVariables>
     </ConfigurationWrapper>
     <method v="2">
       <option name="Make" enabled="true" />
