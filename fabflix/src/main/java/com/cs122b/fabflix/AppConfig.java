@@ -10,6 +10,8 @@ public class AppConfig {
     static {
         properties = new Properties();
 
+        // can use key manager etc for db url
+
         try {
             InputStream input = AppConfig.class.getClassLoader().getResourceAsStream("application.properties");
 

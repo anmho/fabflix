@@ -24,7 +24,7 @@ RUN mv webapps.dist/ webapps
 
 
 #COPY ./apache-tomcat-10.1.20/conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
-COPY apache-tomcat-10.1.20/conf2/ /usr/local/tomcat/conf/
-COPY apache-tomcat-10.1.20/conf2/context.xml /usr/local/tomcat/webapps/manager/META-INF/
+COPY apache-tomcat-10.1.20/conf/ /usr/local/tomcat/conf/
+COPY apache-tomcat-10.1.20/conf/context.xml /usr/local/tomcat/webapps/manager/META-INF/
 
 CMD ["catalina.sh", "run"]
