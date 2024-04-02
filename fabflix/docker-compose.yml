@@ -4,12 +4,14 @@ services:
     ports:
       - '5678:8080'
     container_name: fabflix
-  # db:
-  #   image: mysql:8
-  #   ports:
-  #     - '3307:3306'
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: 'password'
-  #     MYSQL_DATABASE: 'fabflix'
-  #     MYSQL_USER: 'admin'
-  #     MYSQL_USER_PASSWORD: 'admin'
+  db:
+    image: mysql:8
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: 'fabflix'
+      MYSQL_USER: 'admin'
+      MYSQL_USER_PASSWORD: 'admin'
+    volumes:
+      - ./datafiles:/docker-entrypoint-initdb.d

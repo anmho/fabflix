@@ -90,15 +90,13 @@
       </SHUTDOWN>
       <EnvironmentVariables>
         <option name="NAME" value="DATABASE_URL" />
-        <option name="VALUE" value="JOHN" />
+        <option name="VALUE" value="mysql://admin:admin@localhost:3307/fabflix" />
         <option name="IS_PREDEFINED" value="false" />
       </EnvironmentVariables>
     </ConfigurationWrapper>
     <method v="2">
       <option name="Make" enabled="true" />
-      <option name="BuildArtifacts" enabled="true">
-        <artifact name="fabflix:war" />
-      </option>
+      <option name="BuildArtifacts" enabled="false" />
     </method>
   </configuration>
 </component>
