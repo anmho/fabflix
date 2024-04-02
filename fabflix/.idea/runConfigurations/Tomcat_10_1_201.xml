@@ -10,11 +10,12 @@
     <server-settings>
       <option name="BASE_DIRECTORY_NAME" value="759013bd-ba80-4783-a3ad-4b8d35eefbaa" />
     </server-settings>
+    <output_file path="$PROJECT_DIR$/apache-tomcat-10.1.20/logs/output.log" is_save="true" />
+    <log_file alias="Tomcat Manager Log" path="%IDEA_RUN:CATALINA_BASE%/logs/manager.*" />
+    <log_file alias="Tomcat Host Manager Log" path="%IDEA_RUN:CATALINA_BASE%/logs/host-manager.*" />
+    <log_file alias="Tomcat Localhost Access Log" path="%IDEA_RUN:CATALINA_BASE%/logs/localhost_access_log.*" />
     <predefined_log_file enabled="true" id="Tomcat" />
     <predefined_log_file enabled="true" id="Tomcat Catalina" />
-    <predefined_log_file id="Tomcat Manager" />
-    <predefined_log_file id="Tomcat Host Manager" />
-    <predefined_log_file id="Tomcat Localhost Access" />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="50688" />
     </RunnerSettings>

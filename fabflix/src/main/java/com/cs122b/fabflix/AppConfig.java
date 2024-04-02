@@ -1,6 +1,5 @@
 package com.cs122b.fabflix;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -12,9 +11,9 @@ public class AppConfig {
         properties = new Properties();
 
         try {
-            FileInputStream fileInputStream = new FileInputStream("src/main/resources/application.properties");
+            InputStream input = AppConfig.class.getClassLoader().getResourceAsStream("application.properties");
 
-            properties.load(fileInputStream);
+            properties.load(input);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,10 +1,12 @@
 
 
 services:
-#  tomcat:
-#    build: .
-#    ports:
-#      - "5678:8080"
-#    container_name: tomcat
+  fabflix:
+    build: .
+    ports:
+      - "5678:8080"
+    container_name: fabflix
   db:
     image: mysql:8
+    ports:
+      - "3307:3306"
