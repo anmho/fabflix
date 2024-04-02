@@ -39,3 +39,5 @@ build/
 
 ### DATA FILES ###
 datafiles/
+
+.DS_Store
