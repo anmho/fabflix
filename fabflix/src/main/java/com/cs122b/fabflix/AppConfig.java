@@ -12,8 +12,9 @@ public class AppConfig {
         properties = new Properties();
 
         try {
-            InputStream inputStream = AppConfig.class.getClassLoader().getResourceAsStream("config.properties");
-            properties.load(inputStream);
+            FileInputStream fileInputStream = new FileInputStream("src/main/resources/application.properties");
+
+            properties.load(fileInputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
