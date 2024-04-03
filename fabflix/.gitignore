@@ -42,6 +42,7 @@ datafiles/
 
 .DS_Store
 
-# ./db/2-movie-data.sql
-./apache-tomcat-10.1.20/webapps/api/
+./db/2-movie-data.sql
+# fabflix/db/2-movie-data.sql
+# ./apache-tomcat-10.1.20/webapps/api/
 
