@@ -8,10 +8,8 @@ import org.apache.logging.log4j.Logger;
 
 public class AppConfig {
     private static final Configuration config;
-    private static final Logger logger;
 
     static {
-        logger = LogManager.getLogger(AppConfig.class);
         try {
             config = new PropertiesConfiguration("application.properties");
 
@@ -21,7 +19,6 @@ public class AppConfig {
     }
 
     public static String getProperty(String key) {
-        logger.info("getting", key);
         return config.getString(key);
     }
 }

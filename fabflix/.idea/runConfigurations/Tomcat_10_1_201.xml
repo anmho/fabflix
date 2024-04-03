@@ -90,7 +90,7 @@
       </SHUTDOWN>
       <EnvironmentVariables>
         <option name="NAME" value="DATABASE_URL" />
-        <option name="VALUE" value="mysql://admin:admin@localhost:3307/fabflix" />
+        <option name="VALUE" value="mysql://admin:admin@localhost:3307/moviedb" />
         <option name="IS_PREDEFINED" value="false" />
       </EnvironmentVariables>
     </ConfigurationWrapper>

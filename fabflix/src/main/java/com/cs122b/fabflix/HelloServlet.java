@@ -13,11 +13,8 @@ public class HelloServlet extends HttpServlet {
     private static Logger logger;
 
     public void init() {
-
-//        message = "Hello World!";
         message = AppConfig.getProperty("db.url");
         logger = LogManager.getLogger(HelloServlet.class);
-//        System.out.println("Somehing");
         logger.info("Somehing");
     }
 
