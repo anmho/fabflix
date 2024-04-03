@@ -5,17 +5,34 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-    public static Connection connection;
+    private static Connection connection;
 
-    Connection getConnection() {
+    public static Connection getConnection() {
         if (connection == null) {
-            String connString = AppConfig.getProperty("db.url");
+
+            String url = AppConfig.getProperty("db.url");
+            String username = AppConfig.getProperty("db.username");
+            String password = AppConfig.getProperty("db.password");
+
+            System.out.println(url);
+            System.out.println(username);
+            System.out.println(password);
+
+            String connString = String.format("%s?autoReconnect=true&useSSL=false", url);
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+
             if (connString == null) {
                 throw new IllegalStateException("db.url must be defined");
             }
 
             try {
-                connection = DriverManager.getConnection(connString);
+                connection = DriverManager.getConnection(connString, username, password);
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.exit(1);
