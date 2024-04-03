@@ -41,3 +41,6 @@ build/
 datafiles/
 
 .DS_Store
+
+### Init Data ###
+./db/2-movie-data.sql
