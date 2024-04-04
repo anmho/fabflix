@@ -10,21 +10,49 @@ interface SingleStarPageProps {
 
 const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
   return (
-    <div>
+    <div className="min-h-screen p-8">
       <Head>
         <title>{star.name}</title>
       </Head>
-      <h1>Star Name: {star.name}</h1>
-      <p>Year of Birth: {star.yearOfBirth || "N/A"}</p>
-      <div>
-        <h2>Movies:</h2>
-        <ul>
-          {star.movies.map((movie) => (
-            <li key={movie.id}>
-              <Link href={`/movie/${movie.id}`}>{movie.title}</Link>
-            </li>
-          ))}
-        </ul>
+      <div className="container mx-auto p-6 rounded-lg shadow-lg">
+        <div className="bg-teal-500 rounded-t-lg p-4">
+          <h1 className="text-2xl font-bold">{star.name} (N/A)</h1>
+        </div>
+        <table className="lg:min-w-[600px] min-w-full leading-normal">
+          <thead>
+            <tr>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-teal-500 text-left text-xs font-semibold  uppercase tracking-wider">
+                Movie Title
+              </th>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-teal-500 text-left text-xs font-semibold  uppercase tracking-wider">
+                Release Year
+              </th>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-teal-500 text-left text-xs font-semibold  uppercase tracking-wider ">
+                Director
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {star.movies.map((movie) => (
+              <tr key={movie.id}>
+                <td className="px-5 py-5 border-b border-gray-200  text-sm">
+                  <Link
+                    href={`/movie/${movie.id}`}
+                    className="text-teal-600 hover:text-teal-900"
+                  >
+                    {movie.title}
+                  </Link>
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200  text-sm">
+                  {movie.year}
+                </td>
+                <td className="px-5 py-5 border-b border-gray-200 text-sm">
+                  {movie.director}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
