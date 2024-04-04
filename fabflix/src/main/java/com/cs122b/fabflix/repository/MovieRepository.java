@@ -20,6 +20,7 @@ public class MovieRepository {
 
         while (rs.next()) {
             Movie movie = movieFromRow(rs);
+            System.out.println(movie.getId());
             movies.add(movie);
         }
         return movies.toArray(new Movie[movies.size()]);
