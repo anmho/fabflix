@@ -13,16 +13,11 @@ RUN mv /app/target/$(cat /app/war_name.txt) /app/target/api.war
 
 
 # Image step
-FROM tomcat:10.1.20-jdk11
+FROM --platform=linux/amd64 tomcat:10.1.20-jdk11
 
 RUN mv webapps webapps.bk
 RUN mv webapps.dist/ webapps
 COPY --from=builder /app/target/api.war /usr/local/tomcat/webapps/api.war
-
-# Probably don't need
-# COPY ./apache-tomcat-10.1.20/conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
-# COPY ./apache-tomcat-10.1.20/conf/ /usr/local/tomcat/conf/
-# COPY ./apache-tomcat-10.1.20/conf/context.xml /usr/local/tomcat/webapps/manager/META-INF/
 
 COPY docker/tomcat/conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 COPY docker/tomcat/conf/context.xml /usr/local/tomcat/webapps/manager/META-INF/

@@ -4,6 +4,9 @@
 # Load the environment variables
 set -e
 
+sudo apt update
+sudo apt install docker.io
+
 if [[ -z "${IMAGE_TAG}" ]]; then
   echo "IMAGE_TAG is not set"
   exit 1
@@ -15,10 +18,12 @@ echo $IMAGE_TAG
 IMAGE=anmho/fabflix:$IMAGE_TAG
 echo $IMAGE
 
-docker pull $IMAGE
+sudo docker pull $IMAGE
 
-docker run \
+sudo docker run \
  --env-file .env \
  -p 8080:8080 \
+ --name fabflix \
+ -d \
  $IMAGE
 

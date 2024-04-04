@@ -48,3 +48,4 @@ datafiles/
 
 
 **/.env
+.image_tag.txt
