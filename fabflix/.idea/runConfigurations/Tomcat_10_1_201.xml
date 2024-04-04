@@ -89,17 +89,17 @@
         <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
       <EnvironmentVariables>
+        <option name="NAME" value="DB_PASS" />
+        <option name="VALUE" value="admin" />
+        <option name="IS_PREDEFINED" value="false" />
+      </EnvironmentVariables>
+      <EnvironmentVariables>
         <option name="NAME" value="DB_URL" />
         <option name="VALUE" value="jdbc:mysql://127.0.0.1:3307/moviedb" />
         <option name="IS_PREDEFINED" value="false" />
       </EnvironmentVariables>
       <EnvironmentVariables>
         <option name="NAME" value="DB_USER" />
-        <option name="VALUE" value="admin" />
-        <option name="IS_PREDEFINED" value="false" />
-      </EnvironmentVariables>
-      <EnvironmentVariables>
-        <option name="NAME" value="DB_PASS" />
         <option name="VALUE" value="admin" />
         <option name="IS_PREDEFINED" value="false" />
       </EnvironmentVariables>
