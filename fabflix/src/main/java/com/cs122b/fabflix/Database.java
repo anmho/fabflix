@@ -19,7 +19,7 @@ public class Database {
             System.out.println(password);
 
             String connString = String.format("%s?autoReconnect=true&useSSL=false", url);
-
+            System.out.println(connString);
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
             } catch (ClassNotFoundException e) {
