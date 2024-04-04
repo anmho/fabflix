@@ -8,7 +8,6 @@ import { Movie } from "../interfaces/movie";
 const fetchMovies = async (): Promise<Movie[]> => {
   const res = await fetch('http://localhost:8080/api/movies');
   const movies = await res.json();
-  console.log('res', res);
   console.log('movies', movies)
 
 
