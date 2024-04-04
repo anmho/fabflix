@@ -22,17 +22,22 @@ const dummyMovies: Movie[] = Array.from({ length: 20 }).map((_, index) => ({
 }));
 
 const fetchMovies = async (): Promise<Movie[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(dummyMovies);
-    }, 500); // to simulate network delay
-  });
+  const res = await fetch('http://localhost:8080/api/movies');
+  
+  const movies = await res.json();
+  console.log('res', res);
+  console.log('movies', movies)
+
+
+  return dummyMovies;
 };
+
 
 const MovieListPage: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
+    console.log('fetch')
     fetchMovies().then((movies) => {
       setMovies(movies);
     });
