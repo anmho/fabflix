@@ -1,7 +1,6 @@
 package com.cs122b.fabflix;
 
 import com.cs122b.fabflix.models.Movie;
-import com.cs122b.fabflix.models.MovieListItem;
 import com.cs122b.fabflix.repository.MovieRepository;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -28,7 +27,7 @@ public class MovieServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         try {
-            List<MovieListItem> movies = movieRepository.getTopRatedMovies();
+            List<Movie> movies = movieRepository.getTopRatedMovies();
 
             ResponseBuilder.json(resp, movies, 200);
         } catch (SQLException e) {

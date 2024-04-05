@@ -2,7 +2,6 @@ package com.cs122b.fabflix.repository;
 
 import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
-import com.cs122b.fabflix.models.MovieListItem;
 import com.cs122b.fabflix.models.Star;
 
 import java.sql.*;
@@ -30,12 +29,26 @@ public class MovieRepository {
         return movies.toArray(new Movie[movies.size()]);
     }
 
-    public List<MovieListItem> getTopRatedMovies() throws SQLException {
-        List<MovieListItem> detailedMovies = new ArrayList<>();
-        String query = "SELECT m.id, m.title, m.year, m.director, r.rating " +
+
+    public List<Movie> getTopRatedMovies() throws SQLException {
+        List<Movie> movies = new ArrayList<>();
+        String query = "SELECT " +
+                "m.id, " +
+                "m.title, " +
+                "m.year, " +
+                "m.director, " +
+                "r.rating, " +
+                "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+                "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+                "WHERE gim.movieId = m.id) AS genres, " +
+                "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name) SEPARATOR ';') " +
+                "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+                "WHERE sim.movieId = m.id) AS stars " +
                 "FROM movies m " +
                 "JOIN ratings r ON m.id = r.movieId " +
-                "ORDER BY r.rating DESC LIMIT 20;";
+                "ORDER BY r.rating DESC " +
+                "LIMIT 20;";
+
 
         try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
@@ -43,61 +56,42 @@ public class MovieRepository {
                         rs.getString("id"),
                         rs.getString("title"),
                         rs.getInt("year"),
-                        rs.getString("director")
+                        rs.getString("director"),
+                        rs.getFloat("rating")
                 );
 
-                MovieListItem movieListItem = new MovieListItem();
-                movieListItem.setMovie(movie); // Set the Movie object
-                movieListItem.setRating(rs.getFloat("rating"));
-                movieListItem.setGenres(fetchGenresForMovie(movie.getId()));
-                movieListItem.setStars(fetchStarsForMovie(movie.getId()));
-
-                detailedMovies.add(movieListItem);
-            }
-        }
-        return detailedMovies;
-    }
-
-
-
-    private List<Genre> fetchGenresForMovie(String movieId) throws SQLException {
-        List<Genre> genres = new ArrayList<>();
-        String query = "SELECT g.id, g.name FROM genres g " +
-                "JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                "WHERE gim.movieId = ? LIMIT 3;";
-
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, movieId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String name = rs.getString("name");
-                    Genre genre = new Genre(id, name); // Assuming you have a constructor like Genre(int id, String name)
-                    genres.add(genre);
+                String[] genrePairs = rs.getString("genres").split(";");
+                List<Genre> genres = new ArrayList<>();
+                for (String pair : genrePairs) {
+                    if (genres.size() >= 3) break;
+                    String[] parts = pair.split(":");
+                    if (parts.length == 2) {
+                        int genreId = Integer.parseInt(parts[0]);
+                        String genreName = parts[1];
+                        genres.add(new Genre(genreId, genreName));
+                    }
                 }
-            }
-        }
-        return genres;
-    }
 
-    private List<Star> fetchStarsForMovie(String movieId) throws SQLException {
-        List<Star> stars = new ArrayList<>();
-        String query = "SELECT s.id, s.name FROM stars s " +
-                "JOIN stars_in_movies sim ON s.id = sim.starId " +
-                "WHERE sim.movieId = ? LIMIT 3;";
-
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, movieId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    String id = rs.getString("id");
-                    String name = rs.getString("name");
-                    Star star = new Star(id, name);
-                    stars.add(star);
+                String[] starPairs = rs.getString("stars").split(";");
+                List<Star> stars = new ArrayList<>();
+                for (String pair : starPairs) {
+                    if (stars.size() >= 3) break;
+                    String[] parts = pair.split(":");
+                    if (parts.length == 2) {
+                        String starId = parts[0];
+                        String starName = parts[1];
+                        stars.add(new Star(starId, starName));
+                    }
                 }
+
+                movie.setGenres(genres);
+                movie.setStars(stars);
+
+                movies.add(movie);
             }
         }
-        return stars;
+        return movies;
+
     }
 
 
