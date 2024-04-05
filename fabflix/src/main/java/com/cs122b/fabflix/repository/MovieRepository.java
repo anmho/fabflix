@@ -95,6 +95,70 @@ public class MovieRepository {
     }
 
 
+    public Movie getMovieById(String movieId) throws SQLException {
+        Movie movie = null;
+
+        String query = "SELECT " +
+                "m.id, " +
+                "m.title, " +
+                "m.year, " +
+                "m.director, " +
+                "r.rating, " +
+                "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g " +
+                "JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, " +
+                "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s " +
+                "JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars " +
+                "FROM movies m " +
+                "LEFT JOIN ratings r ON m.id = r.movieId " +
+                "WHERE m.id = ? " +
+                "LIMIT 1;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, movieId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    movie = new Movie(
+                            rs.getString("id"),
+                            rs.getString("title"),
+                            rs.getInt("year"),
+                            rs.getString("director"),
+                            rs.getFloat("rating")
+                    );
+
+                    String[] genrePairs = rs.getString("genres").split(";");
+                    List<Genre> genres = new ArrayList<>();
+                    for (String pair : genrePairs) {
+                        String[] parts = pair.split(":");
+                        if (parts.length == 2) {
+                            int genreId = Integer.parseInt(parts[0]);
+                            String genreName = parts[1];
+                            genres.add(new Genre(genreId, genreName));
+                        }
+                    }
+
+                    String[] starPairs = rs.getString("stars").split(";");
+                    List<Star> stars = new ArrayList<>();
+                    for (String pair : starPairs) {
+                        String[] parts = pair.split(":");
+                        if (parts.length == 3) {
+                            String starId = parts[0];
+                            String starName = parts[1];
+                            String birthYearStr = parts[2];
+                            int birthYear = birthYearStr.equals("N/A") ? 0 : Integer.parseInt(birthYearStr); // Convert "N/A" to a default value or parse as int
+                            stars.add(new Star(starId, starName, birthYear));
+                        }
+                    }
+
+                    movie.setGenres(genres);
+                    movie.setStars(stars);
+                }
+            }
+        }
+
+        return movie;
+    }
+
+
 
     public Movie getMovie(String id) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM movies WHERE id = ?");
