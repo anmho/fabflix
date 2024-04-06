@@ -1,6 +1,8 @@
 package com.cs122b.fabflix.models;
 
 
+import java.util.List;
+
 public class Star {
     private String id;
     private String name;
@@ -10,14 +12,13 @@ public class Star {
         this.id = id;
         this.name = name;
         this.birthYear = birthYear;
+
     }
     public Star(String id, String name) {
         this.id = id;
         this.name = name;
     }
-    public Star() {}
 
-    
     public String getId() {
         return id;
     }

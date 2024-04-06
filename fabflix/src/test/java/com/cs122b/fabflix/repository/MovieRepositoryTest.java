@@ -15,14 +15,4 @@ public class MovieRepositoryTest {
         conn = Database.getConnection();
     }
 
-//    @Test
-//    public void testParseRow() {
-//        MovieRepository repository = new MovieRepository(conn);
-//
-//
-//
-//        repository.
-//
-//
-//    }
 }

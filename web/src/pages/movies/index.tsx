@@ -75,7 +75,7 @@ const MovieListPage: React.FC = () => {
                   {movie?.stars.map((star, index) => (
                     <span key={star.id}>
                       <Link
-                        href={`star/${star?.id}`}
+                        href={`stars/${star?.id}`}
                         className="text-blue-600 hover:text-blue-800"
                       >
                         {star?.name}

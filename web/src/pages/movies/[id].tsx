@@ -43,7 +43,7 @@ const SingleMoviePage: React.FC = () => {
               {index > 0 ? ', ' : ''}
               <Link
                 className="text-blue-500 hover:underline"
-                href={`/star/${star?.id}`}
+                href={`/stars/${star?.id}`}
               >
                 {star.name} {`(${star.birthYear > 0 ? star.birthYear : 'N/A'})`}
               </Link>
