@@ -134,12 +134,13 @@ public class MovieRepository extends Repository {
                 "JOIN  " +
                 "    ratings r ON m.id = r.movieId  " +
                 "WHERE  " +
-                "    m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = 'nm0104418')  " +
+                "    m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?)  " +
                 "ORDER BY  " +
                 "    r.rating DESC;";
         Connection conn = getConnection();
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, starId);
             ResultSet rs =  stmt.executeQuery();
 
 
@@ -151,6 +152,15 @@ public class MovieRepository extends Repository {
                 movie.setYear(rs.getInt("year"));
                 movie.setDirector(rs.getString("director"));
                 movie.setRating(rs.getFloat("rating"));
+
+
+                String starsString = rs.getString("stars");
+                List<Star> stars = parseStars(starsString);
+                movie.setStars(stars);
+
+                String genreString = rs.getString("genres");
+                List<Genre> genres = parseGenres(genreString);
+                movie.setGenres(genres);
 
                 movies.add(movie);
             }
