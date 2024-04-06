@@ -103,19 +103,7 @@ public class MovieRepository extends Repository {
                     List<Genre> genres = parseGenres(genresString);
 
                     String starsString = rs.getString("stars");
-
-                    String[] starPairs = starsString.split(";");
-                    List<Star> stars = new ArrayList<>();
-                    for (String pair : starPairs) {
-                        String[] parts = pair.split(":");
-                        if (parts.length == 3) {
-                            String starId = parts[0];
-                            String starName = parts[1];
-                            String birthYearStr = parts[2];
-                            int birthYear = birthYearStr.equals("N/A") ? 0 : Integer.parseInt(birthYearStr); // Convert "N/A" to a default value or parse as int
-                            stars.add(new Star(starId, starName, birthYear));
-                        }
-                    }
+                    List<Star> stars = parseStars(starsString);
 
                     movie.setGenres(genres);
                     movie.setStars(stars);
@@ -171,7 +159,6 @@ public class MovieRepository extends Repository {
     }
 
 
-    // This should be unit tested
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {
             throw new IllegalStateException("null starsString");
@@ -189,7 +176,6 @@ public class MovieRepository extends Repository {
 
         return stars;
     }
-    // This should be unit tested
     private List<Genre> parseGenres(String genresString) {
         if (genresString == null) {
             throw new IllegalStateException("null genresString");
