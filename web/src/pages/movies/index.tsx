@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from "react";
-import Head from "next/head";
-import Link from "next/link";
-import { Movie } from "../interfaces/movie";
-
-
+import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
+import { Movie } from '../../interfaces/movie';
 
 const fetchMovies = async (): Promise<Movie[]> => {
   const res = await fetch('http://localhost:8080/api/movies');
   const movies = await res.json();
-  console.log('movies', movies)
-
+  console.log('movies', movies);
 
   return movies;
 };
-
 
 const MovieListPage: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    console.log('fetch')
+    console.log('fetch');
     fetchMovies().then((movies) => {
       setMovies(movies);
     });
@@ -60,7 +56,7 @@ const MovieListPage: React.FC = () => {
               <tr key={movie?.id} className="border-b">
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   <Link
-                    href={`/movie/${movie?.id}`}
+                    href={`/movies/${movie?.id}`}
                     className="text-blue-600 hover:text-blue-800"
                   >
                     {movie?.title}
@@ -73,7 +69,7 @@ const MovieListPage: React.FC = () => {
                   {movie?.director}
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                  {movie?.genres.map((genre) => genre.name).join(", ")}
+                  {movie?.genres.map((genre) => genre.name).join(', ')}
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                   {movie?.stars.map((star, index) => (
@@ -84,7 +80,7 @@ const MovieListPage: React.FC = () => {
                       >
                         {star?.name}
                       </Link>
-                      {index < movie?.stars.length - 1 ? ", " : ""}
+                      {index < movie?.stars.length - 1 ? ', ' : ''}
                     </span>
                   ))}
                 </td>
