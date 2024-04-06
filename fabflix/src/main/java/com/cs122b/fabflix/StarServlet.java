@@ -1,4 +1,40 @@
 package com.cs122b.fabflix;
 
-public class StarServlet {
+import com.cs122b.fabflix.models.Star;
+import com.cs122b.fabflix.repository.StarRepository;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import javax.xml.crypto.Data;
+import java.sql.Connection;
+
+@WebServlet(name = "starServlet", value="/stars")
+public class StarServlet extends HttpServlet {
+
+    private StarRepository starRepository;
+
+    public void init() {
+        Connection conn = Database.getConnection();
+        starRepository = new StarRepository(conn);
+    }
+
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        String starId = req.getParameter("id");
+        System.out.println(starId);
+
+        if (starId != null) {
+            Star star = starRepository.getStarById(starId);
+            ResponseBuilder.json(resp, star, 200);
+        } else {
+            ResponseBuilder.error(resp, 404, "invalid");
+        }
+    }
+
+    public void destroy() {
+
+    }
 }
+
+

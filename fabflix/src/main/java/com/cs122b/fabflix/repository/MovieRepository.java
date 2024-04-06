@@ -50,11 +50,8 @@ public class MovieRepository extends Repository {
                 String genresString = rs.getString("genres");
                 List<Genre> genres = parseGenres(genresString);
 
-                genres = genres.size() >= limit ? genres.subList(0, limit) : genres;
-
                 String starsString = rs.getString("stars");
                 List<Star> stars = parseStars(starsString);
-                stars = stars.size() >= limit ? stars.subList(0, limit) : stars;
 
                 movie.setGenres(genres);
                 movie.setStars(stars);

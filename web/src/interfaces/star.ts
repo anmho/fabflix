@@ -1,8 +1,8 @@
-import { Movie } from "./movie";
+import { Movie } from './movie';
 
 export interface StarDetail {
-  id: number;
+  id: string;
   name: string;
-  birthYear: number | "N/A";
+  birthYear: number | 'N/A';
   movies: Movie[];
 }

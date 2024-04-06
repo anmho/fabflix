@@ -18,6 +18,9 @@ echo $IMAGE_TAG
 IMAGE=anmho/fabflix:$IMAGE_TAG
 echo $IMAGE
 
+# Wipe the old images
+./stop-prod.sh
+
 sudo docker pull $IMAGE
 
 sudo docker run \
