@@ -1,84 +1,61 @@
-import React from "react";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import { Movie } from "../../interfaces/movie";
-import { StarDetail } from "../../interfaces/star";
-import { GetServerSideProps } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Movie } from "~/interfaces/movie";
 
-interface SingleMoviePageProps {
-  movie: Movie;
-}
+const SingleMoviePage: React.FC = () => {
+  const fetchMovie = async (movieID: string): Promise<Movie> => {
+    const res = await fetch(
+      `http://localhost:8080/api/singleMovie?movieID=${movieID}`
+    );
+    const movie = await res.json();
+    setIsLoading(false);
+    console.log(movie);
+    return movie;
+  };
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
-const SingleMoviePage: React.FC<SingleMoviePageProps> = ({ movie }) => {
+  useEffect(() => {
+    if (router.query.id) {
+      fetchMovie(router.query.id as string).then(setMovie);
+    }
+  }, [router.query.id]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!movie) return <div>NO MOVIE HAS FOUND...</div>;
+
   return (
-    <div className="min-h-screen p-8">
+    <div className="container mx-auto px-4">
       <Head>
         <title>{movie?.title}</title>
       </Head>
-      <div className="container mx-auto p-6 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-2">
+      <div>
+        <h1 className="text-3xl font-bold">
           {movie?.title} ({movie?.year})
         </h1>
-        <div className="flex flex-wrap md:flex-nowrap">
-          <div className="w-full md:w-2/3">
-            <p className="font-semibold">Director:</p>
-            <p>{movie?.director}</p>
-            <p className="font-semibold mt-4">Genres:</p>
-            <p>{movie?.genres.map((genre) => genre.name).join(", ")}</p>
-            <p className="font-semibold mt-4">Stars:</p>
-            <p>
-              {movie?.stars.map((star, index) => (
-                <React.Fragment key={star.id}>
-                  {index > 0 && ", "}
-                  <a
-                    href={star.url}
-                    className="text-blue-500 hover:text-blue-700"
-                  >
-                    {star.name}
-                  </a>
-                </React.Fragment>
-              ))}
-            </p>
-            <p className="font-semibold mt-4">Rating:</p>
-            <p className="mb-4">{movie?.rating}</p>
-            <p className="font-semibold">Story:</p>
-            <p>
-              A description of the movie goes here. It's a placeholder for the
-              actual movie description.
-            </p>
-          </div>
-          <div className="w-full md:w-1/3 mt-6 md:mt-0 md:ml-6">
-            <img
-              src="https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p11580277_v_h9_ae.jpg"
-              alt="Movie poster"
-              className="rounded-lg shadow-lg"
-            />
-          </div>
-        </div>
+        <p>Director: {movie?.director}</p>
+        <p>Genres: {movie?.genres.map((genre) => genre.name).join(", ")}</p>
+        <p>
+          Stars:{" "}
+          {movie?.stars.map((star, index) => (
+            <React.Fragment key={star?.id}>
+              {index > 0 ? ", " : ""}
+              <Link
+                className="text-blue-500 hover:underline"
+                href={`/star/${star?.id}`}
+              >
+                {star.name} {`(${star.birthYear > 0 ? star.birthYear : "N/A"})`}
+              </Link>
+            </React.Fragment>
+          ))}
+        </p>
+        <p>Rating: {movie?.rating}</p>
       </div>
     </div>
   );
-};
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const movie: Movie = {
-    id: 1,
-    title: "Dummy Movie Title",
-    year: 2021,
-    director: "Jane Doe",
-    genres: [
-      { id: 1, name: "Adventure" },
-      { id: 2, name: "Action" },
-      { id: 3, name: "Comedy" },
-    ],
-    stars: [
-      { id: 1, name: "Star One", url: "/star/1" },
-      { id: 2, name: "Star Two", url: "/star/2" },
-      { id: 3, name: "Star Three", url: "/star/3" },
-    ],
-    rating: 8.5,
-  };
-
-  return { props: { movie } };
 };
 
 export default SingleMoviePage;

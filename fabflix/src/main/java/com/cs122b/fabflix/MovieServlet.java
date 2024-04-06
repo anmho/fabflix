@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(name = "movieServlet", value="/movies")
 public class MovieServlet extends HttpServlet {
@@ -24,12 +25,31 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
-        try {
-            Movie[] movies = movieRepository.getMovies();
-            ResponseBuilder.json(resp, movies, 200);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        String movieId = req.getParameter("id");
+        if (movieId == null) {
+            // Get Top 20 movies
+            try {
+                List<Movie> movies = movieRepository.getTopRatedMovies(20);
+
+                ResponseBuilder.json(resp, movies, 200);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                ResponseBuilder.error(resp, 500, null);
+            }
+        } else {
+
+            try {
+                Movie movie = movieRepository.getMovieById(movieId);
+                if (movie != null) {
+                    ResponseBuilder.json(resp, movie, 200);
+                } else {
+                    ResponseBuilder.error(resp, 404, "movie not found");
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                ResponseBuilder.error(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, null);
+            }
         }
     }
 

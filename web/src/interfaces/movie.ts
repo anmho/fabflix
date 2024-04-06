@@ -4,13 +4,14 @@ export interface Genre {
 }
 
 export interface Star {
+  birthYear: number;
   id: number;
   name: string;
   url: string;
 }
 
 export interface Movie {
-  id: number;
+  id: string;
   title: string;
   year: number;
   director: string;
