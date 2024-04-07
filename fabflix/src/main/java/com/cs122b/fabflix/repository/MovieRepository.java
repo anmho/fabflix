@@ -16,21 +16,21 @@ public class MovieRepository extends Repository {
     public List<Movie> getTopRatedMovies(int topK) throws SQLException {
         List<Movie> movies = new ArrayList<>();
         String query = "SELECT " +
-                "m.id, " +
-                "m.title, " +
-                "m.year, " +
-                "m.director, " +
-                "r.rating, " +
-                "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
-                "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                "WHERE gim.movieId = m.id) AS genres, " +
-                "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name) SEPARATOR ';') " +
-                "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
-                "WHERE sim.movieId = m.id) AS stars " +
-                "FROM movies m " +
-                "JOIN ratings r ON m.id = r.movieId " +
-                "ORDER BY r.rating DESC " +
-                "LIMIT " + topK + ";";
+        "m.id, " +
+        "m.title, " +
+        "m.year, " +
+        "m.director, " +
+        "r.rating, " +
+        "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+        "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+        "WHERE gim.movieId = m.id) AS genres, " +
+        "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
+        "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+        "WHERE sim.movieId = m.id) AS stars " +
+        "FROM movies m " +
+        "JOIN ratings r ON m.id = r.movieId " +
+        "ORDER BY r.rating DESC " +
+        "LIMIT " + topK + ";";
 
         Connection conn = getConnection();
 
@@ -45,7 +45,6 @@ public class MovieRepository extends Repository {
                         rs.getFloat("rating")
                 );
 
-                int limit = 3;
 
                 String genresString = rs.getString("genres");
                 List<Genre> genres = parseGenres(genresString);
@@ -174,7 +173,7 @@ public class MovieRepository extends Repository {
         List<Star> stars = new ArrayList<>();
         for (String pair : starPairs) {
             String[] parts = pair.split(":");
-            if (parts.length == 2) {
+            if (parts.length == 3) {
                 String starId = parts[0];
                 String starName = parts[1];
                 stars.add(new Star(starId, starName));
