@@ -122,7 +122,7 @@ public class MovieRepository extends Repository {
                 "    (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';')  " +
                 "       FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId  " +
                 "       WHERE gim.movieId = m.id) AS genres,  " +
-                "    (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name) SEPARATOR ';')  " +
+                "    (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';')  " +
                 "       FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId  " +
                 "       WHERE sim.movieId = m.id) AS stars  " +
                 "FROM  " +
@@ -176,7 +176,13 @@ public class MovieRepository extends Repository {
             if (parts.length == 3) {
                 String starId = parts[0];
                 String starName = parts[1];
-                stars.add(new Star(starId, starName));
+                int birthYear;
+                try {
+                    birthYear = Integer.parseInt(parts[2]);
+                } catch (NumberFormatException e) {
+                    birthYear = 0; 
+                }
+                stars.add(new Star(starId, starName, birthYear));
             }
         }
 
