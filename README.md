@@ -11,11 +11,3 @@
 ## Usage
 
 ## Deployment
-
-## Contributing
-
-## License
-
-## Acknowledgements
-
-## Contact
