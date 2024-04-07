@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Movie } from "../../interfaces/movie";
-
-const fetchMovies = async (): Promise<Movie[]> => {
-  const res = await fetch("http://localhost:8080/api/movies");
-  const movies = await res.json();
-  console.log("movies", movies);
-
-  return movies;
-};
+import { Movie } from "~/interfaces/movie";
+import { fetchTopMovies } from "../../services/movies";
 
 const MovieListPage: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
     console.log("fetch");
-    fetchMovies().then((movies) => {
+    fetchTopMovies().then((movies) => {
       setMovies(movies);
     });
   }, []);

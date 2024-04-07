@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Movie } from '~/interfaces/movie';
+import React, { useEffect, useState } from "react";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Movie } from "~/interfaces/movie";
+import { getMovieById as fetchMovieById } from "~/services/movies";
 
 const SingleMoviePage: React.FC = () => {
-  const fetchMovie = async (movieID: string): Promise<Movie> => {
-    const res = await fetch(`http://localhost:8080/api/movies?id=${movieID}`);
-    const movie = await res.json();
-    setIsLoading(false);
-    console.log(movie);
-    return movie;
-  };
+  // const fetchMovie = async (movieID: string): Promise<Movie> => {
+  //   const res = await fetch(`http://localhost:8080/api/movies?id=${movieID}`);
+  //   const movie = await res.json();
+  //   // setIsLoading(false);
+  //   console.log(movie);
+  //   return movie;
+  // };
+
   const [movie, setMovie] = useState<Movie | null>(null);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (router.query.id) {
-      fetchMovie(router.query.id as string).then(setMovie);
+      fetchMovieById(router.query.id as string).then(setMovie);
+      setIsLoading(false);
     }
   }, [router.query.id]);
 
@@ -35,17 +38,17 @@ const SingleMoviePage: React.FC = () => {
           {movie?.title} ({movie?.year})
         </h1>
         <p>Director: {movie?.director}</p>
-        <p>Genres: {movie?.genres.map((genre) => genre.name).join(', ')}</p>
+        <p>Genres: {movie?.genres.map((genre) => genre.name).join(", ")}</p>
         <p>
-          Stars:{' '}
+          Stars:{" "}
           {movie?.stars.map((star, index) => (
             <React.Fragment key={star?.id}>
-              {index > 0 ? ', ' : ''}
+              {index > 0 ? ", " : ""}
               <Link
                 className="text-blue-500 hover:underline"
                 href={`/stars/${star?.id}`}
               >
-                {star.name} {`(${star.birthYear > 0 ? star.birthYear : 'N/A'})`}
+                {star.name} {`(${star.birthYear > 0 ? star.birthYear : "N/A"})`}
               </Link>
             </React.Fragment>
           ))}
