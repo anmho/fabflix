@@ -26,7 +26,8 @@ public class MovieServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         // So far we just have very basic filtering. Only one filter at a time
         String movieId = req.getParameter("id");
-        String starId = req.getParameter("star");
+        String starId = req.getParameter("starId");
+        System.out.println(starId);
         if (movieId != null) { // get a single movie
             // Get Top 20 movies
             try {
