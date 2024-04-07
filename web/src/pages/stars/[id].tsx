@@ -5,6 +5,7 @@ import Link from "next/link";
 import { StarDetail } from "../../interfaces/star";
 import { SourceTextModule } from "vm";
 import { collectGenerateParams } from "next/dist/build/utils";
+import { fetchStarById } from "~/services/stars";
 
 interface SingleStarPageProps {
   star: StarDetail;
@@ -62,62 +63,10 @@ const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
   );
 };
 
-const fetchStarById = async (id: string): Promise<StarDetail> => {
-  console.log("id", id);
-  const starResponse = await fetch(`http://localhost:8080/api/stars?id=${id}`);
-  const movieResponse = await fetch(
-    `http://localhost:8080/api/movies?starId=${id}`
-  );
-
-  // should use zod
-  const star: { id: string; name: string; birthYear: number | "N/A" } =
-    await starResponse.json();
-  const movies = await movieResponse.json();
-
-  star.birthYear = star.birthYear || "N/A";
-
-  const starDetails: StarDetail = {
-    ...star,
-    movies: movies,
-  };
-
-  console.log("starDetails", starDetails);
-
-  return starDetails;
-};
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params as { id: string };
 
   const star = await fetchStarById(id);
-
-  return { props: { star } };
-
-  // const star: StarDetail = {
-  //   id: parseInt(id),
-  //   name: "Dummy Star Name",
-  //   yearOfBirth: 1980,
-  //   movies: [
-  //     {
-  //       id: 1,
-  //       title: "Movie One",
-  //       year: 2000,
-  //       director: "Director One",
-  //       genres: [],
-  //       stars: [],
-  //       rating: 8.0,
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "Movie Two",
-  //       year: 2005,
-  //       director: "Director Two",
-  //       genres: [],
-  //       stars: [],
-  //       rating: 7.5,
-  //     },
-  //   ],
-  // };
 
   return { props: { star } };
 };
