@@ -14,11 +14,6 @@ public class Star {
         this.birthYear = birthYear;
 
     }
-    public Star(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
 
     public String getId() {
         return id;
