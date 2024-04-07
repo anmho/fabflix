@@ -15,33 +15,45 @@ import java.util.List;
 @WebServlet(name = "movieServlet", value="/movies")
 public class MovieServlet extends HttpServlet {
 
-    private Connection conn;
     private MovieRepository movieRepository;
 
     public void init() {
-        conn = Database.getConnection();
+        Connection conn = Database.getConnection();
         movieRepository = new MovieRepository(conn);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // So far we just have very basic filtering. Only one filter at a time
         String movieId = req.getParameter("id");
-        if (movieId == null) {
+        String starId = req.getParameter("starId");
+        System.out.println(starId);
+        if (movieId != null) { // get a single movie
             // Get Top 20 movies
             try {
-                List<Movie> movies = movieRepository.getTopRatedMovies(20);
 
-                ResponseBuilder.json(resp, movies, 200);
+                // should return null if the movie does not exist
+                Movie movie = movieRepository.getMovieById(movieId);
+                ResponseBuilder.json(resp, movie, 200);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
                 ResponseBuilder.error(resp, 500, null);
             }
-        } else {
+        } else if (starId != null) {
+            try {
+                List<Movie> movies = movieRepository.getMoviesWithStar(starId);
+                ResponseBuilder.json(resp, movies, 200);
+            } catch( SQLException e) {
+                System.out.println(e.getMessage());
+                ResponseBuilder.error(resp, 500, null);
+            }
+        } else{
 
             try {
-                Movie movie = movieRepository.getMovieById(movieId);
-                if (movie != null) {
-                    ResponseBuilder.json(resp, movie, 200);
+                List<Movie> movies = movieRepository.getTopRatedMovies(20);
+
+                if (movies != null) {
+                    ResponseBuilder.json(resp, movies, 200);
                 } else {
                     ResponseBuilder.error(resp, 404, "movie not found");
                 }

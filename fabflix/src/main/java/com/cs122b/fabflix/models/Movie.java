@@ -8,8 +8,8 @@ public class Movie {
     private String title;
     private int year;
     private String director;
-    private List<Genre> genres = new ArrayList<>();
-    private List<Star> stars = new ArrayList<>();
+    private List<Genre> genres;
+    private List<Star> stars;
     private float rating;
 
 

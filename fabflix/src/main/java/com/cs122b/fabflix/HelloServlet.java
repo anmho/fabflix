@@ -13,9 +13,9 @@ public class HelloServlet extends HttpServlet {
     private static Logger logger;
 
     public void init() {
-        message = AppConfig.getProperty("db.url");
+        message = "Hello, World";
         logger = LogManager.getLogger(HelloServlet.class);
-        logger.info("Somehing");
+        logger.info("Something");
     }
 
 

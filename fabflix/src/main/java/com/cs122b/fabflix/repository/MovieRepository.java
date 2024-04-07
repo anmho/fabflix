@@ -8,46 +8,31 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieRepository {
-
-    private final Connection conn;
-
+public class MovieRepository extends Repository {
     public MovieRepository(Connection connection) {
-        this.conn = connection;
+        super(connection);
     }
-    public Movie[] getMovies() throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM movies;");
-
-        ArrayList<Movie> movies = new ArrayList<>();
-
-        while (rs.next()) {
-            Movie movie = movieFromRow(rs);
-            System.out.println(movie.getId());
-            movies.add(movie);
-        }
-        return movies.toArray(new Movie[movies.size()]);
-    }
-
 
     public List<Movie> getTopRatedMovies(int topK) throws SQLException {
         List<Movie> movies = new ArrayList<>();
         String query = "SELECT " +
-                "m.id, " +
-                "m.title, " +
-                "m.year, " +
-                "m.director, " +
-                "r.rating, " +
-                "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
-                "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                "WHERE gim.movieId = m.id) AS genres, " +
-                "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name) SEPARATOR ';') " +
-                "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
-                "WHERE sim.movieId = m.id) AS stars " +
-                "FROM movies m " +
-                "JOIN ratings r ON m.id = r.movieId " +
-                "ORDER BY r.rating DESC " +
-                "LIMIT " + topK + ";";
+        "m.id, " +
+        "m.title, " +
+        "m.year, " +
+        "m.director, " +
+        "r.rating, " +
+        "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+        "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+        "WHERE gim.movieId = m.id) AS genres, " +
+        "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
+        "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+        "WHERE sim.movieId = m.id) AS stars " +
+        "FROM movies m " +
+        "JOIN ratings r ON m.id = r.movieId " +
+        "ORDER BY r.rating DESC " +
+        "LIMIT " + topK + ";";
+
+        Connection conn = getConnection();
 
 
         try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
@@ -60,29 +45,12 @@ public class MovieRepository {
                         rs.getFloat("rating")
                 );
 
-                String[] genrePairs = rs.getString("genres").split(";");
-                List<Genre> genres = new ArrayList<>();
-                for (String pair : genrePairs) {
-                    if (genres.size() >= 3) break;
-                    String[] parts = pair.split(":");
-                    if (parts.length == 2) {
-                        int genreId = Integer.parseInt(parts[0]);
-                        String genreName = parts[1];
-                        genres.add(new Genre(genreId, genreName));
-                    }
-                }
 
-                String[] starPairs = rs.getString("stars").split(";");
-                List<Star> stars = new ArrayList<>();
-                for (String pair : starPairs) {
-                    if (stars.size() >= 3) break;
-                    String[] parts = pair.split(":");
-                    if (parts.length == 2) {
-                        String starId = parts[0];
-                        String starName = parts[1];
-                        stars.add(new Star(starId, starName));
-                    }
-                }
+                String genresString = rs.getString("genres");
+                List<Genre> genres = parseGenres(genresString);
+
+                String starsString = rs.getString("stars");
+                List<Star> stars = parseStars(starsString);
 
                 movie.setGenres(genres);
                 movie.setStars(stars);
@@ -113,6 +81,8 @@ public class MovieRepository {
                 "WHERE m.id = ? " +
                 "LIMIT 1;";
 
+        Connection conn = getConnection();
+
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, movieId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -125,29 +95,11 @@ public class MovieRepository {
                             rs.getFloat("rating")
                     );
 
-                    String[] genrePairs = rs.getString("genres").split(";");
-                    List<Genre> genres = new ArrayList<>();
-                    for (String pair : genrePairs) {
-                        String[] parts = pair.split(":");
-                        if (parts.length == 2) {
-                            int genreId = Integer.parseInt(parts[0]);
-                            String genreName = parts[1];
-                            genres.add(new Genre(genreId, genreName));
-                        }
-                    }
+                    String genresString = rs.getString("genres");
+                    List<Genre> genres = parseGenres(genresString);
 
-                    String[] starPairs = rs.getString("stars").split(";");
-                    List<Star> stars = new ArrayList<>();
-                    for (String pair : starPairs) {
-                        String[] parts = pair.split(":");
-                        if (parts.length == 3) {
-                            String starId = parts[0];
-                            String starName = parts[1];
-                            String birthYearStr = parts[2];
-                            int birthYear = birthYearStr.equals("N/A") ? 0 : Integer.parseInt(birthYearStr); // Convert "N/A" to a default value or parse as int
-                            stars.add(new Star(starId, starName, birthYear));
-                        }
-                    }
+                    String starsString = rs.getString("stars");
+                    List<Star> stars = parseStars(starsString);
 
                     movie.setGenres(genres);
                     movie.setStars(stars);
@@ -158,28 +110,99 @@ public class MovieRepository {
         return movie;
     }
 
+    public List<Movie> getMoviesWithStar(String starId) throws SQLException {
+        String query = "SELECT m.id, m.title, m.year, m.director, r.rating, (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars FROM movies m JOIN ratings r ON m.id = r.movieId WHERE m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?) ORDER BY r.rating DESC;";
+//                "SELECT " +
+//                "m.id, " +
+//                "m.title, " +
+//                "m.year, " +
+//                "m.director, " +
+//                "r.rating, " +
+//                "    r.rating,  " +
+//                "    (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';')  " +
+//                "       FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId  " +
+//                "       WHERE gim.movieId = m.id) AS genres,  " +
+//                "    (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';')  " +
+//                "       FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId  " +
+//                "       WHERE sim.movieId = m.id) AS stars  " +
+//                "FROM  " +
+//                "    movies m  " +
+//                "JOIN  " +
+//                "    ratings r ON m.id = r.movieId  " +
+//                "WHERE  " +
+//                "    m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?)  " +
+//                "ORDER BY  " +
+//                "    r.rating DESC;";
+        Connection conn = getConnection();
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, starId);
+            System.out.println(starId);
+            ResultSet rs =  stmt.executeQuery();
 
 
-    public Movie getMovie(String id) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM movies WHERE id = ?");
-        stmt.setString(1, id);
+            List<Movie> movies = new ArrayList<>();
+            while (rs.next()) {
+                Movie movie = new Movie();
+                movie.setId(rs.getString("id"));
+                movie.setTitle(rs.getString("title"));
+                movie.setYear(rs.getInt("year"));
+                movie.setDirector(rs.getString("director"));
+                movie.setRating(rs.getFloat("rating"));
 
-        ResultSet rs = stmt.executeQuery();
-        if (!rs.next()) {
-            return null;
+
+                String starsString = rs.getString("stars");
+                List<Star> stars = parseStars(starsString);
+                movie.setStars(stars);
+
+                String genreString = rs.getString("genres");
+                List<Genre> genres = parseGenres(genreString);
+                movie.setGenres(genres);
+
+                movies.add(movie);
+            }
+            return movies;
         }
-
-        return movieFromRow(rs);
     }
 
-    private Movie movieFromRow(ResultSet row) throws SQLException {
-        if (row == null) {
-            throw new IllegalStateException("row must not be null");
+
+    private List<Star> parseStars(String starsString) {
+        if (starsString == null) {
+            throw new IllegalStateException("null starsString");
         }
-        String id = row.getString("id");
-        String title = row.getString("title");
-        int year = row.getInt("year");
-        String director = row.getString("director");
-        return new Movie(id, title, year, director);
+        String[] starPairs = starsString.split(";");
+        List<Star> stars = new ArrayList<>();
+        for (String pair : starPairs) {
+            String[] parts = pair.split(":");
+            if (parts.length == 3) {
+                String starId = parts[0];
+                String starName = parts[1];
+                int birthYear;
+                try {
+                    birthYear = Integer.parseInt(parts[2]);
+                } catch (NumberFormatException e) {
+                    birthYear = 0; 
+                }
+                stars.add(new Star(starId, starName, birthYear));
+            }
+        }
+
+        return stars;
+    }
+    private List<Genre> parseGenres(String genresString) {
+        if (genresString == null) {
+            throw new IllegalStateException("null genresString");
+        }
+        String[] genrePairs = genresString.split(";");
+        List<Genre> genres = new ArrayList<>();
+        for (String pair : genrePairs) {
+            String[] parts = pair.split(":");
+            if (parts.length == 2) {
+                int genreId = Integer.parseInt(parts[0]);
+                String genreName = parts[1];
+                genres.add(new Genre(genreId, genreName));
+            }
+        }
+        return genres;
     }
 }
