@@ -52,7 +52,7 @@ const MovieListPage: React.FC = () => {
                   translateZ={20}
                   as={Link}
                   href={`/movies/${movie.id}`}
-                  className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white hover:text-[#FBAD9C]"
+                  className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white hover:text-blue-500"
                 >
                   Learn More →
                 </CardItem>
