@@ -48,7 +48,8 @@ const SingleMoviePage: React.FC = () => {
                 className="text-blue-500 hover:underline"
                 href={`/stars/${star?.id}`}
               >
-                {star.name} {`(${star.birthYear > 0 ? star.birthYear : "N/A"})`}
+                {star.name}{" "}
+                {`(${star?.birthYear > 0 ? star?.birthYear : "N/A"})`}
               </Link>
             </React.Fragment>
           ))}
