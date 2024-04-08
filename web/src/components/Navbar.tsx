@@ -1,5 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
 export const Navbar = () => {
   return (
@@ -11,10 +11,16 @@ export const Navbar = () => {
         <div className="container mx-auto max-w-[1760px] xl:px-[30px]">
           <nav className={`navbar relative flex flex-wrap`}>
             <div className="flex justify-around w-full">
-              <Link href="/" className="hover:text-[#FBAD9C] mx-5">
+              <Link
+                href="/"
+                className="text-white hover:text-blue-800 transition-colors duration-200 ease-in-out mx-5"
+              >
                 Home
               </Link>
-              <Link href="/movies" className="hover:text-[#FBAD9C] mx-5">
+              <Link
+                href="/movies"
+                className="text-white hover:text-blue-800 transition-colors duration-200 ease-in-out mx-5"
+              >
                 Top 20 Movies
               </Link>
             </div>

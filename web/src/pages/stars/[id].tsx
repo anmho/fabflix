@@ -43,7 +43,7 @@ const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
                 <td className="px-5 py-5 border-b border-gray-200  text-sm">
                   <Link
                     href={`/movies/${movie.id}`}
-                    className="text-teal-600 hover:text-teal-900"
+                    className="text-blue-600 hover:text-blue-800 transition-colors duration-200 ease-in-out"
                   >
                     {movie.title}
                   </Link>

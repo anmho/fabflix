@@ -29,32 +29,43 @@ const SingleMoviePage: React.FC = () => {
   if (!movie) return <div>NO MOVIE HAS FOUND...</div>;
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 py-8">
       <Head>
         <title>{movie?.title}</title>
       </Head>
-      <div>
-        <h1 className="text-3xl font-bold">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-4">
           {movie?.title} ({movie?.year})
         </h1>
-        <p>Director: {movie?.director}</p>
-        <p>Genres: {movie?.genres.map((genre) => genre.name).join(", ")}</p>
-        <p>
-          Stars:{" "}
-          {movie?.stars.map((star, index) => (
-            <React.Fragment key={star?.id}>
-              {index > 0 ? ", " : ""}
-              <Link
-                className="text-blue-500 hover:underline"
-                href={`/stars/${star?.id}`}
-              >
-                {star.name}{" "}
-                {`(${star?.birthYear > 0 ? star?.birthYear : "N/A"})`}
-              </Link>
-            </React.Fragment>
-          ))}
-        </p>
-        <p>Rating: {movie?.rating}</p>
+        <div className="text-lg space-y-2">
+          <p className="text-gray-400">
+            Director: <span className="font-semibold">{movie?.director}</span>
+          </p>
+          <p className="text-gray-400">
+            Genres:{" "}
+            <span className="font-semibold">
+              {movie?.genres.map((genre) => genre.name).join(", ")}
+            </span>
+          </p>
+          <p className="text-gray-400">
+            Stars:{" "}
+            {movie?.stars.map((star, index) => (
+              <React.Fragment key={star?.id}>
+                {index > 0 && ", "}
+                <Link
+                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200 ease-in-out"
+                  href={`/stars/${star?.id}`}
+                >
+                  {star.name}{" "}
+                  {`(${star?.birthYear > 0 ? star?.birthYear : "N/A"})`}
+                </Link>
+              </React.Fragment>
+            ))}
+          </p>
+          <p className="text-gray-400">
+            Rating: <span className="font-semibold">{movie?.rating}</span>
+          </p>
+        </div>
       </div>
     </div>
   );
