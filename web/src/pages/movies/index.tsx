@@ -73,12 +73,12 @@ const MovieListPage: React.FC = () => {
                 Genres:{" "}
                 {movie?.genres.slice(0, 3).map((genre, index, slicedArray) => (
                   <span key={genre.id}>
-                    <Link
+                    {/* <Link
                       href={`stars/${genre?.id}`}
                       className="text-blue-600 hover:text-blue-800"
-                    >
-                      {genre?.name}
-                    </Link>
+                    > */}
+                    {genre?.name}
+                    {/* </Link> */}
                     {index < slicedArray.length - 1 ? ", " : ""}
                   </span>
                 ))}
