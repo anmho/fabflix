@@ -90,7 +90,7 @@ const MovieListPage: React.FC = () => {
                   href={`/movies/${movie.id}`}
                   className="rounded-xl text-xs font-normal dark:text-white hover:text-blue-500"
                 >
-                  Learn More About This Movie→
+                  Learn More About {movie?.title}→
                 </CardItem>
                 <CardItem translateZ={20} className="text-xs font-bold">
                   {movie.rating.toFixed(1)}
