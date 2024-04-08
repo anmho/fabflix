@@ -34,7 +34,7 @@ const MovieListPage: React.FC = () => {
               <CardItem
                 as="p"
                 translateZ="30"
-                className="text-neutral-500 text-sm mt-2 dark:text-neutral-300"
+                className="text-neutral-500 text-sm dark:text-neutral-300"
               >
                 {`${movie.year} • ${movie.director}`}
               </CardItem>
@@ -47,14 +47,50 @@ const MovieListPage: React.FC = () => {
                   alt="Movie Thumbnail"
                 />
               </CardItem> */}
+              <CardItem
+                as="p"
+                translateZ="30"
+                className="text-neutral-500 text-sm mt-2 dark:text-neutral-300"
+              >
+                Actors:{" "}
+                {movie?.stars.slice(0, 3).map((star, index, slicedArray) => (
+                  <span key={star.id}>
+                    <Link
+                      href={`stars/${star?.id}`}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      {star?.name}
+                    </Link>
+                    {index < slicedArray.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+              </CardItem>
+              <CardItem
+                as="p"
+                translateZ="30"
+                className="text-neutral-500 text-sm mt-2 dark:text-neutral-300"
+              >
+                Genres:{" "}
+                {movie?.genres.slice(0, 3).map((genre, index, slicedArray) => (
+                  <span key={genre.id}>
+                    <Link
+                      href={`stars/${genre?.id}`}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      {genre?.name}
+                    </Link>
+                    {index < slicedArray.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+              </CardItem>
               <div className="flex justify-between items-center mt-4">
                 <CardItem
                   translateZ={20}
                   as={Link}
                   href={`/movies/${movie.id}`}
-                  className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white hover:text-blue-500"
+                  className="rounded-xl text-xs font-normal dark:text-white hover:text-blue-500"
                 >
-                  Learn More →
+                  Learn More About This Movie→
                 </CardItem>
                 <CardItem translateZ={20} className="text-xs font-bold">
                   {movie.rating.toFixed(1)}
