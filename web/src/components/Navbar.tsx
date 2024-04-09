@@ -1,26 +1,50 @@
-import React from 'react';
-import Link from 'next/link';
-
-export const Navbar = () => {
+"use client";
+import React, { useState } from "react";
+import {
+  HoveredLink,
+  Menu,
+  MenuItem,
+  ProductItem,
+} from "../components/ui/navbar-menu";
+import { cn } from "../utils/cn";
+import top20MoviesImage from "../images/top20MoviesPageSS.png";
+import homePageImage from "../images/homePageSS.png";
+export function Navbar() {
   return (
-    <>
-      <div
-        id="navbar"
-        className="navbar-area navbar-style-two z-[2] py-[20px] lg:py-[15px] xl:py-0"
-      >
-        <div className="container mx-auto max-w-[1760px] xl:px-[30px]">
-          <nav className={`navbar relative flex flex-wrap`}>
-            <div className="flex justify-around w-full">
-              <Link href="/" className="hover:text-[#FBAD9C] mx-5">
-                Home
-              </Link>
-              <Link href="/movies" className="hover:text-[#FBAD9C] mx-5">
-                Top 20 Movies
-              </Link>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </>
+    <div className="relative w-full flex items-center justify-center">
+      <NavbarWrapper className="top-2" />
+    </div>
   );
-};
+}
+
+function NavbarWrapper({ className }: { className?: string }) {
+  const [active, setActive] = useState<string | null>(null);
+  return (
+    <div
+      className={cn("fixed top-10 inset-x-0 max-w-2xl mx-auto z-50", className)}
+    >
+      <Menu setActive={setActive}>
+        <MenuItem setActive={setActive} active={active} item="Home">
+          <div className="text-sm grid grid-cols-2 gap-10 p-4">
+            <ProductItem
+              title="Home"
+              href="/"
+              src={homePageImage.src}
+              description=""
+            />
+          </div>
+        </MenuItem>
+        <MenuItem setActive={setActive} active={active} item="Top Movies">
+          <div className="text-sm grid grid-cols-2 gap-10 p-4">
+            <ProductItem
+              title="Top 20 Movies"
+              href="/movies"
+              src={top20MoviesImage.src}
+              description="Discover the highest ranked top 20 movies."
+            />
+          </div>
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+}

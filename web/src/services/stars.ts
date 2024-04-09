@@ -2,7 +2,9 @@ import { StarDetail } from "~/interfaces/star";
 
 export const fetchStarById = async (id: string): Promise<StarDetail> => {
   console.log("id", id);
-  const starResponse = await fetch(`http://localhost:8080/api/stars?id=${id}`);
+  const starResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/stars?id=${id}`
+  );
   const movieResponse = await fetch(
     `http://localhost:8080/api/movies?starId=${id}`
   );
