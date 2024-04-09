@@ -38,6 +38,10 @@ const SingleMoviePage: React.FC = () => {
           {movie?.title} ({movie?.year})
         </h1>
         <div className="text-lg space-y-2">
+          <h1 className="text-2xl font-bold">{movie?.title}</h1>
+          <p className="text-gray-400">
+            Year: <span className="font-semibold">{movie?.year}</span>
+          </p>
           <p className="text-gray-400">
             Director: <span className="font-semibold">{movie?.director}</span>
           </p>
