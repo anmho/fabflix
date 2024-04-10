@@ -42,7 +42,7 @@ datafiles/
 
 .DS_Store
 
-/db/2-movie-data.sql
+db/*
 /apache-tomcat-10.1.20/webapps/api/
 
 
