@@ -6,6 +6,7 @@ import { StarDetail } from "../../interfaces/star";
 import { SourceTextModule } from "vm";
 import { collectGenerateParams } from "next/dist/build/utils";
 import { fetchStarById } from "~/services/stars";
+import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
 
 interface SingleStarPageProps {
   star: StarDetail;
@@ -14,50 +15,101 @@ interface SingleStarPageProps {
 const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
   console.log("star", star);
   return (
-    <div className="min-h-screen p-8">
+    <div className="container mx-auto px-4 py-8">
       <Head>
-        <title>{star.name}</title>
+        <title>{star?.name}</title>
       </Head>
-      <div className="container mx-auto p-6 rounded-lg shadow-lg">
-        <div className="bg-teal-500 rounded-t-lg p-4">
-          <h1 className="text-2xl font-bold">{star.name}</h1>
-          <h4 className="font-bold">DOB: {star?.birthYear}</h4>
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-4">{star?.name}</h1>
+        <div className="text-lg space-y-2">
+          <h1 className="text-2xl font-bold">{star?.name}</h1>
+          <p className="text-gray-400">
+            DOB: <span className="font-semibold">{star?.birthYear}</span>
+          </p>
         </div>
-        <table className="lg:min-w-[600px] min-w-full leading-normal">
-          <thead>
-            <tr>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-teal-500 text-left text-xs font-semibold  uppercase tracking-wider">
-                Movie Title
-              </th>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-teal-500 text-left text-xs font-semibold  uppercase tracking-wider">
-                Release Year
-              </th>
-              <th className="px-5 py-3 border-b-2 border-gray-200 bg-teal-500 text-left text-xs font-semibold  uppercase tracking-wider ">
-                Director
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {star.movies.map((movie) => (
-              <tr key={movie.id}>
-                <td className="px-5 py-5 border-b border-gray-200  text-sm">
-                  <Link
-                    href={`/movies/${movie.id}`}
-                    className="text-blue-600 hover:text-blue-800 transition-colors duration-200 ease-in-out"
-                  >
-                    {movie.title}
-                  </Link>
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200  text-sm">
-                  {movie.year}
-                </td>
-                <td className="px-5 py-5 border-b border-gray-200 text-sm">
-                  {movie.director}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      </div>
+      <h1 className="text-xl font-bold text-center mb-4">
+        All Movies of {star?.name}{" "}
+      </h1>
+
+      <div className="max-w-4xl mx-auto flex flex-wrap justify-start items-start">
+        {star?.movies.map((movie) => (
+          <CardContainer key={movie.id} className="w-full">
+            <CardBody className="bg-gray-50 relative group dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] mx-2 rounded-xl p-6 border">
+              <CardItem
+                translateZ="50"
+                className="text-xl font-bold text-neutral-600 dark:text-white"
+              >
+                {movie.title}
+              </CardItem>
+              <CardItem
+                as="p"
+                translateZ="30"
+                className="text-neutral-500 text-sm dark:text-neutral-300"
+              >
+                {`${movie.year} • ${movie.director}`}
+              </CardItem>
+              {/* <CardItem translateZ="100" className="w-full mt-4">
+                  <Image
+                    src="/path/to/movie/image.jpg" // Placeholder, replace with actual movie image path
+                    height="400"
+                    width="300"
+                    className="h-60 w-full object-cover rounded-xl group-hover:shadow-xl"
+                    alt="Movie Thumbnail"
+                  />
+                </CardItem> */}
+              <CardItem
+                as="p"
+                translateZ="30"
+                className="text-neutral-500 text-sm mt-2 dark:text-neutral-300"
+              >
+                Actors:{" "}
+                {movie?.stars.slice(0, 3).map((star, index, slicedArray) => (
+                  <span key={star.id}>
+                    <Link
+                      href={`/stars/${star?.id}`}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      {star?.name}
+                    </Link>
+                    {index < slicedArray.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+              </CardItem>
+              <CardItem
+                as="p"
+                translateZ="30"
+                className="text-neutral-500 text-sm mt-2 dark:text-neutral-300"
+              >
+                Genres:{" "}
+                {movie?.genres.slice(0, 3).map((genre, index, slicedArray) => (
+                  <span key={genre.id}>
+                    {/* <Link
+                        href={`/stars/${genre?.id}`}
+                        className="text-blue-600 hover:text-blue-800"
+                      > */}
+                    {genre?.name}
+                    {/* </Link> */}
+                    {index < slicedArray.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+              </CardItem>
+              <div className="flex justify-between items-center mt-4">
+                <CardItem
+                  translateZ={20}
+                  as={Link}
+                  href={`/movies/${movie.id}`}
+                  className="rounded-xl text-xs font-normal dark:text-white hover:text-blue-500"
+                >
+                  Learn More About {movie?.title}→
+                </CardItem>
+                <CardItem translateZ={20} className="text-xs font-bold">
+                  {movie.rating.toFixed(1)}
+                </CardItem>
+              </div>
+            </CardBody>
+          </CardContainer>
+        ))}
       </div>
     </div>
   );
