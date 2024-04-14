@@ -6,7 +6,7 @@ export const fetchStarById = async (id: string): Promise<StarDetail> => {
     `${process.env.NEXT_PUBLIC_API_URL}/stars?id=${id}`
   );
   const movieResponse = await fetch(
-    `http://localhost:8080/api/movies?starId=${id}`
+    `${process.env.NEXT_PUBLIC_API_URL}/movies?starId=${id}`
   );
 
   // should use zod
