@@ -4,6 +4,9 @@ export const fetchTopMovies = async (): Promise<Movie[]> => {
   console.log(process.env.NODE_ENV);
   console.log("process.env.API_URL", process.env.NEXT_PUBLIC_API_URL);
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`);
+  if (!res.ok) {
+    return [];
+  }
   const movies = await res.json();
   console.log("movies", movies);
 

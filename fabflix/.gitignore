@@ -49,3 +49,5 @@ db/*
 
 **/.env
 .image_tag.txt
+
+.idea/
