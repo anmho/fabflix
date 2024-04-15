@@ -1,13 +1,15 @@
 import { StarDetail } from "~/interfaces/star";
 
-export const fetchStarById = async (id: string): Promise<StarDetail> => {
+export const fetchStarById = async (id: string): Promise<StarDetail | null> => {
   console.log("id", id);
-  const starResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/stars?id=${id}`
-  );
-  const movieResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/movies?starId=${id}`
-  );
+  const [starResponse, movieResponse] = await Promise.all([
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stars?id=${id}`),
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies?starId=${id}`),
+  ]);
+
+  if (!starResponse.ok || !movieResponse.ok) {
+    return null;
+  }
 
   // should use zod
   const star: { id: string; name: string; birthYear: number | "N/A" } =
