@@ -11,8 +11,19 @@ public class Movie {
     private List<Genre> genres;
     private List<Star> stars;
     private float rating;
+    private double price;
 
 
+    public Movie(String id, String title, int year, String director, float rating, double price) {
+        this.id = id;
+        this.title = title;
+        this.year = year;
+        this.director = director;
+        this.rating = rating;
+        this.genres = new ArrayList<>();
+        this.stars = new ArrayList<>();
+        this.price = price;
+    }
     public Movie(String id, String title, int year, String director, float rating) {
         this.id = id;
         this.title = title;
@@ -21,15 +32,17 @@ public class Movie {
         this.rating = rating;
         this.genres = new ArrayList<>();
         this.stars = new ArrayList<>();
+        this.price = 5.99;
     }
     public Movie(String id, String title, int year, String director) {
         this.id = id;
         this.title = title;
         this.year = year;
         this.director = director;
-        this.genres = new ArrayList<>(); // Assuming genres is a List<Genre>
+        this.genres = new ArrayList<>();
         this.stars = new ArrayList<>();
         this.rating = 0;
+        this.price = 5.99;
     }
 
     public Movie() {}
@@ -88,4 +101,12 @@ public class Movie {
     public void setRating(float rating) {
         this.rating = rating;
     }
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
 }

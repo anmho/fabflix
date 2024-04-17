@@ -9,7 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="920033dd-7bcd-48a1-aaae-e0f79f9a7e50" name="Changes" comment="" />
+    <list default="true" id="920033dd-7bcd-48a1-aaae-e0f79f9a7e50" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/fabflix/db/3-movie-price.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fabflix/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/fabflix/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fabflix/src/main/java/com/cs122b/fabflix/models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/fabflix/src/main/java/com/cs122b/fabflix/models/Movie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fabflix/src/main/java/com/cs122b/fabflix/repository/MovieRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fabflix/src/main/java/com/cs122b/fabflix/repository/MovieRepository.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,10 +47,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Tomcat Server.Tomcat 10.1.201.executor": "Run",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "mehmet-2",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -80,7 +86,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1713309719986</updated>
-      <workItem from="1713309722420" duration="2525000" />
+      <workItem from="1713309722420" duration="4252000" />
     </task>
     <servers />
   </component>

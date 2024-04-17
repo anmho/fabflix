@@ -20,6 +20,7 @@ public class MovieRepository extends Repository {
         "m.title, " +
         "m.year, " +
         "m.director, " +
+        "m.price, " +
         "r.rating, " +
         "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
         "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
@@ -42,7 +43,8 @@ public class MovieRepository extends Repository {
                         rs.getString("title"),
                         rs.getInt("year"),
                         rs.getString("director"),
-                        rs.getFloat("rating")
+                        rs.getFloat("rating"),
+                        rs.getDouble("price")
                 );
 
 
