@@ -44,7 +44,7 @@ datafiles/
 
 #db/*
 db/2-movie-data.sql
-/apache-tomcat-10.1.20/webapps/api/
+/apache-tomcat-10.1.20/webapps/*
 
 
 
@@ -52,3 +52,4 @@ db/2-movie-data.sql
 .image_tag.txt
 
 .idea/
+
