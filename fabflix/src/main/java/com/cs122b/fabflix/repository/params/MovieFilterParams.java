@@ -1,6 +1,7 @@
 package com.cs122b.fabflix.repository.params;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 
 public class MovieFilterParams {
     private String titleStartsWith;
@@ -10,6 +11,21 @@ public class MovieFilterParams {
     private Integer year;
 
 
+    public static MovieFilterParams fromRequest(HttpServletRequest req) throws NumberFormatException {
+        MovieFilterParams params = new MovieFilterParams();
+
+        String titleStartsWith = req.getParameter("titleStartsWith");
+        String title = req.getParameter("title");
+        String director = req.getParameter("director");
+        Integer year = Integer.parseInt(req.getParameter("year"));
+
+        params.setTitleStartsWith(titleStartsWith);
+        params.setTitleStartsWith(title);
+        params.setDirector(director);
+        params.setYear(year);
+
+        return params;
+    }
     public boolean isValid() {
         return false;
     }

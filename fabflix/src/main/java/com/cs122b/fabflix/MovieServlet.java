@@ -3,6 +3,8 @@ package com.cs122b.fabflix;
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.repository.MovieRepository;
 import com.cs122b.fabflix.repository.StarRepository;
+import com.cs122b.fabflix.repository.params.MovieFilterParams;
+import com.cs122b.fabflix.repository.params.MovieSortParams;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,10 +26,16 @@ public class MovieServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         // So far we just have very basic filtering. Only one filter at a time
         String movieId = req.getParameter("id");
         String starId = req.getParameter("starId");
+
+
+
+
+
+
         System.out.println(starId);
         if (movieId != null) { // get a single movie
             // Get Top 20 movies
