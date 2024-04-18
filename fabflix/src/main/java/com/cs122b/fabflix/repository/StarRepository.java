@@ -1,11 +1,14 @@
 package com.cs122b.fabflix.repository;
 
+import com.cs122b.fabflix.models.Genre;
+import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.models.Star;
+import com.cs122b.fabflix.repository.params.MovieFilterParams;
+import com.cs122b.fabflix.repository.params.MovieSortParams;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StarRepository extends Repository {
 
@@ -44,4 +47,6 @@ public class StarRepository extends Repository {
             return null;
         }
    }
+
 }
+

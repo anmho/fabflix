@@ -2,12 +2,13 @@ package com.cs122b.fabflix;
 
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.repository.MovieRepository;
+import com.cs122b.fabflix.repository.params.MovieFilterParams;
+import com.cs122b.fabflix.repository.params.MovieSortParams;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,11 +24,33 @@ public class MovieServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         // So far we just have very basic filtering. Only one filter at a time
         String movieId = req.getParameter("id");
         String starId = req.getParameter("starId");
         System.out.println("starId");
+        System.out.println(starId);
+        
+
+
+        try {
+            MovieFilterParams filterParams = MovieFilterParams.parse(req);
+            MovieSortParams sortParams = MovieSortParams.parse(req);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseBuilder.error(resp, 400, "invalid query params");
+            return;
+        }
+
+
+
+
+
+
+
+
+
         if (movieId != null) { // get a single movie
             // Get Top 20 movies
             System.out.println("Get Top 20 movies");
@@ -41,7 +64,7 @@ public class MovieServlet extends HttpServlet {
             } catch (SQLException e) {
                 System.out.println("Line 42");
                 System.out.println(e.getMessage());
-                ResponseBuilder.error(resp, 500, null);
+                ResponseBuilder.error(resp, 500, e.getMessage());
             }
         } else if (starId != null) {
             try {
