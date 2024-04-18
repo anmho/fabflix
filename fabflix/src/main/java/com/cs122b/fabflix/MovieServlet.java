@@ -31,6 +31,11 @@ public class MovieServlet extends HttpServlet {
         String movieId = req.getParameter("id");
         String starId = req.getParameter("starId");
 
+        MovieFilterParams filterParams = MovieFilterParams.fromRequest(req);
+        MovieSortParams sortParams = MovieSortParams.fromRequest(req);
+
+
+
 
 
 
