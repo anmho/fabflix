@@ -168,6 +168,14 @@ public class MovieRepository extends Repository {
     }
 
 
+    public List<Movie> filterMovies(
+            Integer moviesPerPage,
+            Integer page,
+            MovieFilterParams filterParams,
+            MovieSortParams sortParams) {
+        return null;
+    }
+
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {
             throw new IllegalStateException("null starsString");

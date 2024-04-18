@@ -11,4 +11,9 @@ public class Repository {
     public Connection getConnection() {
         return conn;
     }
+
+    public enum Ordering {
+        ASCENDING,
+        DESCENDING
+    }
 }

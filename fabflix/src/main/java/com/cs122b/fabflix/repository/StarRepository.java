@@ -44,4 +44,9 @@ public class StarRepository extends Repository {
             return null;
         }
    }
+
+    public enum SortField {
+        TITLE,
+
+    }
 }
