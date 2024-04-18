@@ -157,6 +157,25 @@ public class MovieRepository {
             PaginationParams paginationParams
         ) {
 
+
+
+
+//        List<String> filters = new ArrayList();
+//
+//        // add filters
+//        if (filterParams.getDirector() != null) {
+//            filters.add("director = ?");
+//        }
+        return null;
+    }
+
+
+    PreparedStatement createFilterMoviesQuery(
+            MovieFilterParams filterParams,
+            MovieSortParams sortParams,
+            PaginationParams paginationParams
+    ) {
+
         String baseQuery =
             "SELECT " +
                 "m.id, " +
@@ -171,52 +190,54 @@ public class MovieRepository {
                 "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
                     "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
                     "WHERE sim.movieId = m.id) AS stars " +
-                "FROM movies m " +
-                    "JOIN ratings r ON m.id = r.movieId " +
-                "ORDER BY r.rating DESC " +
-                "LIMIT " + paginationParams.getLimit() + ";";
+            "FROM movies m " +
+            "JOIN ratings r ON m.id = r.movieId \n";
 
+        StringBuilder sb = new StringBuilder();
 
-        List<String> filters = new ArrayList();
+        sb.append(baseQuery);
 
-        // add filters
-        if (filterParams.getDirector() != null) {
-            filters.add("director = ?");
-        }
+        String whereClause = createWhereClause(filterParams);
+        sb.append(whereClause);
+        String orderByClause = createOrderByClause(sortParams);
+        sb.append(orderByClause);
+
+//        return sb.toString();
         return null;
     }
 
+
     String createWhereClause(
-        MovieFilterParams filterParams
+        MovieFilterParams params
     ) {
 
         List<String> clauses = new ArrayList<>();
 
         // title
-        if (filterParams.getTitle() != null) {
+        if (params.getTitle() != null) {
             clauses.add("title LIKE %?%");
         }
         // startsWith
-        if (filterParams.getStartsWith() != null) {
+        if (params.getStartsWith() != null) {
             clauses.add("title LIKE ?%");
         }
         // director
-        if (filterParams.getDirector() != null) {
+        if (params.getDirector() != null) {
             clauses.add("director LIKE %?%");
         }
         // year
-        if (filterParams.getYear() != null) {
+        if (params.getYear() != null) {
             clauses.add("year = ?");
         }
         return "WHERE \n" + String.join(" AND\n", clauses);
     }
 
-    String createOrderByString(
-            MovieSortParams sortParams
+    String createOrderByClause(
+            MovieSortParams params
     ) {
 
         List<String> fields = new ArrayList<>();
-        for (MovieSortField field : sortParams.getSortFields()) {
+        for (MovieSortField field : params.getSortFields()) {
             switch (field) {
                 case RATING:
                     fields.add("rating");
@@ -234,7 +255,7 @@ public class MovieRepository {
 
 
         String orderString = "DESC";
-        SortOrder sortOrder = sortParams.getSortOrder();
+        SortOrder sortOrder = params.getSortOrder();
         if (sortOrder != null) {
             if (sortOrder == SortOrder.DESCENDING) {
                 orderString = "DESC";
@@ -242,15 +263,29 @@ public class MovieRepository {
                 orderString = "ASC";
             }
         }
-        String orderByClause = String.format(
+
+        return String.format(
                 "ORDER BY %s %s",
                 fieldString,
                 orderString
         );
-
-        return orderByClause;
     }
 
+
+    String createPaginationString(
+            PaginationParams params) {
+
+        int limit = params.getLimit();
+        int page = params.getPage();
+        int offset = limit * page;
+
+         return String.format(
+        "LIMIT %d\n" +
+                "OFFSET %d",
+                limit,
+                offset
+        );
+    }
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {
             throw new IllegalStateException("null starsString");

@@ -12,12 +12,12 @@ public class MovieSortParams {
     List<MovieSortField> sortFields;
     SortOrder sortOrder;
 
-    private MovieSortParams() {
-
+    public MovieSortParams(List<MovieSortField> sortFields, SortOrder sortOrder) {
+        this.sortFields = sortFields;
+        this.sortOrder = sortOrder;
     }
 
     public static MovieSortParams parse(HttpServletRequest req) throws IllegalArgumentException {
-        MovieSortParams params = new MovieSortParams();
         String orderQueryParam = req.getParameter("order");
         SortOrder order = null;
 
@@ -28,16 +28,17 @@ public class MovieSortParams {
                 order = SortOrder.DESCENDING;
             }
         }
-        params.setSortOrder(order);
+
 
         String sortByString = req.getParameter("sort-by");
         // encoded as a comma separated string
         // field1,field2,field3
 
 
+        List<MovieSortField> sortFields = new ArrayList<>();
         if (sortByString != null) {
             List<String> fieldStrings = new ArrayList<>(Arrays.asList(sortByString.split(",")));
-            List<MovieSortField> sortFields = new ArrayList<>();
+
 
             // each sort field must be unique
             for (String field : fieldStrings) {
@@ -55,10 +56,9 @@ public class MovieSortParams {
                         throw new IllegalArgumentException("invalid filter parameter");
                 }
             }
-            params.setSortFields(sortFields);
         }
 
-        return params;
+        return new MovieSortParams(sortFields, order);
     }
 
     public List<MovieSortField> getSortFields() {
