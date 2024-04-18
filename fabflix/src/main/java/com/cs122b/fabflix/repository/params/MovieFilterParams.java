@@ -15,7 +15,7 @@ public class MovieFilterParams {
 
     }
 
-    public static MovieFilterParams fromRequest(HttpServletRequest req) throws NumberFormatException {
+    public static MovieFilterParams parse(HttpServletRequest req) throws NumberFormatException {
         MovieFilterParams params = new MovieFilterParams();
 
 
@@ -23,7 +23,8 @@ public class MovieFilterParams {
         String titleStartsWith = req.getParameter("titleStartsWith");
         String title = req.getParameter("title");
         String director = req.getParameter("director");
-        Integer year = Integer.parseInt(req.getParameter("year"));
+        String yearString = req.getParameter("year");
+        Integer year = yearString != null ? Integer.parseInt(yearString) : null;
 
 
         params.setId(id);

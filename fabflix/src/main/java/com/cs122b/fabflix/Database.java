@@ -53,7 +53,6 @@ public class Database {
                 poolProperties.setMaxActive(100);
                 poolProperties.setInitialSize(10);
                 poolProperties.setMaxWait(10000);
-                poolProperties.setRemoveAbandonedTimeout(60);
                 poolProperties.setMinEvictableIdleTimeMillis(30000);
                 poolProperties.setMinIdle(10);
                 poolProperties.setLogAbandoned(true);

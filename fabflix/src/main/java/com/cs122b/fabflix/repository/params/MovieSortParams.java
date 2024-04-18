@@ -1,8 +1,11 @@
 package com.cs122b.fabflix.repository.params;
 
 import com.cs122b.fabflix.repository.Repository;
-import com.cs122b.fabflix.repository.StarRepository;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MovieSortParams {
     public enum SortField {
@@ -10,32 +13,43 @@ public class MovieSortParams {
         YEAR,
     }
 
-    SortField[] sortFields;
+    List<SortField> sortFields;
     Repository.Ordering order;
 
     private MovieSortParams() {
 
     }
 
-    public static MovieSortParams fromRequest(HttpServletRequest req) {
+    public static MovieSortParams parse(HttpServletRequest req) {
         MovieSortParams params = new MovieSortParams();
 
-
         String orderQueryParam = req.getParameter("order");
-        Repository.Ordering order;
+
+
+        Repository.Ordering order = null;
         if (orderQueryParam.equals("asc")) {
             order = Repository.Ordering.ASCENDING;
         } else if (orderQueryParam.equals("desc")){
             order = Repository.Ordering.DESCENDING;
         }
-
         String sortByString = req.getParameter("sortBy");
         // encoded as a comma separated string
         // field1,field2,field3
 
-        String[] fields = sortByString.split(",");
+        List<String> fieldStrs = new ArrayList<>(Arrays.asList(sortByString.split(",")));
 
-        for (String field : fields) {
+
+        // each sort field must be unique
+
+        for (String field : fieldStrs) {
+            switch (field) {
+                case "title":
+
+                    break;
+                case "year":
+                    break;
+
+            }
 
         }
 
@@ -46,7 +60,7 @@ public class MovieSortParams {
         return null;
     }
 
-    public SortField[] getSortFields() {
+    public List<SortField> getSortFields() {
         return sortFields;
     }
     public boolean isValid() {

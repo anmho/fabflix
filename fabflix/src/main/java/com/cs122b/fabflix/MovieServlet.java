@@ -2,7 +2,6 @@ package com.cs122b.fabflix;
 
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.repository.MovieRepository;
-import com.cs122b.fabflix.repository.StarRepository;
 import com.cs122b.fabflix.repository.params.MovieFilterParams;
 import com.cs122b.fabflix.repository.params.MovieSortParams;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -32,14 +30,15 @@ public class MovieServlet extends HttpServlet {
         String starId = req.getParameter("starId");
 
 
-//        try {
-//            MovieFilterParams filterParams = MovieFilterParams.fromRequest(req);
-//            MovieSortParams sortParams = MovieSortParams.fromRequest(req);
-//
-//        } catch (Exception e) {
-//            ResponseBuilder.error(resp, 400, "invalid query params");
-//            return;
-//        }
+        try {
+            MovieFilterParams filterParams = MovieFilterParams.parse(req);
+            MovieSortParams sortParams = MovieSortParams.parse(req);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseBuilder.error(resp, 400, "invalid query params");
+            return;
+        }
 
 
 
