@@ -2,6 +2,7 @@ package com.cs122b.fabflix;
 
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.repository.MovieRepository;
+import com.cs122b.fabflix.repository.StarRepository;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

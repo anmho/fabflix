@@ -1,20 +1,24 @@
-package com.cs122b.fabflix.repository;
+package com.cs122b.fabflix.repository.params;
 
 
 
 public class MovieFilterParams {
-    String startsWith;
+    private String titleStartsWith;
 
-    String title;
-    String director;
-    Integer year;
+    private String title; // Substring match
+    private String director;
+    private Integer year;
 
-    public String getStartsWith() {
-        return startsWith;
+
+    public boolean isValid() {
+        return false;
+    }
+    public String getTitleStartsWith() {
+        return titleStartsWith;
     }
 
-    public void setStartsWith(String startsWith) {
-        this.startsWith = startsWith;
+    public void setTitleStartsWith(String titleStartsWith) {
+        this.titleStartsWith = titleStartsWith;
     }
 
     public String getTitle() {
