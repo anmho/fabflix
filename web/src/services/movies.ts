@@ -3,7 +3,14 @@ import { Movie } from "~/interfaces/movie";
 export const fetchTopMovies = async (): Promise<Movie[]> => {
   console.log(process.env.NODE_ENV);
   console.log("process.env.API_URL", process.env.NEXT_PUBLIC_API_URL);
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`, {
+    credentials: "include",
+  });
+  console.log(res);
+  // if (res.status === 401) {
+  //   console.log('window.location.href = "/login";');
+  //   window.location.href = "/login";
+  // }
   if (!res.ok) {
     return [];
   }

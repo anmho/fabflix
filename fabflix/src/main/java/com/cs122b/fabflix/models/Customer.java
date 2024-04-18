@@ -1,10 +1,10 @@
 package com.cs122b.fabflix.models;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
 
+public class Customer implements Serializable {
 
-
-public class Customer {
+    private static final long serialVersionUID = 1L; // Recommended to add
 
     private int id;
     private String firstName;
@@ -13,19 +13,18 @@ public class Customer {
     private String email;
     private String password;
     private String creditCardID;
-    // thought about adding credit card field here, but then decided not to bc of security conserns
+
     public Customer() {}
 
-    public Customer(int id, String firstName, String lastName, String address, String email,String creditCardID, String password) {
+    public Customer(int id, String firstName, String lastName, String address, String email, String creditCardID, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.email = email;
-        this.password = password;
         this.creditCardID = creditCardID;
+        this.password = password;
     }
-
     public int getId() {
         return id;
     }

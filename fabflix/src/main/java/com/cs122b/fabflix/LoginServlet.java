@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,7 +17,7 @@ import java.sql.ResultSet;
 public class LoginServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        System.out.println("LoginServlet");
         String providedEmail = request.getParameter("email");
         String providedPassword = request.getParameter("password");
 
@@ -29,9 +30,12 @@ public class LoginServlet extends HttpServlet {
                 if (rs.next()) {
                     String storedPassword = rs.getString("password");
                     String storedEmail = rs.getString("email");
+                    System.out.println("clientEmail:" + providedEmail);
+                    System.out.println("clientPassword:" + providedPassword);
+                    System.out.println("DBEmail:" + storedEmail);
+                    System.out.println("DBPassword:" + storedPassword);
 
-
-                    if (providedEmail.equals(storedEmail) && providedPassword.equals(storedPassword)) { // bad practice. should never store actual password in the db.
+                    if (providedPassword.equals(storedPassword)) {
                         Customer customer = new Customer(
                                 rs.getInt("id"),
                                 rs.getString("firstName"),
@@ -41,14 +45,23 @@ public class LoginServlet extends HttpServlet {
                                 rs.getString("ccId"),
                                 null
                         );
+                        System.out.println("AUTH success");
 
-                        request.getSession().setAttribute("customer", customer);
+                        HttpSession session = request.getSession();
+                        session.setMaxInactiveInterval(30*60);
+                        session.setAttribute("customer", customer);
+
+                        System.out.println("Session ID: " + session.getId());
+                        System.out.println("Customer set in session: " + session.getAttribute("customer"));
+
                         ResponseBuilder.json(response, customer, HttpServletResponse.SC_OK);
                     } else {
-                        ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Incorrect email or password.");
+                        System.out.println("Incorrect password." + providedPassword);
+                        ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Incorrect password.");
                     }
                 } else {
-                    ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Incorrect email or password.");
+                    System.out.println("Account does not exist." + providedEmail);
+                    ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Account does not exist.");
                 }
             }
         } catch (Exception e) {
@@ -57,3 +70,6 @@ public class LoginServlet extends HttpServlet {
     }
 
 }
+
+
+
