@@ -4,9 +4,7 @@ package com.cs122b.fabflix.repository;
 import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.models.Star;
-import com.cs122b.fabflix.params.MovieFilterParams;
-import com.cs122b.fabflix.params.MovieSortParams;
-import com.cs122b.fabflix.params.PaginationParams;
+import com.cs122b.fabflix.params.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -154,11 +152,13 @@ public class MovieRepository {
 
 
     public List<Movie> filterMovies(
-            PaginationParams paginationParams,
             MovieFilterParams filterParams,
-            MovieSortParams sortParams) {
+            MovieSortParams sortParams,
+            PaginationParams paginationParams
+        ) {
 
-        String query = "SELECT " +
+        String baseQuery =
+            "SELECT " +
                 "m.id, " +
                 "m.title, " +
                 "m.year, " +
@@ -166,19 +166,89 @@ public class MovieRepository {
                 "m.price, " +
                 "r.rating, " +
                 "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
-                "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                "WHERE gim.movieId = m.id) AS genres, " +
+                    "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+                    "WHERE gim.movieId = m.id) AS genres, " +
                 "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
-                "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
-                "WHERE sim.movieId = m.id) AS stars " +
+                    "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+                    "WHERE sim.movieId = m.id) AS stars " +
                 "FROM movies m " +
-                "JOIN ratings r ON m.id = r.movieId " +
+                    "JOIN ratings r ON m.id = r.movieId " +
                 "ORDER BY r.rating DESC " +
                 "LIMIT " + paginationParams.getLimit() + ";";
 
 
+        List<String> filters = new ArrayList();
 
+        // add filters
+        if (filterParams.getDirector() != null) {
+            filters.add("director = ?");
+        }
         return null;
+    }
+
+    String createWhereClause(
+        MovieFilterParams filterParams
+    ) {
+
+        List<String> clauses = new ArrayList<>();
+
+        // title
+        if (filterParams.getTitle() != null) {
+            clauses.add("title LIKE %?%");
+        }
+        // startsWith
+        if (filterParams.getStartsWith() != null) {
+            clauses.add("title LIKE ?%");
+        }
+        // director
+        if (filterParams.getDirector() != null) {
+            clauses.add("director LIKE %?%");
+        }
+        // year
+        if (filterParams.getYear() != null) {
+            clauses.add("year = ?");
+        }
+        return "WHERE \n" + String.join(" AND\n", clauses);
+    }
+
+    String createOrderByString(
+            MovieSortParams sortParams
+    ) {
+
+        List<String> fields = new ArrayList<>();
+        for (MovieSortField field : sortParams.getSortFields()) {
+            switch (field) {
+                case RATING:
+                    fields.add("rating");
+                    break;
+                case TITLE:
+                    fields.add("title");
+                    break;
+                case YEAR:
+                    fields.add("year");
+                    break;
+            }
+        }
+
+        String fieldString = String.join(", ", fields);
+
+
+        String orderString = "DESC";
+        SortOrder sortOrder = sortParams.getSortOrder();
+        if (sortOrder != null) {
+            if (sortOrder == SortOrder.DESCENDING) {
+                orderString = "DESC";
+            } else if (sortOrder == SortOrder.ASCENDING) {
+                orderString = "ASC";
+            }
+        }
+        String orderByClause = String.format(
+                "ORDER BY %s %s",
+                fieldString,
+                orderString
+        );
+
+        return orderByClause;
     }
 
     private List<Star> parseStars(String starsString) {

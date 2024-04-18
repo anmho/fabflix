@@ -40,11 +40,11 @@ public class MovieService {
             MovieSortParams sortParams
     ) {
 
-        List<Movie> movies = movieRepository.filterMovies(
-                paginationParams,
-                filterParams,
-                sortParams
-        );
+//        List<Movie> movies = movieRepository.filterMovies(
+//                paginationParams,
+//                filterParams,
+//                sortParams
+//        );
 
         // build the response
 

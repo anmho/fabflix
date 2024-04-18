@@ -75,8 +75,5 @@ public class MovieFilterParams {
         return year;
     }
 
-    public enum SortOrder {
-        ASCENDING,
-        DESCENDING
-    }
+
 }

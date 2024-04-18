@@ -49,13 +49,7 @@ public class MovieServlet extends HttpServlet {
             sortParams = MovieSortParams.parse(req);
             paginationParams = PaginationParams.parse(req);
 
-            ObjectMapper mapper = new ObjectMapper();
-
-            System.out.println(mapper.writeValueAsString(filterParams));
-            System.out.println(sortParams);
-            System.out.println(paginationParams);
-
-        } catch (IllegalArgumentException | JsonProcessingException e) {
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
             ResponseBuilder.error(resp, 400, "invalid query params");
         }
@@ -75,7 +69,7 @@ public class MovieServlet extends HttpServlet {
             } else if (starId != null) {
                 List<Movie> movies = movieRepository.getMoviesByStarId(starId);
                 ResponseBuilder.json(resp, movies, 200);
-            } else{
+            } else {
 
                 List<Movie> movies = movieRepository.getTopRatedMovies(20);
 

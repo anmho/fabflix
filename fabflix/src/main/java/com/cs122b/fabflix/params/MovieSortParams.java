@@ -7,14 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MovieSortParams {
-    public enum SortFieldKey {
-        TITLE,
-        YEAR,
-        RATING
-    }
 
-    List<SortFieldKey> sortFields;
-    MovieFilterParams.SortOrder sortOrder;
+
+    List<MovieSortField> sortFields;
+    SortOrder sortOrder;
 
     private MovieSortParams() {
 
@@ -23,13 +19,13 @@ public class MovieSortParams {
     public static MovieSortParams parse(HttpServletRequest req) throws IllegalArgumentException {
         MovieSortParams params = new MovieSortParams();
         String orderQueryParam = req.getParameter("order");
-        MovieFilterParams.SortOrder order = null;
+        SortOrder order = null;
 
         if (orderQueryParam != null) {
             if (orderQueryParam.equals("asc")) {
-                order = MovieFilterParams.SortOrder.ASCENDING;
+                order = SortOrder.ASCENDING;
             } else if (orderQueryParam.equals("desc")){
-                order = MovieFilterParams.SortOrder.DESCENDING;
+                order = SortOrder.DESCENDING;
             }
         }
         params.setSortOrder(order);
@@ -41,19 +37,19 @@ public class MovieSortParams {
 
         if (sortByString != null) {
             List<String> fieldStrings = new ArrayList<>(Arrays.asList(sortByString.split(",")));
-            List<SortFieldKey> sortFields = new ArrayList<>();
+            List<MovieSortField> sortFields = new ArrayList<>();
 
             // each sort field must be unique
             for (String field : fieldStrings) {
                 switch (field) {
                     case "title":
-                        sortFields.add(SortFieldKey.TITLE);
+                        sortFields.add(MovieSortField.TITLE);
                         break;
                     case "year":
-                        sortFields.add(SortFieldKey.YEAR);
+                        sortFields.add(MovieSortField.YEAR);
                         break;
                     case "rating":
-                        sortFields.add(SortFieldKey.RATING);
+                        sortFields.add(MovieSortField.RATING);
                         break;
                     default:
                         throw new IllegalArgumentException("invalid filter parameter");
@@ -65,18 +61,18 @@ public class MovieSortParams {
         return params;
     }
 
-    public List<SortFieldKey> getSortFields() {
+    public List<MovieSortField> getSortFields() {
         return sortFields;
     }
-    public void setSortFields(List<SortFieldKey> sortFields) {
+    public void setSortFields(List<MovieSortField> sortFields) {
         this.sortFields = sortFields;
     }
 
-    public MovieFilterParams.SortOrder getSortOrder() {
+    public SortOrder getSortOrder() {
         return sortOrder;
     }
 
-    public void setSortOrder(MovieFilterParams.SortOrder sortOrder) {
+    public void setSortOrder(SortOrder sortOrder) {
         this.sortOrder = sortOrder;
     }
 }
