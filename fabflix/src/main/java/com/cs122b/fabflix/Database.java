@@ -4,13 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
+
+
 public class Database {
     private static Connection connection;
+    private static DataSource dataSource;
 
     public static Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
-
+            if (dataSource == null) {
                 String url = AppConfig.getProperty("db.url");
                 String username = AppConfig.getProperty("db.username");
                 String password = AppConfig.getProperty("db.password");
@@ -19,8 +23,7 @@ public class Database {
                 System.out.println(username);
                 System.out.println(password);
 
-                String connString = String.format("%s?autoReconnect=true&useSSL=false", url);
-                System.out.println(connString);
+
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                 } catch (ClassNotFoundException e) {
@@ -28,15 +31,46 @@ public class Database {
                     throw new RuntimeException(e);
                 }
 
-                if (connString == null) {
-                    throw new IllegalStateException("db.url must be defined");
-                }
+                PoolProperties poolProperties = new PoolProperties();
 
-                connection = DriverManager.getConnection(connString, username, password);
+
+                System.out.println(url);
+                poolProperties.setUrl(url);
+                poolProperties.setUsername(username);
+                poolProperties.setPassword(password);
+
+
+
+                // Properties
+                poolProperties.setDriverClassName("com.mysql.cj.jdbc.Driver");
+                poolProperties.setJmxEnabled(true);
+                poolProperties.setTestWhileIdle(false);
+                poolProperties.setTestOnBorrow(true);
+                poolProperties.setValidationQuery("SELECT 1");
+                poolProperties.setTestOnReturn(false);
+                poolProperties.setValidationInterval(30000);
+                poolProperties.setTimeBetweenEvictionRunsMillis(30000);
+                poolProperties.setMaxActive(100);
+                poolProperties.setInitialSize(10);
+                poolProperties.setMaxWait(10000);
+                poolProperties.setRemoveAbandonedTimeout(60);
+                poolProperties.setMinEvictableIdleTimeMillis(30000);
+                poolProperties.setMinIdle(10);
+                poolProperties.setLogAbandoned(true);
+                poolProperties.setRemoveAbandoned(true);
+
+                poolProperties.setJdbcInterceptors(
+                        "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"+
+                                "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
+                dataSource = new DataSource();
+                dataSource.setPoolProperties(poolProperties);
+
+
             }
+            return dataSource.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return connection;
+
     }
 }

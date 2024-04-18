@@ -31,8 +31,16 @@ public class MovieServlet extends HttpServlet {
         String movieId = req.getParameter("id");
         String starId = req.getParameter("starId");
 
-        MovieFilterParams filterParams = MovieFilterParams.fromRequest(req);
-        MovieSortParams sortParams = MovieSortParams.fromRequest(req);
+
+//        try {
+//            MovieFilterParams filterParams = MovieFilterParams.fromRequest(req);
+//            MovieSortParams sortParams = MovieSortParams.fromRequest(req);
+//
+//        } catch (Exception e) {
+//            ResponseBuilder.error(resp, 400, "invalid query params");
+//            return;
+//        }
+
 
 
 
@@ -51,7 +59,7 @@ public class MovieServlet extends HttpServlet {
                 ResponseBuilder.json(resp, movie, 200);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-                ResponseBuilder.error(resp, 500, null);
+                ResponseBuilder.error(resp, 500, e.getMessage());
             }
         } else if (starId != null) {
             try {
