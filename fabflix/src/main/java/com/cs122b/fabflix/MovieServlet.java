@@ -30,16 +30,16 @@ public class MovieServlet extends HttpServlet {
         String starId = req.getParameter("starId");
 
 
-        try {
-            MovieFilterParams filterParams = MovieFilterParams.parse(req);
-            MovieSortParams sortParams = MovieSortParams.parse(req);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            ResponseBuilder.error(resp, 400, "invalid query params");
-            return;
-        }
-
+//        try {
+//            MovieFilterParams filterParams = MovieFilterParams.parse(req);
+//            MovieSortParams sortParams = MovieSortParams.parse(req);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            ResponseBuilder.error(resp, 400, "invalid query params");
+//            return;
+//        }
+//
 
 
 
