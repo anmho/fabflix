@@ -1,20 +1,11 @@
 package com.cs122b.fabflix.repository;
 
-import com.cs122b.fabflix.models.Genre;
-import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.models.Star;
-import com.cs122b.fabflix.repository.params.MovieFilterParams;
-import com.cs122b.fabflix.repository.params.MovieSortParams;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
-public class StarRepository extends Repository {
+public class StarRepository {
 
-    public StarRepository(Connection conn) {
-        super(conn);
-    }
 
     public Star getStarById(String id) {
         String query = "SELECT id, name, birthYear " +
@@ -22,7 +13,7 @@ public class StarRepository extends Repository {
                 "WHERE id = ?;"
                 ;
 
-        Connection conn = getConnection();
+        Connection conn = Database.getConnection();
 
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -47,6 +38,7 @@ public class StarRepository extends Repository {
             return null;
         }
    }
+
 
 }
 

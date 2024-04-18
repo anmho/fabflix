@@ -4,8 +4,9 @@ package com.cs122b.fabflix.repository;
 import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.models.Star;
-import com.cs122b.fabflix.repository.params.MovieFilterParams;
-import com.cs122b.fabflix.repository.params.MovieSortParams;
+import com.cs122b.fabflix.params.MovieFilterParams;
+import com.cs122b.fabflix.params.MovieSortParams;
+import com.cs122b.fabflix.params.PaginationParams;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,10 +14,9 @@ import java.util.List;
 
 
 
-public class MovieRepository extends Repository {
-    public MovieRepository(Connection connection) {
-        super(connection);
-    }
+public class MovieRepository {
+
+
 
     public List<Movie> getTopRatedMovies(int topK) throws SQLException {
         List<Movie> movies = new ArrayList<>();
@@ -28,17 +28,17 @@ public class MovieRepository extends Repository {
                 "m.price, " +
                 "r.rating, " +
                 "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
-                "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                "WHERE gim.movieId = m.id) AS genres, " +
+                    "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+                    "WHERE gim.movieId = m.id) AS genres, " +
                 "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
-                "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
-                "WHERE sim.movieId = m.id) AS stars " +
+                    "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+                    "WHERE sim.movieId = m.id) AS stars " +
                 "FROM movies m " +
                 "JOIN ratings r ON m.id = r.movieId " +
                 "ORDER BY r.rating DESC " +
                 "LIMIT " + topK + ";";
 
-        Connection conn = getConnection();
+        Connection conn = Database.getConnection();
 
 
         try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
@@ -88,7 +88,7 @@ public class MovieRepository extends Repository {
                         "WHERE m.id = ? " +
                         "LIMIT 1;";
 
-        Connection conn = getConnection();
+        Connection conn = Database.getConnection();
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, movieId);
@@ -117,30 +117,10 @@ public class MovieRepository extends Repository {
         return movie;
     }
 
-    public List<Movie> getMoviesWithStar(String starId) throws SQLException {
+    public List<Movie> getMoviesByStarId(String starId) throws SQLException {
         String query = "SELECT m.id, m.title, m.year, m.director, r.rating, (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars FROM movies m JOIN ratings r ON m.id = r.movieId WHERE m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?) ORDER BY r.rating DESC;";
-        //                "SELECT " +
-        //                "m.id, " +
-        //                "m.title, " +
-        //                "m.year, " +
-        //                "m.director, " +
-        //                "r.rating, " +
-        //                "    r.rating,  " +
-        //                "    (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';')  " +
-        //                "       FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId  " +
-        //                "       WHERE gim.movieId = m.id) AS genres,  " +
-        //                "    (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';')  " +
-        //                "       FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId  " +
-        //                "       WHERE sim.movieId = m.id) AS stars  " +
-        //                "FROM  " +
-        //                "    movies m  " +
-        //                "JOIN  " +
-        //                "    ratings r ON m.id = r.movieId  " +
-        //                "WHERE  " +
-        //                "    m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?)  " +
-        //                "ORDER BY  " +
-        //                "    r.rating DESC;";
-        Connection conn = getConnection();
+
+        Connection conn = Database.getConnection();
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, starId);
@@ -174,10 +154,30 @@ public class MovieRepository extends Repository {
 
 
     public List<Movie> filterMovies(
-            Integer moviesPerPage,
-            Integer page,
+            PaginationParams paginationParams,
             MovieFilterParams filterParams,
             MovieSortParams sortParams) {
+
+        String query = "SELECT " +
+                "m.id, " +
+                "m.title, " +
+                "m.year, " +
+                "m.director, " +
+                "m.price, " +
+                "r.rating, " +
+                "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+                "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+                "WHERE gim.movieId = m.id) AS genres, " +
+                "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
+                "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+                "WHERE sim.movieId = m.id) AS stars " +
+                "FROM movies m " +
+                "JOIN ratings r ON m.id = r.movieId " +
+                "ORDER BY r.rating DESC " +
+                "LIMIT " + paginationParams.getLimit() + ";";
+
+
+
         return null;
     }
 

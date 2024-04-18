@@ -1,5 +1,6 @@
-package com.cs122b.fabflix;
+package com.cs122b.fabflix.servlets;
 
+import com.cs122b.fabflix.ResponseBuilder;
 import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.repository.StarRepository;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,8 +17,7 @@ public class StarServlet extends HttpServlet {
     private StarRepository starRepository;
 
     public void init() {
-        Connection conn = Database.getConnection();
-        starRepository = new StarRepository(conn);
+        starRepository = new StarRepository();
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) {

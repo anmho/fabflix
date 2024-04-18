@@ -1,21 +1,20 @@
-package com.cs122b.fabflix.repository.params;
+package com.cs122b.fabflix.params;
 
-import com.cs122b.fabflix.repository.Repository;
 import jakarta.servlet.http.HttpServletRequest;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MovieSortParams {
-    public enum SortField {
+    public enum SortFieldKey {
         TITLE,
         YEAR,
+        RATING
     }
 
-    List<SortField> sortFields;
-    Repository.Ordering order;
+    List<SortFieldKey> sortFields;
+    MovieFilterParams.SortOrder sortOrder;
 
     private MovieSortParams() {
 
@@ -24,65 +23,60 @@ public class MovieSortParams {
     public static MovieSortParams parse(HttpServletRequest req) throws IllegalArgumentException {
         MovieSortParams params = new MovieSortParams();
         String orderQueryParam = req.getParameter("order");
-        Repository.Ordering order = null;
+        MovieFilterParams.SortOrder order = null;
 
         if (orderQueryParam != null) {
             if (orderQueryParam.equals("asc")) {
-                order = Repository.Ordering.ASCENDING;
+                order = MovieFilterParams.SortOrder.ASCENDING;
             } else if (orderQueryParam.equals("desc")){
-                order = Repository.Ordering.DESCENDING;
+                order = MovieFilterParams.SortOrder.DESCENDING;
             }
         }
-        params.setOrder(order);
+        params.setSortOrder(order);
 
-        String sortByString = req.getParameter("sortBy");
+        String sortByString = req.getParameter("sort-by");
         // encoded as a comma separated string
         // field1,field2,field3
 
 
         if (sortByString != null) {
             List<String> fieldStrings = new ArrayList<>(Arrays.asList(sortByString.split(",")));
-            List<SortField> sortFields = new ArrayList<>();
+            List<SortFieldKey> sortFields = new ArrayList<>();
 
             // each sort field must be unique
             for (String field : fieldStrings) {
                 switch (field) {
                     case "title":
-                        sortFields.add(SortField.TITLE);
+                        sortFields.add(SortFieldKey.TITLE);
                         break;
                     case "year":
-                        sortFields.add(SortField.YEAR);
+                        sortFields.add(SortFieldKey.YEAR);
+                        break;
+                    case "rating":
+                        sortFields.add(SortFieldKey.RATING);
                         break;
                     default:
                         throw new IllegalArgumentException("invalid filter parameter");
                 }
-
             }
             params.setSortFields(sortFields);
         }
 
-
-
-
         return params;
     }
 
-    public List<SortField> getSortFields() {
+    public List<SortFieldKey> getSortFields() {
         return sortFields;
     }
-    public boolean isValid() {
-        return false;
-    }
-
-    public void setSortFields(List<SortField> sortFields) {
+    public void setSortFields(List<SortFieldKey> sortFields) {
         this.sortFields = sortFields;
     }
 
-    public Repository.Ordering getOrder() {
-        return order;
+    public MovieFilterParams.SortOrder getSortOrder() {
+        return sortOrder;
     }
 
-    public void setOrder(Repository.Ordering order) {
-        this.order = order;
+    public void setSortOrder(MovieFilterParams.SortOrder sortOrder) {
+        this.sortOrder = sortOrder;
     }
 }
