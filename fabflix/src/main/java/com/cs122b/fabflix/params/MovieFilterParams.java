@@ -10,13 +10,16 @@ public class MovieFilterParams {
     private String title; // Substring match
     private String director;
     private Integer year;
+    private String genre;
 
     public MovieFilterParams(
             String id,
             String startsWith,
             String title,
             String director,
-            Integer year) {
+            Integer year,
+            String genre
+        ) {
 
         if (id != null) {
             this.id = id;
@@ -35,6 +38,7 @@ public class MovieFilterParams {
         String title = req.getParameter("title");
         String director = req.getParameter("director");
         String yearString = req.getParameter("year");
+        String genre = req.getParameter("genre");
 
 
         Integer year = null;
@@ -48,7 +52,8 @@ public class MovieFilterParams {
                 startsWith,
                 title,
                 director,
-                year
+                year,
+                genre
         );
     }
 
@@ -75,5 +80,7 @@ public class MovieFilterParams {
         return year;
     }
 
-
+    public String getGenre() {
+        return genre;
+    }
 }

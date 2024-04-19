@@ -8,8 +8,9 @@ import com.cs122b.fabflix.params.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class MovieRepository {
@@ -152,11 +153,17 @@ public class MovieRepository {
 
 
     public List<Movie> filterMovies(
-            MovieFilterParams filterParams,
+            MovieFilterParams filters,
             MovieSortParams sortParams,
-            PaginationParams paginationParams
-        ) {
+            PaginationParams pageParams
+        ) throws SQLException {
 
+
+    
+        Query query = createFilterMoviesQuery(Database.getConnection(), filters, sortParams, pageParams);
+        try (Statement stmt = query.getStatement()) {
+//            ResultSet stmt.executeQuery()
+        }
 
 
 
@@ -170,10 +177,11 @@ public class MovieRepository {
     }
 
 
-    String createFilterMoviesQuery(
-            MovieFilterParams filterParams,
+    Query createFilterMoviesQuery(
+            Connection conn,
+            MovieFilterParams filters,
             MovieSortParams sortParams,
-            PaginationParams paginationParams
+            PaginationParams pageParams
     ) throws SQLException {
 
         String baseQuery =
@@ -193,104 +201,60 @@ public class MovieRepository {
             "FROM movies m " +
             "JOIN ratings r ON m.id = r.movieId \n";
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(baseQuery);
-
-        String whereClause = createWhereClause(filterParams);
-        sb.append(whereClause);
-
-        String orderByClause = createOrderByClause(sortParams);
-        sb.append(orderByClause);
-
-        String paginationClause = createPaginationString(paginationParams);
-        sb.append(paginationClause);
-
-        String query = sb.toString();
-
-        return query;
-    }
 
 
-    String createWhereClause(
-        MovieFilterParams params
-    ) {
+        Query.Builder queryBuilder = new Query.Builder(conn);
+        queryBuilder.select(baseQuery);
+        if (filters != null) {
+            if (filters.getTitle() != null) {
+                String pattern = String.format("%%%s%%", filters.getTitle());
+                queryBuilder.where("title", "LIKE", pattern);
+            }
 
-        List<String> clauses = new ArrayList<>();
+            if (filters.getYear() != null) {
+                queryBuilder.where("year", "=", filters.getYear());
+            }
 
-        // title
-        if (params.getTitle() != null) {
-            clauses.add("title LIKE %?%");
-        }
-        // startsWith
-        if (params.getStartsWith() != null) {
-            clauses.add("title LIKE ?%");
-        }
-        // director
-        if (params.getDirector() != null) {
-            clauses.add("director LIKE %?%");
-        }
-        // year
-        if (params.getYear() != null) {
-            clauses.add("year = ?");
-        }
-        return "WHERE \n" + String.join(" AND\n", clauses);
-    }
+            if (filters.getDirector() != null) {
+                String pattern = String.format("%%%s%%", filters.getDirector());
+                queryBuilder.where("director", "LIKE", pattern);
+            }
 
-    String createOrderByClause(
-            MovieSortParams params
-    ) {
-
-        List<String> fields = new ArrayList<>();
-        for (MovieSortField field : params.getSortFields()) {
-            switch (field) {
-                case RATING:
-                    fields.add("rating");
-                    break;
-                case TITLE:
-                    fields.add("title");
-                    break;
-                case YEAR:
-                    fields.add("year");
-                    break;
+            if (filters.getGenre() != null) {
+                queryBuilder.where("genre", "=", filters.getGenre());
+            }
+            if (filters.getStartsWith() != null) {
+                String pattern = String.format("%%%s%%", filters.getStartsWith());
+                queryBuilder.where("title", "LIKE", pattern);
             }
         }
 
-        String fieldString = String.join(", ", fields);
-
-
-        String orderString = "DESC";
-        SortOrder sortOrder = params.getSortOrder();
-        if (sortOrder != null) {
-            if (sortOrder == SortOrder.DESCENDING) {
-                orderString = "DESC";
-            } else if (sortOrder == SortOrder.ASCENDING) {
-                orderString = "ASC";
+        if (sortParams != null) {
+            List<String> sortCols = new ArrayList<>();
+            for (MovieSortField field : sortParams.getSortFields()) {
+                if (field == MovieSortField.YEAR) {
+                    sortCols.add("year");
+                } else if (field == MovieSortField.RATING) {
+                    sortCols.add("rating");
+                } else if (field == MovieSortField.TITLE) {
+                    sortCols.add("title");
+                }
             }
+
+            queryBuilder.orderBy(sortCols, sortParams.getSortOrder());
         }
 
-        return String.format(
-                "ORDER BY %s %s",
-                fieldString,
-                orderString
-        );
+        int limit = pageParams.getLimit();
+        int page = pageParams.getPage();
+        int offset = Math.max(limit * (page-1), 0);
+        
+        queryBuilder.setLimit(limit);
+        queryBuilder.setOffset(offset);
+
+        return queryBuilder.build();
     }
 
 
-    String createPaginationString(
-            PaginationParams params) {
-
-        int limit = params.getLimit();
-        int page = params.getPage();
-        int offset = limit * page;
-
-         return String.format(
-        "LIMIT %d\n" +
-                "OFFSET %d",
-                limit,
-                offset
-        );
-    }
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {
             throw new IllegalStateException("null starsString");

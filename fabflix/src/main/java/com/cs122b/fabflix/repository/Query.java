@@ -10,15 +10,15 @@ import java.util.List;
 
 public class Query {
 
-    public class Builder {
+    public static class Builder {
         private final Connection conn;
         private final List<Object> params;
         private String selectStatement;
 
         private final List<String> whereConditions;
 
-        List<String> sortColumns;
-        SortOrder sortOrder;
+        private List<String> sortColumns;
+        private SortOrder sortOrder;
         private Integer offset;
         private Integer limit;
 
@@ -124,7 +124,7 @@ public class Query {
 
         String createOffsetClause(Integer offset) {
             if (offset == null) {
-                return "\n"
+                return "\n";
             }
             return String.format("OFFSET %d\n", offset);
         }
