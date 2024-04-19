@@ -170,11 +170,11 @@ public class MovieRepository {
     }
 
 
-    PreparedStatement createFilterMoviesQuery(
+    String createFilterMoviesQuery(
             MovieFilterParams filterParams,
             MovieSortParams sortParams,
             PaginationParams paginationParams
-    ) {
+    ) throws SQLException {
 
         String baseQuery =
             "SELECT " +
@@ -199,11 +199,16 @@ public class MovieRepository {
 
         String whereClause = createWhereClause(filterParams);
         sb.append(whereClause);
+
         String orderByClause = createOrderByClause(sortParams);
         sb.append(orderByClause);
 
-//        return sb.toString();
-        return null;
+        String paginationClause = createPaginationString(paginationParams);
+        sb.append(paginationClause);
+
+        String query = sb.toString();
+
+        return query;
     }
 
 
