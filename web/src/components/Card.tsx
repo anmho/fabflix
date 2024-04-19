@@ -123,7 +123,7 @@ const Card = ({
         {isCartPage && (
           <div className="mt-2">
             <CardItem translateZ={20} className="text-xs font-bold">
-              Total Price: ${movie.quantity * movie.price}
+              Total Price: ${(movie.quantity * movie.price).toFixed(2)}
             </CardItem>
             <div className="flex justify-between mt-5">
               <div className="flex items-center">
