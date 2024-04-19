@@ -41,6 +41,9 @@ public class PaginatedResults<T> {
     public void setPrevLink(String link) {
         links.put("prev", link);
     }
+    public void setSelfLink(String link) {
+        links.put("self", link);
+    }
 
     public Map<String, String> getLinks() {
         return links;

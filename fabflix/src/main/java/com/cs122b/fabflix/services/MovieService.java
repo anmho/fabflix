@@ -71,6 +71,7 @@ public class MovieService {
 
         String nextLink = null;
         String prevLink = null;
+        String selfLink = null;
         try {
             var queryStr
                     = makeQueryString(params);
@@ -80,9 +81,13 @@ public class MovieService {
             if (!isLastPage) {
                 nextLink = String.format("%s?%s&page=%d&limit=%d", baseUrl, queryStr, page+1, limit);
             }
+            selfLink = String.format("%s?%s&page=%d&limit=%d", baseUrl, queryStr, page, limit);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+
+
+
 
 
 
@@ -93,7 +98,9 @@ public class MovieService {
                 movies
         );
         results.setPrevLink(prevLink);
+        results.setSelfLink(selfLink);
         results.setNextLink(nextLink);
+
 
         return results;
     }
