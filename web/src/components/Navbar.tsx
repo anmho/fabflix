@@ -43,6 +43,14 @@ function NavbarWrapper({ className }: { className?: string }) {
               description="Discover the highest ranked top 20 movies."
             />
           </div>
+          <div className="text-sm grid grid-cols-2 gap-10 p-4">
+            <ProductItem
+              title="Shopping Cart"
+              href="/cart"
+              src={top20MoviesImage.src}
+              description="See your shopping cart."
+            />
+          </div>
         </MenuItem>
       </Menu>
     </div>
