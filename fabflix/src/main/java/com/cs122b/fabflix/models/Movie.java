@@ -12,7 +12,19 @@ public class Movie {
     private List<Star> stars;
     private float rating;
     private double price;
+    private  int quantity;
 
+    public Movie(String id, String title, int year, String director, double price, int quantity) {
+        this.id = id;
+        this.title = title;
+        this.year = year;
+        this.director = director;
+        this.rating = -1;
+        this.genres = new ArrayList<>();
+        this.stars = new ArrayList<>();
+        this.price = price;
+        this.quantity = quantity;
+    }
 
     public Movie(String id, String title, int year, String director, float rating, double price) {
         this.id = id;
@@ -23,6 +35,8 @@ public class Movie {
         this.genres = new ArrayList<>();
         this.stars = new ArrayList<>();
         this.price = price;
+        this.quantity = 1;
+
     }
     public Movie(String id, String title, int year, String director, float rating) {
         this.id = id;
@@ -33,6 +47,8 @@ public class Movie {
         this.genres = new ArrayList<>();
         this.stars = new ArrayList<>();
         this.price = 5.99;
+        this.quantity = 1;
+
     }
     public Movie(String id, String title, int year, String director) {
         this.id = id;
@@ -43,6 +59,7 @@ public class Movie {
         this.stars = new ArrayList<>();
         this.rating = 0;
         this.price = 5.99;
+        this.quantity = 1;
     }
 
     public Movie() {}
@@ -108,5 +125,8 @@ public class Movie {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public void setQuantity(int quantity) {this.quantity = quantity;}
+    public int getQuantity() {return this.quantity;}
 
 }

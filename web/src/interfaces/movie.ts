@@ -18,4 +18,6 @@ export interface Movie {
   genres: Genre[];
   stars: Star[];
   rating: number;
+  quantity: number;
+  price: number;
 }

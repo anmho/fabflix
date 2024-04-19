@@ -16,6 +16,7 @@ public class MovieRepository {
 
 
     public List<Movie> getTopRatedMovies(int topK) throws SQLException {
+        System.out.println("Called getTopRatedMovies");
         List<Movie> movies = new ArrayList<>();
         String query = "SELECT " +
                 "m.id, " +
@@ -48,6 +49,8 @@ public class MovieRepository {
     }
 
     public Movie getMovieById(String movieId) throws SQLException {
+        System.out.println("Called getMovieById");
+
         Movie movie = null;
 
         String query =
@@ -95,7 +98,9 @@ public class MovieRepository {
         return movie;
     }
 
-    public List<Movie> getMoviesByStarId(String starId) throws SQLException {
+    public List<Movie> getMoviesWithStar(String starId) throws SQLException {
+        System.out.println("Called getMoviesWithStar");
+
         String query = "SELECT m.id, m.title, m.year, m.director, r.rating, (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars FROM movies m JOIN ratings r ON m.id = r.movieId WHERE m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?) ORDER BY r.rating DESC;";
 
         Connection conn = Database.getConnection();
