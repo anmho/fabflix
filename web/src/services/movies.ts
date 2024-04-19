@@ -7,10 +7,10 @@ export const fetchTopMovies = async (): Promise<Movie[]> => {
     credentials: "include",
   });
   console.log(res);
-  // if (res.status === 401) {
-  //   console.log('window.location.href = "/login";');
-  //   window.location.href = "/login";
-  // }
+  if (res.status === 401) {
+    console.log('window.location.href = "/login";');
+    window.location.href = "/login";
+  }
   if (!res.ok) {
     return [];
   }
