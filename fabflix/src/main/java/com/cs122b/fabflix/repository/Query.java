@@ -104,6 +104,9 @@ public class Query {
         }
 
         String createOrderByClause(List<String> sortColumns, SortOrder sortOrder) {
+            if (sortColumns == null) {
+                return "";
+            }
             if (sortOrder == null) {
                 sortOrder = SortOrder.ASCENDING;
             }

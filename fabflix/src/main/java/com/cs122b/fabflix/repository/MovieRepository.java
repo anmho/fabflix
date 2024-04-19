@@ -126,7 +126,6 @@ public class MovieRepository {
             System.out.println(starId);
             ResultSet rs = stmt.executeQuery();
 
-
             List<Movie> movies = new ArrayList<>();
             while (rs.next()) {
                 Movie movie = new Movie();
@@ -158,48 +157,49 @@ public class MovieRepository {
             PaginationParams pageParams
         ) throws SQLException {
 
+        String baseQuery =
+                "SELECT " +
+                        "m.id, " +
+                        "m.title, " +
+                        "m.year, " +
+                        "m.director, " +
+                        "m.price, " +
+                        "r.rating, " +
+                        "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+                        "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+                        "WHERE gim.movieId = m.id) AS genres, " +
+                        "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
+                        "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+                        "WHERE sim.movieId = m.id) AS stars " +
+                        "FROM movies m " +
+                        "JOIN ratings r ON m.id = r.movieId \n";
+        try (Connection conn = Database.getConnection()) {
+            Query query = createFilterMoviesQuery(conn, baseQuery, filters, sortParams, pageParams);
+            try (PreparedStatement stmt = query.getStatement()) {
+                ResultSet rs = stmt.executeQuery();
 
-    
-        Query query = createFilterMoviesQuery(Database.getConnection(), filters, sortParams, pageParams);
-        try (Statement stmt = query.getStatement()) {
-//            ResultSet stmt.executeQuery()
+
+
+
+                // parse the result set now
+                while (rs.next()) {
+                    System.out.println(rs.getString("title"));
+                }
+            }
         }
 
-
-
-//        List<String> filters = new ArrayList();
-//
-//        // add filters
-//        if (filterParams.getDirector() != null) {
-//            filters.add("director = ?");
-//        }
         return null;
     }
 
 
     Query createFilterMoviesQuery(
             Connection conn,
+            String baseQuery,
             MovieFilterParams filters,
             MovieSortParams sortParams,
             PaginationParams pageParams
     ) throws SQLException {
 
-        String baseQuery =
-            "SELECT " +
-                "m.id, " +
-                "m.title, " +
-                "m.year, " +
-                "m.director, " +
-                "m.price, " +
-                "r.rating, " +
-                "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
-                    "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                    "WHERE gim.movieId = m.id) AS genres, " +
-                "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
-                    "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
-                    "WHERE sim.movieId = m.id) AS stars " +
-            "FROM movies m " +
-            "JOIN ratings r ON m.id = r.movieId \n";
 
 
 

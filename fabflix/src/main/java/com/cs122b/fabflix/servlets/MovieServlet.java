@@ -48,19 +48,19 @@ public class MovieServlet extends HttpServlet {
             filterParams = MovieFilterParams.parse(req);
             sortParams = MovieSortParams.parse(req);
             paginationParams = PaginationParams.parse(req);
+            movieRepository.filterMovies(filterParams, sortParams, paginationParams);
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             ResponseBuilder.error(resp, 400, "invalid query params");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
+
+
+
         try {
-
-            if (movieId != null) {
-
-            }
-
-
             if (movieId != null) { // get a single movie
                 // Get Top 20 movies
                 // should return null if the movie does not exist
