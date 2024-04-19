@@ -7,6 +7,7 @@ import com.cs122b.fabflix.repository.MovieRepository;
 import com.cs122b.fabflix.params.MovieFilterParams;
 import com.cs122b.fabflix.params.MovieSortParams;
 import com.cs122b.fabflix.params.PaginationParams;
+import com.cs122b.fabflix.services.MovieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,11 +22,12 @@ import java.util.List;
 @WebServlet(name = "movieServlet", value="/movies")
 public class MovieServlet extends HttpServlet {
 
-    private MovieRepository movieRepository;
+    private MovieService movieService;
 
     public void init() {
         Connection conn = Database.getConnection();
-        movieRepository = new MovieRepository();
+        movieService = new MovieService(new MovieRepository());
+
     }
 
     @Override
@@ -42,45 +44,32 @@ public class MovieServlet extends HttpServlet {
 
         MovieFilterParams filterParams;
         MovieSortParams sortParams;
-        PaginationParams paginationParams;
+        PaginationParams pageParams;
 
         try {
             filterParams = MovieFilterParams.parse(req);
             sortParams = MovieSortParams.parse(req);
-            paginationParams = PaginationParams.parse(req);
-            movieRepository.filterMovies(filterParams, sortParams, paginationParams);
+            pageParams = PaginationParams.parse(req);
+
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             ResponseBuilder.error(resp, 400, "invalid query params");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return;
         }
 
 
 
 
         try {
-            if (movieId != null) { // get a single movie
-                // Get Top 20 movies
-                // should return null if the movie does not exist
-                Movie movie = movieRepository.getMovieById(movieId);
+            if (filterParams.getId() != null) {
+                Movie movie = movieService.findMovieById(filterParams.getId());
                 ResponseBuilder.json(resp, movie, 200);
-            } else if (starId != null) {
-                List<Movie> movies = movieRepository.getMoviesByStarId(starId);
-                ResponseBuilder.json(resp, movies, 200);
             } else {
-
-                List<Movie> movies = movieRepository.getTopRatedMovies(20);
-
-                if (movies != null) {
-                    ResponseBuilder.json(resp, movies, 200);
-                } else {
-                    ResponseBuilder.error(resp, 404, "movie not found");
-                }
-
+                // filter many movies
+                var results = movieService.filterMovies(filterParams, sortParams, pageParams);
+                ResponseBuilder.json(resp, results, 200);
             }
-
 
         } catch (SQLException e) {
             e.printStackTrace();

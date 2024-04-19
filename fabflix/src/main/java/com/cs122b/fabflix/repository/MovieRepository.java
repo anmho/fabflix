@@ -3,6 +3,7 @@ package com.cs122b.fabflix.repository;
 
 import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
+import com.cs122b.fabflix.models.PaginatedResult;
 import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.params.*;
 
@@ -42,30 +43,11 @@ public class MovieRepository {
 
         try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
-                Movie movie = new Movie(
-                        rs.getString("id"),
-                        rs.getString("title"),
-                        rs.getInt("year"),
-                        rs.getString("director"),
-                        rs.getFloat("rating"),
-                        rs.getDouble("price")
-                );
-
-
-                String genresString = rs.getString("genres");
-                List<Genre> genres = parseGenres(genresString);
-
-                String starsString = rs.getString("stars");
-                List<Star> stars = parseStars(starsString);
-
-                movie.setGenres(genres);
-                movie.setStars(stars);
-
+                Movie movie = parseMovieRow(rs);
                 movies.add(movie);
             }
         }
         return movies;
-
     }
 
     public Movie getMovieById(String movieId) throws SQLException {
@@ -173,22 +155,21 @@ public class MovieRepository {
                         "WHERE sim.movieId = m.id) AS stars " +
                         "FROM movies m " +
                         "JOIN ratings r ON m.id = r.movieId \n";
+
         try (Connection conn = Database.getConnection()) {
             Query query = createFilterMoviesQuery(conn, baseQuery, filters, sortParams, pageParams);
             try (PreparedStatement stmt = query.getStatement()) {
                 ResultSet rs = stmt.executeQuery();
 
-
-
-
-                // parse the result set now
+                List<Movie> movies = new ArrayList<>();
+                // parse the result set row
                 while (rs.next()) {
-                    System.out.println(rs.getString("title"));
+                    Movie movie = parseMovieRow(rs);
+                    movies.add(movie);
                 }
+                return movies;
             }
         }
-
-        return null;
     }
 
 
@@ -199,14 +180,12 @@ public class MovieRepository {
             MovieSortParams sortParams,
             PaginationParams pageParams
     ) throws SQLException {
-
-
-
-
         Query.Builder queryBuilder = new Query.Builder(conn);
         queryBuilder.select(baseQuery);
         if (filters != null) {
             if (filters.getTitle() != null) {
+
+                // fix this
                 String pattern = String.format("%%%s%%", filters.getTitle());
                 queryBuilder.where("title", "LIKE", pattern);
             }
@@ -223,6 +202,7 @@ public class MovieRepository {
             if (filters.getGenre() != null) {
                 queryBuilder.where("genre", "=", filters.getGenre());
             }
+
             if (filters.getStartsWith() != null) {
                 String pattern = String.format("%%%s%%", filters.getStartsWith());
                 queryBuilder.where("title", "LIKE", pattern);
@@ -247,11 +227,36 @@ public class MovieRepository {
         int limit = pageParams.getLimit();
         int page = pageParams.getPage();
         int offset = Math.max(limit * (page-1), 0);
-        
-        queryBuilder.setLimit(limit);
+
+        queryBuilder.setLimit(limit+1);
         queryBuilder.setOffset(offset);
 
         return queryBuilder.build();
+    }
+
+
+
+    private Movie parseMovieRow(ResultSet rs) throws SQLException {
+        Movie movie = new Movie(
+                rs.getString("id"),
+                rs.getString("title"),
+                rs.getInt("year"),
+                rs.getString("director"),
+                rs.getFloat("rating"),
+                rs.getDouble("price")
+        );
+
+
+        String genresString = rs.getString("genres");
+        List<Genre> genres = parseGenres(genresString);
+
+        String starsString = rs.getString("stars");
+        List<Star> stars = parseStars(starsString);
+
+        movie.setGenres(genres);
+        movie.setStars(stars);
+
+        return movie;
     }
 
 

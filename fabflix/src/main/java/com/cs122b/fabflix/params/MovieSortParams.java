@@ -11,6 +11,9 @@ public class MovieSortParams {
 
     List<MovieSortField> sortFields;
     SortOrder sortOrder;
+    public MovieSortParams() {
+
+    }
 
     public MovieSortParams(List<MovieSortField> sortFields, SortOrder sortOrder) {
         this.sortFields = sortFields;

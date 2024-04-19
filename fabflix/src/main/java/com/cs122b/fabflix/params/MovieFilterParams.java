@@ -11,6 +11,9 @@ public class MovieFilterParams {
     private String director;
     private Integer year;
     private String genre;
+    public MovieFilterParams() {
+
+    }
 
     public MovieFilterParams(
             String id,

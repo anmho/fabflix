@@ -113,7 +113,7 @@ public class Query {
 
             String orderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
             return String.format(
-                    "ORDER BY %s %s",
+                    "ORDER BY %s %s\n",
                     String.join(", ", sortColumns),
                     orderString
             );
