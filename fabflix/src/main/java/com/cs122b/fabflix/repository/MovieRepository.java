@@ -138,20 +138,26 @@ public class MovieRepository {
 
         String baseQuery =
                 "SELECT " +
-                        "m.id, " +
-                        "m.title, " +
-                        "m.year, " +
-                        "m.director, " +
-                        "m.price, " +
-                        "r.rating, " +
-                        "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+                    "m.id, " +
+                    "m.title, " +
+                    "m.year, " +
+                    "m.director, " +
+                    "m.price, " +
+                    "r.rating, " +
+                    "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
                         "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
                         "WHERE gim.movieId = m.id) AS genres, " +
-                        "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
+                    "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
                         "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
                         "WHERE sim.movieId = m.id) AS stars " +
-                        "FROM movies m " +
-                        "JOIN ratings r ON m.id = r.movieId \n";
+                "FROM movies m " +
+                    "JOIN ratings r ON m.id = r.movieId " +
+                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                    "JOIN stars s ON s.id = sim.starId " +
+                    "JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                    "JOIN genres g ON gim.genreId = g.id ";
+
+
 
         try (Connection conn = Database.getConnection()) {
             Query query = createFilterMoviesQuery(conn, baseQuery, filters, sortParams, pageParams);
@@ -182,7 +188,6 @@ public class MovieRepository {
         queryBuilder.select(baseQuery);
         if (filters != null) {
             if (filters.getTitle() != null) {
-
                 // fix this
                 String pattern = String.format("%%%s%%", filters.getTitle());
                 queryBuilder.where("title", "LIKE", pattern);
@@ -197,15 +202,22 @@ public class MovieRepository {
                 queryBuilder.where("director", "LIKE", pattern); // unsafe potentially
             }
 
-            if (filters.getGenre() != null) {
-                queryBuilder.where("genre", "=", filters.getGenre());
-            }
-
             if (filters.getStartsWith() != null) {
                 System.out.println("startswith: " + filters.getStartsWith());
                 String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
                 System.out.println(pattern);
                 queryBuilder.where("title", "LIKE", pattern);
+            }
+
+
+            // need to change the query since it will include anyone but the star
+            if (filters.getStar() != null) {
+                String pattern = String.format("%%%s%%", filters.getStar()); // THIS IS UNSAFE. MUST FIX
+                queryBuilder.where("s.name", "LIKE", pattern);
+            }
+
+            if (filters.getGenre() != null) {
+                queryBuilder.where("g.name", "=", filters.getGenre());
             }
         }
 
