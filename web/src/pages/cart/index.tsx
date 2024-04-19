@@ -3,6 +3,8 @@ import Head from "next/head";
 import { Movie } from "~/interfaces/movie";
 import { fetchTopMovies } from "../../services/movies";
 import Card from "~/components/Card";
+import { Button } from "~/components/ui/button";
+
 import {
   fetchCartItems,
   handleAddToCart,
@@ -37,7 +39,16 @@ const CartPage: React.FC = () => {
       <Head>
         <title>Shopping Cart</title>
       </Head>
-      <h1 className="text-2xl font-bold my-6">Shopping Cart</h1>
+      <div className="flex flex-wrap justify-between item-center">
+        <h1 className="text-2xl font-bold my-6">Shopping Cart</h1>
+        <Button
+          variant="outline"
+          className="my-auto"
+          onClick={() => alert("to be implemented")}
+        >
+          Proceed to payment
+        </Button>
+      </div>
       <div className="flex flex-wrap justify-around items-start">
         {cartItems.map((item) => (
           <Card
