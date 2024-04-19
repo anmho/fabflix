@@ -17,7 +17,7 @@ const MovieListPage: React.FC = () => {
   }, []);
 
   const updateMovies = () => {
-    console.log("cart update");
+    alert("Item Added to the cart.");
   };
 
   console.log(isLoading);
