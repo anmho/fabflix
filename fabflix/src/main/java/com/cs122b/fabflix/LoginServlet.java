@@ -1,5 +1,6 @@
 package com.cs122b.fabflix;
 
+import com.cs122b.fabflix.models.Cart;
 import com.cs122b.fabflix.models.Customer;
 import com.cs122b.fabflix.utils.PasswordUtils;
 import jakarta.servlet.annotation.WebServlet;
@@ -45,12 +46,17 @@ public class LoginServlet extends HttpServlet {
                                 rs.getString("ccId"),
                                 null
                         );
+
                         System.out.println("AUTH success");
 
                         HttpSession session = request.getSession();
                         session.setMaxInactiveInterval(30*60);
                         session.setAttribute("customer", customer);
-
+                        Cart cart = (Cart) session.getAttribute("cart");
+                        if (cart == null) {
+                            cart = new Cart();
+                            session.setAttribute("cart", cart);
+                        }
                         System.out.println("Session ID: " + session.getId());
                         System.out.println("Customer set in session: " + session.getAttribute("customer"));
 
