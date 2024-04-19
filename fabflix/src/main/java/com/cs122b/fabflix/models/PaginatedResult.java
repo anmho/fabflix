@@ -64,7 +64,7 @@ public class PaginatedResult<T> {
     }
 
     public List<T> getResults() {
-        return results.subList(0, limit);
+        return results.subList(0, Math.min(limit, results.size()));
     }
 
     public int getPage() {
