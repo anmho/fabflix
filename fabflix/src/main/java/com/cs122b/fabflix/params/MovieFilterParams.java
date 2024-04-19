@@ -1,38 +1,40 @@
 package com.cs122b.fabflix.params;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.*;
 
 public class MovieFilterParams {
     private String id;
+    private String title;
+
+    @JsonProperty("starts-with")
     private String startsWith;
 
-    private String title; // Substring match
     private String director;
     private Integer year;
     private String genre;
+    private String star;
     public MovieFilterParams() {
-
     }
 
     public MovieFilterParams(
             String id,
-            String startsWith,
             String title,
+            String startsWith,
             String director,
             Integer year,
-            String genre
-        ) {
-
-        if (id != null) {
-            this.id = id;
-            return;
-        }
-
-        this.startsWith = startsWith;
+            String genre,
+            String star) {
+        this.id = id;
         this.title = title;
+        this.startsWith = startsWith;
         this.director = director;
         this.year = year;
+        this.genre = genre;
+        this.star = star;
     }
 
     public static MovieFilterParams parse(HttpServletRequest req) throws NumberFormatException {
@@ -42,6 +44,7 @@ public class MovieFilterParams {
         String director = req.getParameter("director");
         String yearString = req.getParameter("year");
         String genre = req.getParameter("genre");
+        String star = req.getParameter("star");
 
 
         Integer year = null;
@@ -49,14 +52,18 @@ public class MovieFilterParams {
             year = Integer.parseInt(yearString);
         }
 
+        var params = new MovieFilterParams();
+
+        Map<String, Object> x = new HashMap<>();
 
         return new MovieFilterParams(
                 id,
-                startsWith,
                 title,
+                startsWith,
                 director,
                 year,
-                genre
+                genre,
+                star
         );
     }
 
@@ -85,5 +92,9 @@ public class MovieFilterParams {
 
     public String getGenre() {
         return genre;
+    }
+
+    public String getStar() {
+        return star;
     }
 }

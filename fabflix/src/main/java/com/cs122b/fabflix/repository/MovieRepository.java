@@ -3,15 +3,12 @@ package com.cs122b.fabflix.repository;
 
 import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
-import com.cs122b.fabflix.models.PaginatedResult;
 import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.params.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class MovieRepository {
@@ -159,6 +156,7 @@ public class MovieRepository {
         try (Connection conn = Database.getConnection()) {
             Query query = createFilterMoviesQuery(conn, baseQuery, filters, sortParams, pageParams);
             try (PreparedStatement stmt = query.getStatement()) {
+                System.out.println(stmt.toString());
                 ResultSet rs = stmt.executeQuery();
 
                 List<Movie> movies = new ArrayList<>();
@@ -196,7 +194,7 @@ public class MovieRepository {
 
             if (filters.getDirector() != null) {
                 String pattern = String.format("%%%s%%", filters.getDirector());
-                queryBuilder.where("director", "LIKE", pattern);
+                queryBuilder.where("director", "LIKE", pattern); // unsafe potentially
             }
 
             if (filters.getGenre() != null) {
@@ -204,7 +202,9 @@ public class MovieRepository {
             }
 
             if (filters.getStartsWith() != null) {
-                String pattern = String.format("%%%s%%", filters.getStartsWith());
+                System.out.println("startswith: " + filters.getStartsWith());
+                String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
+                System.out.println(pattern);
                 queryBuilder.where("title", "LIKE", pattern);
             }
         }

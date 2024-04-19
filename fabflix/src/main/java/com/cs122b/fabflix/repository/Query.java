@@ -70,18 +70,20 @@ public class Query {
 
             StringBuilder query = new StringBuilder();
 
-            String whereClause = createWhereClause(whereConditions);
-            query.append(whereClause);
-
             // Add select statement
 
-            // Add clauses
             query.append(selectStatement);
+            // Add clauses
             query.append(createWhereClause(whereConditions));
+            query.append("\n");
             query.append(createOrderByClause(sortColumns, sortOrder));
+            query.append("\n");
             query.append(createLimitClause(limit));
+            query.append("\n");
             query.append(createOffsetClause(offset));
+            query.append(";");
             String queryString = query.toString();
+
             // Create the prepared statement
             PreparedStatement stmt = conn.prepareStatement(queryString);
 
@@ -108,7 +110,7 @@ public class Query {
                 return "";
             }
             if (sortOrder == null) {
-                sortOrder = SortOrder.ASCENDING;
+                sortOrder = SortOrder.DESCENDING;
             }
 
             String orderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
@@ -121,7 +123,10 @@ public class Query {
 
 
         String createWhereClause(List<String> whereConditions) {
-            return String.join(" AND \n", whereConditions);
+            if (whereConditions.size() == 0) {
+                return "\n";
+            }
+            return "WHERE\n" + String.join(" AND \n", whereConditions);
         }
 
 

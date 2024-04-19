@@ -1,5 +1,7 @@
 package com.cs122b.fabflix.params;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
@@ -9,15 +11,19 @@ import java.util.List;
 public class MovieSortParams {
 
 
+    List<String> fieldStrings;
     List<MovieSortField> sortFields;
     SortOrder sortOrder;
-    public MovieSortParams() {
 
-    }
+
 
     public MovieSortParams(List<MovieSortField> sortFields, SortOrder sortOrder) {
         this.sortFields = sortFields;
         this.sortOrder = sortOrder;
+    }
+
+    public MovieSortParams() {
+
     }
 
     public static MovieSortParams parse(HttpServletRequest req) throws IllegalArgumentException {
@@ -32,6 +38,7 @@ public class MovieSortParams {
             }
         }
 
+        MovieSortParams params = new MovieSortParams();
 
         String sortByString = req.getParameter("sort-by");
         // encoded as a comma separated string
@@ -59,11 +66,16 @@ public class MovieSortParams {
                         throw new IllegalArgumentException("invalid filter parameter");
                 }
             }
+
+            params = new MovieSortParams(sortFields, order);
+
+            params.fieldStrings = fieldStrings;
         }
 
-        return new MovieSortParams(sortFields, order);
+        return params;
     }
 
+    @JsonIgnore
     public List<MovieSortField> getSortFields() {
         return sortFields;
     }
@@ -71,6 +83,17 @@ public class MovieSortParams {
         this.sortFields = sortFields;
     }
 
+    @JsonProperty("sort-by")
+    public String getSortBy() {
+        return String.join(",", fieldStrings);
+    }
+    @JsonProperty("order")
+    public String getOrder() {
+        return sortOrder == SortOrder.ASCENDING ? "asc" : "desc";
+    }
+
+
+    @JsonIgnore
     public SortOrder getSortOrder() {
         return sortOrder;
     }
@@ -78,4 +101,6 @@ public class MovieSortParams {
     public void setSortOrder(SortOrder sortOrder) {
         this.sortOrder = sortOrder;
     }
+
+
 }

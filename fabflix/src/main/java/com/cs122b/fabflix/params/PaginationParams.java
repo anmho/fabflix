@@ -8,8 +8,8 @@ public class PaginationParams {
     private final int limit;
 
     public PaginationParams (int page, int limit) {
-        if (page < 0) {
-            throw new IllegalArgumentException("page must be non-negative or null");
+        if (page <= 0) {
+            throw new IllegalArgumentException("page must be > 0 or null");
         }
         if (limit < 0) {
             throw new IllegalArgumentException("limit must be positive or null");
@@ -23,7 +23,7 @@ public class PaginationParams {
     public static PaginationParams parse(HttpServletRequest req) {
         String pageString = req.getParameter("page");
         String limitString = req.getParameter("limit");
-        int page = 0;
+        int page = 1;
         int limit = 20;
         try {
             if (pageString != null) {
