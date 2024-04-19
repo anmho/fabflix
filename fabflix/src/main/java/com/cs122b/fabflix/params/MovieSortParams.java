@@ -85,6 +85,9 @@ public class MovieSortParams {
 
     @JsonProperty("sort-by")
     public String getSortBy() {
+        if (fieldStrings == null) {
+            return null;
+        }
         return String.join(",", fieldStrings);
     }
     @JsonProperty("order")

@@ -37,9 +37,6 @@ public class MovieServlet extends HttpServlet {
         String starId = req.getParameter("starId");
 
 
-        // sub endpoints to route from here
-
-        //
 
 
         MovieFilterParams filterParams;
@@ -59,16 +56,23 @@ public class MovieServlet extends HttpServlet {
         }
 
 
-
-
+        // sub endpoints to route from here
         try {
             if (filterParams.getId() != null) {
                 Movie movie = movieService.findMovieById(filterParams.getId());
                 ResponseBuilder.json(resp, movie, 200);
+                return;
+            } else if (starId != null) { // should update the method
+
+                List<Movie> movies = movieService.getMoviesWithStar(starId);
+                ResponseBuilder.json(resp, movies, 200);
+                return;
+
             } else {
                 // filter many movies
                 var results = movieService.filterMovies(filterParams, sortParams, pageParams);
                 ResponseBuilder.json(resp, results, 200);
+                return;
             }
 
         } catch (SQLException e) {

@@ -24,6 +24,10 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
+    public List<Movie> getMoviesWithStar(String starId) throws SQLException {
+        return movieRepository.getMoviesWithStar(starId);
+    }
+
 
 
     public Movie findMovieById(String id) throws SQLException {

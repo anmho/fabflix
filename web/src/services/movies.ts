@@ -3,7 +3,14 @@ import { Movie } from "~/interfaces/movie";
 export const fetchTopMovies = async (): Promise<Movie[]> => {
   console.log(process.env.NODE_ENV);
   console.log("process.env.API_URL", process.env.NEXT_PUBLIC_API_URL);
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies`, {
+
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/movies`);
+  url.searchParams.append("sort-by", "rating");
+  url.searchParams.append("order", "desc");
+  url.searchParams.append("limit", "20");
+  url.searchParams.append("page", "1");
+
+  const res = await fetch(url.toString(), {
     credentials: "include",
   });
   console.log(res);
@@ -14,7 +21,9 @@ export const fetchTopMovies = async (): Promise<Movie[]> => {
   if (!res.ok) {
     return [];
   }
-  const movies = await res.json();
+  const data = await res.json();
+  console.log("data", data);
+  const movies = data.results;
   console.log("movies", movies);
 
   return movies;
