@@ -49,14 +49,9 @@ public class Database {
                 poolProperties.setValidationQuery("SELECT 1");
                 poolProperties.setTestOnReturn(false);
                 poolProperties.setValidationInterval(30000);
-                poolProperties.setTimeBetweenEvictionRunsMillis(30000);
-                poolProperties.setMaxActive(100);
                 poolProperties.setInitialSize(10);
                 poolProperties.setMaxWait(10000);
-                poolProperties.setMinEvictableIdleTimeMillis(30000);
-                poolProperties.setMinIdle(10);
                 poolProperties.setLogAbandoned(true);
-                poolProperties.setRemoveAbandoned(true);
 
                 poolProperties.setJdbcInterceptors(
                         "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"+
