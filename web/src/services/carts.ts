@@ -41,7 +41,6 @@ export const handleAddToCart = async (
       body: JSON.stringify({
         action: "add",
         movieId: movieId,
-        quantity: 1, // Default quantity to add
       }),
       credentials: "include",
     });

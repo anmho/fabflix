@@ -47,15 +47,8 @@ public class CartServlet extends HttpServlet {
 
     private void addMovieToCart(HttpServletRequest request, HttpServletResponse response, RequestBody body) throws IOException {
         String movieId = body.getMovieId();
-        int quantity = body.getQuantity();
 
         System.out.println("Add Movie ID: " + movieId);
-        System.out.println("Movie Quantity: " + quantity);
-
-        if (quantity <= 0) {
-            ResponseBuilder.error(response, HttpServletResponse.SC_BAD_REQUEST, "Quantity must be positive to add a new movie.");
-            return;
-        }
 
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
@@ -88,7 +81,7 @@ public class CartServlet extends HttpServlet {
                             rs.getInt("year"),
                             rs.getString("director"),
                             rs.getDouble("price"),
-                            quantity
+                            1
                     );
                     System.out.println("Adding movie to the cart");
                     cart.addMovie(movie);
