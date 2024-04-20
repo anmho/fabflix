@@ -1,5 +1,4 @@
 import { ComboboxDemo } from "~/components/combobox";
-import { NavigationMenuDemo } from "~/components/NavMenu";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,10 +13,7 @@ import {
 const BrowseMoviesPage: React.FC = () => {
   return (
     <>
-      {/* <ComboboxDemo />
-      <ComboboxDemo /> */}
-
-      
+      <ComboboxDemo />
     </>
   );
 };

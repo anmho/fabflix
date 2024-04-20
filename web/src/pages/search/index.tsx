@@ -1,11 +1,13 @@
 import { Head } from "next/document";
 import { useEffect, useState } from "react";
+import { ComboboxDemo } from "~/components/combobox";
 import MovieCard from "~/components/MovieCard";
-import { PaginationDemo } from "~/components/pagination-demo";
 import { FiltersDropdown } from "~/components/search/filters-dropdown";
 import SearchOptionsDropdown from "~/components/search/options-dropdown";
+import { PaginationDemo } from "~/components/search/pagination-demo";
 import { PaginationDropdown } from "~/components/search/pagination-dropdown";
 import { SortDropdown } from "~/components/search/sort-dropdown";
+import { BentoGrid } from "~/components/ui/bento-grid";
 import { Pagination } from "~/components/ui/pagination";
 import { Movie } from "~/interfaces/movie";
 import { handleAddToCart } from "~/services/carts";
@@ -26,6 +28,8 @@ const SearchMoviesPage: React.FC = () => {
         <div className="bg-red-500 w-5 h-5"></div>
       </div>
       <PaginationDemo />
+      <BentoGrid />
+      <ComboboxDemo />
     </div>
   );
 };
