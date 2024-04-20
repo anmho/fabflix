@@ -10,7 +10,7 @@ import { MdAddShoppingCart } from "react-icons/md";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { handleEditFromCart } from "../services/carts";
 
-const Card = ({
+const MovieCard = ({
   movie,
   isCartPage,
   handleAddToCart,
@@ -148,4 +148,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default MovieCard;

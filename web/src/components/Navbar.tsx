@@ -9,10 +9,16 @@ import {
 import { cn } from "../utils/cn";
 import top20MoviesImage from "../images/top20MoviesPageSS.png";
 import homePageImage from "../images/homePageSS.png";
+import { NavigationMenu } from "./ui/navigation-menu";
+import { NavigationMenuDemo } from "./NavMenu";
 export function Navbar() {
   return (
-    <div className="relative w-full flex items-center justify-center">
-      <NavbarWrapper className="top-2" />
+    // <div className="w-full flex items-center justify-center bg-red-500 h-10">
+    // {/* <NavbarWrapper className="top-2" /> */}
+
+    // {/* </div> */}
+    <div className="flex justify-center items-center p-4">
+      <NavigationMenuDemo />
     </div>
   );
 }
