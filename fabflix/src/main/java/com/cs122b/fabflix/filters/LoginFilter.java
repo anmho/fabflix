@@ -19,6 +19,7 @@ public class LoginFilter implements Filter {
         allowedURIs.add("/index.tsx");
         allowedURIs.add("/login.tsx");
         allowedURIs.add("/api/login");
+        allowedURIs.add("/api/isLoggedIn");
         allowedURIs.add("/_next/static/");
     }
 
@@ -54,7 +55,14 @@ public class LoginFilter implements Filter {
 
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
-        return allowedURIs.stream().anyMatch(uri -> requestURI.toLowerCase().endsWith(uri));
+        String normalizedUri = requestURI.toLowerCase();
+
+        for (String uri : allowedURIs) {
+            if (normalizedUri.contains(uri.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
