@@ -1,4 +1,4 @@
-package com.cs122b.fabflix;
+package com.cs122b.fabflix.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -20,8 +20,6 @@ public class LoginFilter implements Filter {
         allowedURIs.add("/login.tsx");
         allowedURIs.add("/api/login");
         allowedURIs.add("/_next/static/");
-
-
     }
 
     @Override

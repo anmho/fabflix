@@ -4,71 +4,16 @@ package com.cs122b.fabflix.repository;
 import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.models.Star;
-import com.cs122b.fabflix.repository.params.MovieFilterParams;
-import com.cs122b.fabflix.repository.params.MovieSortParams;
+import com.cs122b.fabflix.params.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-
-public class MovieRepository extends Repository {
-    public MovieRepository(Connection connection) {
-        super(connection);
-    }
-
-    public List<Movie> getTopRatedMovies(int topK) throws SQLException {
-        System.out.println("Called getTopRatedMovies");
-        List<Movie> movies = new ArrayList<>();
-        String query = "SELECT " +
-                "m.id, " +
-                "m.title, " +
-                "m.year, " +
-                "m.director, " +
-                "m.price, " +
-                "r.rating, " +
-                "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
-                "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                "WHERE gim.movieId = m.id) AS genres, " +
-                "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
-                "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
-                "WHERE sim.movieId = m.id) AS stars " +
-                "FROM movies m " +
-                "JOIN ratings r ON m.id = r.movieId " +
-                "ORDER BY r.rating DESC " +
-                "LIMIT " + topK + ";";
-
-        Connection conn = getConnection();
+public class MovieRepository {
 
 
-        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                Movie movie = new Movie(
-                        rs.getString("id"),
-                        rs.getString("title"),
-                        rs.getInt("year"),
-                        rs.getString("director"),
-                        rs.getFloat("rating"),
-                        rs.getDouble("price")
-                );
-
-
-                String genresString = rs.getString("genres");
-                List<Genre> genres = parseGenres(genresString);
-
-                String starsString = rs.getString("stars");
-                List<Star> stars = parseStars(starsString);
-
-                movie.setGenres(genres);
-                movie.setStars(stars);
-
-                movies.add(movie);
-            }
-        }
-        return movies;
-
-    }
 
     public Movie getMovieById(String movieId) throws SQLException {
         System.out.println("Called getMovieById");
@@ -91,7 +36,7 @@ public class MovieRepository extends Repository {
                         "WHERE m.id = ? " +
                         "LIMIT 1;";
 
-        Connection conn = getConnection();
+        Connection conn = Database.getConnection();
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, movieId);
@@ -124,34 +69,13 @@ public class MovieRepository extends Repository {
         System.out.println("Called getMoviesWithStar");
 
         String query = "SELECT m.id, m.title, m.year, m.director, r.rating, (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars FROM movies m JOIN ratings r ON m.id = r.movieId WHERE m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?) ORDER BY r.rating DESC;";
-        //                "SELECT " +
-        //                "m.id, " +
-        //                "m.title, " +
-        //                "m.year, " +
-        //                "m.director, " +
-        //                "r.rating, " +
-        //                "    r.rating,  " +
-        //                "    (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';')  " +
-        //                "       FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId  " +
-        //                "       WHERE gim.movieId = m.id) AS genres,  " +
-        //                "    (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';')  " +
-        //                "       FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId  " +
-        //                "       WHERE sim.movieId = m.id) AS stars  " +
-        //                "FROM  " +
-        //                "    movies m  " +
-        //                "JOIN  " +
-        //                "    ratings r ON m.id = r.movieId  " +
-        //                "WHERE  " +
-        //                "    m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?)  " +
-        //                "ORDER BY  " +
-        //                "    r.rating DESC;";
-        Connection conn = getConnection();
+
+        Connection conn = Database.getConnection();
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, starId);
             System.out.println(starId);
             ResultSet rs = stmt.executeQuery();
-
 
             List<Movie> movies = new ArrayList<>();
             while (rs.next()) {
@@ -179,12 +103,147 @@ public class MovieRepository extends Repository {
 
 
     public List<Movie> filterMovies(
-            Integer moviesPerPage,
-            Integer page,
-            MovieFilterParams filterParams,
-            MovieSortParams sortParams) {
-        return null;
+            MovieFilterParams filters,
+            MovieSortParams sortParams,
+            PaginationParams pageParams
+        ) throws SQLException {
+
+        String baseQuery =
+                "SELECT DISTINCT " +
+                    "m.id, " +
+                    "m.title, " +
+                    "m.year, " +
+                    "m.director, " +
+                    "m.price, " +
+                    "r.rating, " +
+                    "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+                        "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+                        "WHERE gim.movieId = m.id) AS genres, " +
+                    "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
+                        "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+                        "WHERE sim.movieId = m.id) AS stars " +
+                "FROM movies m " +
+                    "JOIN ratings r ON m.id = r.movieId " +
+                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                    "JOIN stars s ON s.id = sim.starId " +
+                    "JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                    "JOIN genres g ON gim.genreId = g.id ";
+
+
+
+        try (Connection conn = Database.getConnection()) {
+            Query query = createFilterMoviesQuery(conn, baseQuery, filters, sortParams, pageParams);
+            try (PreparedStatement stmt = query.getStatement()) {
+                System.out.println(stmt.toString());
+                ResultSet rs = stmt.executeQuery();
+
+                List<Movie> movies = new ArrayList<>();
+                // parse the result set row
+                while (rs.next()) {
+                    Movie movie = parseMovieRow(rs);
+                    movies.add(movie);
+                }
+                return movies;
+            }
+        }
     }
+
+
+    Query createFilterMoviesQuery(
+            Connection conn,
+            String baseQuery,
+            MovieFilterParams filters,
+            MovieSortParams sortParams,
+            PaginationParams pageParams
+    ) throws SQLException {
+        Query.Builder queryBuilder = new Query.Builder(conn);
+        queryBuilder.select(baseQuery);
+        if (filters != null) {
+            if (filters.getTitle() != null) {
+                // fix this
+                String pattern = String.format("%%%s%%", filters.getTitle());
+                queryBuilder.where("title", "LIKE", pattern);
+            }
+
+            if (filters.getYear() != null) {
+                queryBuilder.where("year", "=", filters.getYear());
+            }
+
+            if (filters.getDirector() != null) {
+                String pattern = String.format("%%%s%%", filters.getDirector());
+                queryBuilder.where("director", "LIKE", pattern); // unsafe potentially
+            }
+
+            if (filters.getStartsWith() != null) {
+                System.out.println("startswith: " + filters.getStartsWith());
+                String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
+                System.out.println(pattern);
+                queryBuilder.where("title", "LIKE", pattern);
+            }
+
+
+            // need to change the query since it will include anyone but the star
+            if (filters.getStar() != null) {
+                String pattern = String.format("%%%s%%", filters.getStar()); // THIS IS UNSAFE. MUST FIX
+                queryBuilder.where("s.name", "LIKE", pattern);
+            }
+
+            if (filters.getGenre() != null) {
+                queryBuilder.where("g.name", "=", filters.getGenre());
+            }
+        }
+
+        if (sortParams != null && sortParams.getSortFields() != null) {
+            List<String> sortCols = new ArrayList<>();
+            System.out.println("sort params: " + sortParams.getSortFields());
+            for (MovieSortField field : sortParams.getSortFields()) {
+                if (field == MovieSortField.YEAR) {
+                    sortCols.add("year");
+                } else if (field == MovieSortField.RATING) {
+                    sortCols.add("rating");
+                } else if (field == MovieSortField.TITLE) {
+                    sortCols.add("title");
+                }
+            }
+
+            queryBuilder.orderBy(sortCols, sortParams.getSortOrder());
+        }
+
+        int limit = pageParams.getLimit();
+        int page = pageParams.getPage();
+        int offset = Math.max(limit * (page-1), 0);
+
+        queryBuilder.setLimit(limit+1);
+        queryBuilder.setOffset(offset);
+
+        return queryBuilder.build();
+    }
+
+
+
+    private Movie parseMovieRow(ResultSet rs) throws SQLException {
+        Movie movie = new Movie(
+                rs.getString("id"),
+                rs.getString("title"),
+                rs.getInt("year"),
+                rs.getString("director"),
+                rs.getFloat("rating"),
+                rs.getDouble("price")
+        );
+
+
+        String genresString = rs.getString("genres");
+        List<Genre> genres = parseGenres(genresString);
+
+        String starsString = rs.getString("stars");
+        List<Star> stars = parseStars(starsString);
+
+        movie.setGenres(genres);
+        movie.setStars(stars);
+
+        return movie;
+    }
+
 
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {

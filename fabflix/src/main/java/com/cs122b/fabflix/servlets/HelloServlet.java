@@ -1,4 +1,4 @@
-package com.cs122b.fabflix;
+package com.cs122b.fabflix.servlets;
 
 import java.io.*;
 

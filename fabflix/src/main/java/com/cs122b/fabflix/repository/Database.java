@@ -1,9 +1,10 @@
-package com.cs122b.fabflix;
+package com.cs122b.fabflix.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.cs122b.fabflix.AppConfig;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
@@ -47,7 +48,7 @@ public class Database {
                 poolProperties.setTestWhileIdle(false);
                 poolProperties.setTestOnBorrow(true);
                 poolProperties.setValidationQuery("SELECT 1");
-                poolProperties.setTestOnReturn(false);
+//                poolProperties.setTestOnReturn(false);
                 poolProperties.setValidationInterval(30000);
                 poolProperties.setInitialSize(10);
                 poolProperties.setMaxWait(10000);

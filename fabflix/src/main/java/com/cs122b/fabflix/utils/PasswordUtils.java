@@ -1,14 +1,17 @@
 package com.cs122b.fabflix.utils;
 
-import org.mindrot.jbcrypt.BCrypt;
+
+//import org.mindrot.jbcrypt.BCrypt;
 
 public class PasswordUtils {
 
     public static String hashPassword(String plainTextPassword){
-        return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
+//        return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
+        return null;
     }
 
     public static boolean verifyPassword(String plainTextPassword, String hashedPassword) {
-        return BCrypt.checkpw(plainTextPassword, hashedPassword);
+//        return BCrypt.checkpw(plainTextPassword, hashedPassword);
+        return false;
     }
 }
