@@ -11,38 +11,78 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "~/components/ui/sheet";
+import React, { use, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import MovieCard from "~/components/MovieCard";
+import { isLoggedIn } from "~/services/login";
+import { fetchCartItems, handleAddToCart } from "~/services/carts";
+import { Movie } from "~/interfaces/movie";
 
 export function CartDrawer() {
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [cartItems, setCartItems] = useState<Movie[]>([]);
+  const [showDrawer, setShowDrawer] = useState<boolean>(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    isLoggedIn().then(({ success }) => {
+      setShowDrawer(success);
+    });
+  }, [router]);
+
+  const getCartItems = async () => {
+    await fetchCartItems().then((items) => {
+      setCartItems(items);
+    });
+  };
+
+  const updateMovies = () => {
+    getCartItems();
+  };
+
+  if (!showDrawer) return;
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">Cart</Button>
+        <Button variant="outline">Shopping Cart</Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Cart</SheetTitle>
-          <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
-          </SheetDescription>
+          <SheetTitle>Shopping Cart</SheetTitle>
+          <Button
+            variant="outline"
+            onClick={() => alert("Proceed to payment not implemented yet")}
+          >
+            Proceed to payment
+          </Button>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <div className="flex flex-wrap justify-around items-start">
+            {cartItems.map((item) => (
+              <React.Fragment key={item.id}>
+                <MovieCard
+                  movie={item}
+                  isCartPage={true}
+                  handleAddToCart={() => handleAddToCart(item.id, updateMovies)}
+                  updateMovies={updateMovies}
+                />
+              </React.Fragment>
+            ))}
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
+        )}
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
+            <Button variant="outline">Close</Button>
           </SheetClose>
+          <Button
+            variant="outline"
+            onClick={() => alert("Proceed to payment not implemented yet")}
+          >
+            Proceed to payment
+          </Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
