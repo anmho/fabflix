@@ -54,12 +54,16 @@ export function CartDrawer() {
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
           {cartItems.length > 0 && (
-            <Button
-              variant="outline"
-              onClick={() => alert("Proceed to payment not implemented yet")}
-            >
-              Proceed to payment
-            </Button>
+            <SheetClose asChild>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  router.push("/checkout");
+                }}
+              >
+                Proceed to payment
+              </Button>
+            </SheetClose>
           )}
         </SheetHeader>
         {isLoading ? (
