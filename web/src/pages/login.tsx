@@ -5,11 +5,12 @@ import { Input } from "../components/ui/input";
 import { cn } from "~/utils/cn";
 import { useRouter } from "next/router";
 import { handleLogin } from "~/services/login";
-
+import { Badge } from "~/components/ui/badge";
 const Login: React.FC = () => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const router = useRouter();
+  const [errorMsg, setErrorMsg] = useState<String>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,11 +19,19 @@ const Login: React.FC = () => {
     formData.append("email", emailInput);
     formData.append("password", passwordInput);
 
+    if (!emailInput || !passwordInput) return;
+
     await handleLogin(formData)
-      .then(() => {
-        router.push("/movies");
+      .then((res) => {
+        if (res.success) {
+          setErrorMsg("");
+          router.push("/movies");
+        } else {
+          setErrorMsg(res?.message || "Error login in");
+        }
       })
       .catch((error) => {
+        setErrorMsg(error?.message);
         console.error("Login failed: ", error);
         alert("Login failed: " + error.message);
       });
@@ -36,6 +45,7 @@ const Login: React.FC = () => {
             <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
               Welcome Back!
             </h2>
+
             <h1>
               jbrown@ics185.edu <br />
               keyboard
@@ -64,6 +74,15 @@ const Login: React.FC = () => {
                   type="password"
                 />
               </LabelInputContainer>
+              {errorMsg !== "" && (
+                <div
+                  className="my-2 bg-red-100 w-full border border-red-400 text-red-700 px-4 py-3 rounded"
+                  role="alert"
+                >
+                  <strong className="font-bold">Error! </strong>
+                  <span className="block sm:inline">{errorMsg}</span>
+                </div>
+              )}
               <button
                 className="bg-gradient-to-br from-black dark:from-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium"
                 type="submit"
