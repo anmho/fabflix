@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Movie } from "~/interfaces/movie";
 import { fetchTopMovies } from "../../services/movies";
-import Card from "~/components/Card";
+import MovieCard from "~/components/MovieCard";
 import { Button } from "~/components/ui/button";
+import { isLoggedIn } from "~/services/login";
+import { useRouter } from "next/router";
 
 import {
   fetchCartItems,
@@ -14,6 +16,17 @@ import {
 const CartPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [cartItems, setCartItems] = useState<Movie[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    isLoggedIn().then(({ success }) => {
+      if (!success) {
+        router.push("/login");
+      } else {
+        getCartItems();
+      }
+    });
+  }, [router]);
 
   const getCartItems = async () => {
     await fetchCartItems().then((items) => {
@@ -23,15 +36,9 @@ const CartPage: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    getCartItems();
-  }, []);
-
   const updateMovies = () => {
     getCartItems();
   };
-
-  console.log(isLoading);
 
   if (isLoading) return <div>Loading...</div>;
   return (
@@ -51,7 +58,7 @@ const CartPage: React.FC = () => {
       </div>
       <div className="flex flex-wrap justify-around items-start">
         {cartItems.map((item) => (
-          <Card
+          <MovieCard
             movie={item}
             isCartPage={true}
             handleAddToCart={() => handleAddToCart(item.id, updateMovies)}
