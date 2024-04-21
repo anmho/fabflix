@@ -33,6 +33,7 @@ export function CartDrawer() {
   const getCartItems = async () => {
     await fetchCartItems().then((items) => {
       setCartItems(items);
+      setIsLoading(false);
     });
   };
 
@@ -45,45 +46,63 @@ export function CartDrawer() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">Shopping Cart</Button>
+        <Button variant="outline" onClick={getCartItems}>
+          Shopping Cart
+        </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
-          <Button
-            variant="outline"
-            onClick={() => alert("Proceed to payment not implemented yet")}
-          >
-            Proceed to payment
-          </Button>
+          {cartItems.length > 0 && (
+            <Button
+              variant="outline"
+              onClick={() => alert("Proceed to payment not implemented yet")}
+            >
+              Proceed to payment
+            </Button>
+          )}
         </SheetHeader>
         {isLoading ? (
           <div>Loading...</div>
         ) : (
           <div className="flex flex-wrap justify-around items-start">
-            {cartItems.map((item) => (
-              <React.Fragment key={item.id}>
-                <MovieCard
-                  movie={item}
-                  isCartPage={true}
-                  handleAddToCart={() => handleAddToCart(item.id, updateMovies)}
-                  updateMovies={updateMovies}
-                />
-              </React.Fragment>
-            ))}
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                <React.Fragment key={item.id}>
+                  <MovieCard
+                    movie={item}
+                    isCartPage={true}
+                    handleAddToCart={() =>
+                      handleAddToCart(item.id, updateMovies)
+                    }
+                    updateMovies={updateMovies}
+                  />
+                </React.Fragment>
+              ))
+            ) : (
+              <div className="mt-5 font-semibold text-[20px]">
+                Your shopping cart is empty
+              </div>
+            )}
           </div>
         )}
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button variant="outline">Close</Button>
-          </SheetClose>
-          <Button
-            variant="outline"
-            onClick={() => alert("Proceed to payment not implemented yet")}
-          >
-            Proceed to payment
-          </Button>
-        </SheetFooter>
+        {cartItems.length > 0 && (
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant="outline">Close</Button>
+            </SheetClose>
+            <SheetClose asChild>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  router.push("/checkout");
+                }}
+              >
+                Proceed to payment
+              </Button>
+            </SheetClose>
+          </SheetFooter>
+        )}
       </SheetContent>
     </Sheet>
   );
