@@ -1,9 +1,10 @@
-"use client";
+// At the top of your file
 import React, { useState } from "react";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "~/utils/cn";
 import { useRouter } from "next/router";
+import { handleLogin } from "~/services/login";
 
 const Login: React.FC = () => {
   const [emailInput, setEmailInput] = useState("");
@@ -17,29 +18,14 @@ const Login: React.FC = () => {
     formData.append("email", emailInput);
     formData.append("password", passwordInput);
 
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        credentials: "include",
-        body: formData,
-      });
-
-      if (response.ok) {
-        const customer = await response.json();
-        console.log("customer", customer);
+    await handleLogin(formData)
+      .then(() => {
         router.push("/movies");
-      } else {
-        const error = await response.json();
-        console.error("error", error);
-        alert(error.message);
-      }
-    } catch (error) {
-      console.error("Failed to connect to the server.", error);
-      alert("Failed to connect to the server.");
-    }
+      })
+      .catch((error) => {
+        console.error("Login failed: ", error);
+        alert("Login failed: " + error.message);
+      });
   };
 
   return (
