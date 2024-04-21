@@ -1,10 +1,13 @@
 import { StarDetail } from "~/interfaces/star";
 
 export const fetchStarById = async (id: string): Promise<StarDetail | null> => {
-  console.log("id", id);
   const [starResponse, movieResponse] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stars?id=${id}`),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies?starId=${id}`),
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stars?id=${id}`, {
+      credentials: "include",
+    }),
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies?starId=${id}`, {
+      credentials: "include",
+    }),
   ]);
 
   if (!starResponse.ok || !movieResponse.ok) {
@@ -22,8 +25,6 @@ export const fetchStarById = async (id: string): Promise<StarDetail | null> => {
     ...star,
     movies: movies,
   };
-
-  console.log("starDetails", starDetails);
 
   return starDetails;
 };
