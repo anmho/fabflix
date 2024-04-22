@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +23,9 @@ public class LoginServlet extends HttpServlet {
         String providedEmail = request.getParameter("email");
         String providedPassword = request.getParameter("password");
 
-        try (Connection conn = Database.getConnection()) {
+        Database db = Database.getInstance();
+
+        try (Connection conn = db.getConnection()) {
             String sql = "SELECT * FROM customers WHERE email = ?";
             try (PreparedStatement statement = conn.prepareStatement(sql)) {
                 statement.setString(1, providedEmail);

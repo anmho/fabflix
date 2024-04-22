@@ -25,9 +25,7 @@ public class MovieServlet extends HttpServlet {
     private MovieService movieService;
 
     public void init() {
-        Connection conn = Database.getConnection();
         movieService = new MovieService(new MovieRepository());
-
     }
 
     @Override

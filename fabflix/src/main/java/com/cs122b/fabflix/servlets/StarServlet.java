@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import javax.xml.crypto.Data;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 @WebServlet(name = "starServlet", value="/stars")
 public class StarServlet extends HttpServlet {
@@ -24,12 +25,23 @@ public class StarServlet extends HttpServlet {
         String starId = req.getParameter("id");
         System.out.println(starId);
 
-        if (starId != null) {
-            Star star = starRepository.getStarById(starId);
-            ResponseBuilder.json(resp, star, 200);
-        } else {
-            ResponseBuilder.error(resp, 404, "invalid");
+
+        try {
+            if (starId != null) {
+                Star star = starRepository.getStarById(starId);
+                ResponseBuilder.json(resp, star, 200);
+            } else {
+                ResponseBuilder.error(resp, 404, "invalid");
+            }
+
+        } catch (SQLException e) {
+
+
+            e.printStackTrace();
+
+            ResponseBuilder.error(resp, 500, "A database error occurred");
         }
+
     }
 
     public void destroy() {

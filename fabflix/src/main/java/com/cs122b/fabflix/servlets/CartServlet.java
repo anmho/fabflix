@@ -71,7 +71,9 @@ public class CartServlet extends HttpServlet {
             return;
         }
 
-        try (Connection conn = Database.getConnection()) {
+
+        Database db = Database.getInstance();
+        try (Connection conn = db.getConnection()) {
             String sql = "SELECT id, title, year, director, price FROM movies WHERE id = ?";
             try (PreparedStatement statement = conn.prepareStatement(sql)) {
                 statement.setString(1, movieId);

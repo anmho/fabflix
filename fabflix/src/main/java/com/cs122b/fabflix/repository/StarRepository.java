@@ -2,18 +2,21 @@ package com.cs122b.fabflix.repository;
 
 import com.cs122b.fabflix.models.Star;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 
 public class StarRepository {
 
 
-    public Star getStarById(String id) {
+    public Star getStarById(String id) throws SQLException {
         String query = "SELECT id, name, birthYear " +
                 "FROM stars " +
                 "WHERE id = ?;"
                 ;
 
-        Connection conn = Database.getConnection();
+        Database db = Database.getInstance();
+
+        Connection conn = db.getConnection();
 
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
