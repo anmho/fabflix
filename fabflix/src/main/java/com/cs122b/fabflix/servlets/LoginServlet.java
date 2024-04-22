@@ -4,27 +4,28 @@ import com.cs122b.fabflix.ResponseBuilder;
 import com.cs122b.fabflix.models.Cart;
 import com.cs122b.fabflix.models.Customer;
 import com.cs122b.fabflix.repository.Database;
-import com.cs122b.fabflix.utils.PasswordUtils;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/login")
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login", "/isLoggedIn"})
 public class LoginServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("LoginServlet");
         String providedEmail = request.getParameter("email");
         String providedPassword = request.getParameter("password");
 
-        try (Connection conn = Database.getConnection()) {
+        Database db = Database.getInstance();
+
+        try (Connection conn = db.getConnection()) {
             String sql = "SELECT * FROM customers WHERE email = ?";
             try (PreparedStatement statement = conn.prepareStatement(sql)) {
                 statement.setString(1, providedEmail);
@@ -32,11 +33,6 @@ public class LoginServlet extends HttpServlet {
                 ResultSet rs = statement.executeQuery();
                 if (rs.next()) {
                     String storedPassword = rs.getString("password");
-                    String storedEmail = rs.getString("email");
-                    System.out.println("clientEmail:" + providedEmail);
-                    System.out.println("clientPassword:" + providedPassword);
-                    System.out.println("DBEmail:" + storedEmail);
-                    System.out.println("DBPassword:" + storedPassword);
 
                     if (providedPassword.equals(storedPassword)) {
                         Customer customer = new Customer(
@@ -49,26 +45,21 @@ public class LoginServlet extends HttpServlet {
                                 null
                         );
 
-                        System.out.println("AUTH success");
-
                         HttpSession session = request.getSession();
-                        session.setMaxInactiveInterval(30*60);
+                        session.setMaxInactiveInterval(30 * 60); // Session timeout set to 30 minutes
                         session.setAttribute("customer", customer);
+
                         Cart cart = (Cart) session.getAttribute("cart");
                         if (cart == null) {
                             cart = new Cart();
                             session.setAttribute("cart", cart);
                         }
-                        System.out.println("Session ID: " + session.getId());
-                        System.out.println("Customer set in session: " + session.getAttribute("customer"));
 
                         ResponseBuilder.json(response, customer, HttpServletResponse.SC_OK);
                     } else {
-                        System.out.println("Incorrect password." + providedPassword);
                         ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Incorrect password.");
                     }
                 } else {
-                    System.out.println("Account does not exist." + providedEmail);
                     ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Account does not exist.");
                 }
             }
@@ -77,7 +68,17 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false); // do not create a session if one does not exist
+        boolean isLoggedIn = false;
+
+        if (session != null) {
+            Customer customer = (Customer) session.getAttribute("customer");
+            if (customer != null) {
+                isLoggedIn = true;
+            }
+        }
+        System.out.println("Is logged: " + isLoggedIn);
+        ResponseBuilder.json(response, isLoggedIn, HttpServletResponse.SC_OK);
+    }
 }
-
-
-
