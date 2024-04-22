@@ -68,7 +68,10 @@ const CheckoutPage: React.FC = () => {
       if (!data.success) {
         setErrorMsg(data.message);
       } else {
-        setResponse(data.data);
+        router.push({
+          pathname: "/confirmation",
+          query: { data: JSON.stringify(data) },
+        });
       }
 
       setIsLoading(false);
@@ -136,7 +139,7 @@ const CheckoutPage: React.FC = () => {
             </div>
           )}{" "}
           <button
-            className="w-full bg-blue-500 text-white rounded-lg p-2 mt-4"
+            className="bg-gradient-to-br from-black dark:from-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium"
             type="submit"
           >
             Complete Checkout
