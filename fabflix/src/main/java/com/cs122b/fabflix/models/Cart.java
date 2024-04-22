@@ -48,4 +48,8 @@ public class Cart {
         }
         return false;
     }
+
+    public void clearMovies() {
+        this.movies = new ArrayList<Movie>();
+    }
 }
