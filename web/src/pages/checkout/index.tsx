@@ -20,6 +20,7 @@ const CheckoutPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<Movie[]>([]);
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<String>("");
+  const [totalBill, setTotalBill] = useState<number>(0);
 
   useEffect(() => {
     isLoggedIn().then(({ success }) => {
@@ -30,7 +31,13 @@ const CheckoutPage: React.FC = () => {
       }
     });
   }, [router]);
-
+  useEffect(() => {
+    const total = cartItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+    setTotalBill(total);
+  }, [cartItems]);
   const getCartItems = async () => {
     try {
       const items = await fetchCartItems();
@@ -137,7 +144,10 @@ const CheckoutPage: React.FC = () => {
               <strong className="font-bold">Error! </strong>
               <span className="block sm:inline">{errorMsg}</span>
             </div>
-          )}{" "}
+          )}
+          <div className="text-lg font-semibold my-4">
+            Total Bill: ${totalBill.toFixed(2)}
+          </div>
           <button
             className="bg-gradient-to-br from-black dark:from-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium"
             type="submit"
