@@ -1,17 +1,14 @@
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "~/components/ui/sheet";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MovieCard from "~/components/MovieCard";
 import { isLoggedIn } from "~/services/login";
@@ -49,7 +46,7 @@ export function CartDrawer() {
     getCartItems();
   };
 
-  if (!showDrawer) return;
+  if (!showDrawer) return <></>;
 
   return (
     <Sheet>
