@@ -6,6 +6,7 @@ import homePageImage from "../images/homePageSS.png";
 import { NavMenu } from "./navigation-menu";
 import { Menu, MenuItem, ProductItem } from "../ui/navbar-menu";
 import { CartDrawer } from "./cart-drawer";
+import { BentoGridDemo } from "../bento-grid";
 export function NavigationBar() {
   return (
     // <div className="w-full flex items-center justify-center bg-red-500 h-10">
