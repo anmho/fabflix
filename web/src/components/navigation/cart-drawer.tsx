@@ -25,10 +25,18 @@ export function CartDrawer() {
   const router = useRouter();
 
   useEffect(() => {
-    isLoggedIn().then(({ success }) => {
-      setShowDrawer(success);
-    });
-  }, [router]);
+    const checkUserAndRoute = async () => {
+      const { success } = await isLoggedIn();
+      if (success && router.pathname !== "/checkout") {
+        setShowDrawer(true);
+        getCartItems();
+      } else {
+        setShowDrawer(false);
+      }
+    };
+
+    checkUserAndRoute();
+  }, [router.pathname]);
 
   const getCartItems = async () => {
     await fetchCartItems().then((items) => {
