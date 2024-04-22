@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { StarDetail } from "../../interfaces/star";
-import { SourceTextModule } from "vm";
-import { collectGenerateParams } from "next/dist/build/utils";
+import { isLoggedIn } from "~/services/login";
+import { useRouter } from "next/router";
 import { fetchStarById } from "~/services/stars";
 import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
 
-interface SingleStarPageProps {
-  star: StarDetail;
-}
+const SingleStarPage: React.FC = () => {
+  const [star, setStar] = useState<StarDetail | null>(null);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
-const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
-  console.log("star", star);
+  useEffect(() => {
+    isLoggedIn().then(({ success }) => {
+      if (!success) {
+        router.push("/login");
+      } else if (router.query.id) {
+        fetchStarById(router.query.id as string).then((fetchedStar) => {
+          setStar(fetchedStar);
+          setIsLoading(false);
+        });
+      }
+    });
+  }, [router]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!star) return <div>No star found...</div>;
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Head>
@@ -29,9 +43,8 @@ const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
         </div>
       </div>
       <h1 className="text-xl font-bold text-center mb-4">
-        All Movies of {star?.name}{" "}
+        All Movies of {star?.name}
       </h1>
-
       <div className="max-w-4xl mx-auto flex flex-wrap justify-start items-start">
         {star?.movies.map((movie) => (
           <CardContainer key={movie.id} className="w-full">
@@ -49,28 +62,19 @@ const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
               >
                 {`${movie.year} • ${movie.director}`}
               </CardItem>
-              {/* <CardItem translateZ="100" className="w-full mt-4">
-                  <Image
-                    src="/path/to/movie/image.jpg" // Placeholder, replace with actual movie image path
-                    height="400"
-                    width="300"
-                    className="h-60 w-full object-cover rounded-xl group-hover:shadow-xl"
-                    alt="Movie Thumbnail"
-                  />
-                </CardItem> */}
               <CardItem
                 as="p"
                 translateZ="30"
                 className="text-neutral-500 text-sm mt-2 dark:text-neutral-300"
               >
                 Actors:{" "}
-                {movie?.stars.slice(0, 3).map((star, index, slicedArray) => (
+                {movie.stars.slice(0, 3).map((star, index, slicedArray) => (
                   <span key={star.id}>
                     <Link
-                      href={`/stars/${star?.id}`}
+                      href={`/stars/${star.id}`}
                       className="text-blue-600 hover:text-blue-800"
                     >
-                      {star?.name}
+                      {star.name}
                     </Link>
                     {index < slicedArray.length - 1 ? ", " : ""}
                   </span>
@@ -82,14 +86,9 @@ const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
                 className="text-neutral-500 text-sm mt-2 dark:text-neutral-300"
               >
                 Genres:{" "}
-                {movie?.genres.slice(0, 3).map((genre, index, slicedArray) => (
+                {movie.genres.slice(0, 3).map((genre, index, slicedArray) => (
                   <span key={genre.id}>
-                    {/* <Link
-                        href={`/stars/${genre?.id}`}
-                        className="text-blue-600 hover:text-blue-800"
-                      > */}
-                    {genre?.name}
-                    {/* </Link> */}
+                    {genre.name}
                     {index < slicedArray.length - 1 ? ", " : ""}
                   </span>
                 ))}
@@ -101,7 +100,7 @@ const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
                   href={`/movies/${movie.id}`}
                   className="rounded-xl text-xs font-normal dark:text-white hover:text-blue-500"
                 >
-                  Learn More About {movie?.title}→
+                  Learn More About {movie.title}→
                 </CardItem>
                 <CardItem translateZ={20} className="text-xs font-bold">
                   {movie.rating.toFixed(1)}
@@ -113,14 +112,6 @@ const SingleStarPage: React.FC<SingleStarPageProps> = ({ star }) => {
       </div>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params as { id: string };
-
-  const star = await fetchStarById(id);
-
-  return { props: { star } };
 };
 
 export default SingleStarPage;

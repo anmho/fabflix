@@ -13,7 +13,6 @@ export const fetchCartItems = async (): Promise<Movie[]> => {
       credentials: "include",
     });
     if (response.status === 401) {
-      console.log('window.location.href = "/login";');
       window.location.href = "/login";
     }
     if (!response.ok) {
@@ -45,7 +44,6 @@ export const handleAddToCart = async (
       credentials: "include",
     });
     if (response.status === 401) {
-      console.log('window.location.href = "/login";');
       window.location.href = "/login";
     }
     const data = await response.json();
@@ -75,7 +73,6 @@ export const handleEditFromCart = async (
       credentials: "include",
     });
     if (response.status === 401) {
-      console.log('window.location.href = "/login";');
       window.location.href = "/login";
     }
     const data = await response.json();

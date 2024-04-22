@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Movie } from "~/interfaces/movie";
 import { getMovieById as fetchMovieById } from "~/services/movies";
+import { isLoggedIn } from "~/services/login";
 
 const SingleMoviePage: React.FC = () => {
   // const fetchMovie = async (movieID: string): Promise<Movie> => {
@@ -19,11 +20,17 @@ const SingleMoviePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (router.query.id) {
-      fetchMovieById(router.query.id as string).then(setMovie);
-      setIsLoading(false);
-    }
-  }, [router.query.id]);
+    isLoggedIn().then(({ success }) => {
+      if (!success) {
+        router.push("/login");
+      } else if (router.query.id) {
+        fetchMovieById(router.query.id as string).then((movie) => {
+          setMovie(movie);
+          setIsLoading(false);
+        });
+      }
+    });
+  }, [router]);
 
   if (isLoading) return <div>Loading...</div>;
   if (!movie) return <div>NO MOVIE HAS FOUND...</div>;

@@ -4,23 +4,29 @@ import { Movie } from "~/interfaces/movie";
 import { fetchTopMovies } from "../../services/movies";
 import MovieCard from "~/components/MovieCard";
 import { handleAddToCart, handleEditFromCart } from "../../services/carts";
+import { isLoggedIn } from "~/services/login";
+import { useRouter } from "next/router";
+
 const MovieListPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [movies, setMovies] = useState<Movie[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
-    fetchTopMovies().then((movies) => {
-      console.log("data", movies);
-      setMovies(movies);
-      setIsLoading(false);
+    isLoggedIn().then(({ success }) => {
+      if (!success) {
+        router.push("/login");
+      } else {
+        fetchTopMovies().then((movies) => {
+          setMovies(movies);
+          setIsLoading(false);
+        });
+      }
     });
-  }, []);
-
+  }, [router]);
   const updateMovies = () => {
     alert("Item Added to the cart.");
   };
-
-  console.log(isLoading);
 
   if (isLoading) return <div>Loading...</div>;
   return (
