@@ -5,7 +5,7 @@ import { Input } from "../components/ui/input";
 import { cn } from "~/utils/cn";
 import { useRouter } from "next/router";
 import { handleLogin } from "~/services/login";
-import { Badge } from "~/components/ui/badge";
+
 const Login: React.FC = () => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
