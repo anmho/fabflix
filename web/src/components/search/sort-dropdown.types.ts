@@ -9,8 +9,10 @@ export enum SortActionType {
   YEAR_ASC,
 }
 
+export type SortField = "title" | "rating" | "year";
+
 export interface SortDimension {
-  field: "title" | "rating" | "year";
+  field: SortField;
   order: "asc" | "desc";
   type: SortActionType;
 }
