@@ -25,7 +25,8 @@ const MovieListPage: React.FC = () => {
     });
   }, [router]);
   const updateMovies = () => {
-    alert("Item Added to the cart.");
+    console.log("added");
+    // alert("Item Added to the cart.");
   };
 
   if (isLoading) return <div>Loading...</div>;
