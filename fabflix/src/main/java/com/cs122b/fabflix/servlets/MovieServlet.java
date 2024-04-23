@@ -30,12 +30,7 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        // So far we just have very basic filtering. Only one filter at a time
-        String movieId = req.getParameter("id");
         String starId = req.getParameter("starId");
-
-
-
 
         MovieFilterParams filterParams;
         MovieSortParams sortParams;

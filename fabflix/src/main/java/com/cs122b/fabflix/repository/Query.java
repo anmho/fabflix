@@ -18,7 +18,7 @@ public class Query {
         private final List<String> whereConditions;
 
         private List<String> sortColumns;
-        private SortOrder sortOrder;
+        private List<SortOrder> sortOrder;
         private Integer offset;
         private Integer limit;
 
@@ -26,6 +26,8 @@ public class Query {
             this.conn = conn;
             whereConditions = new ArrayList<>();
             params = new ArrayList<>();
+            sortColumns = new ArrayList<>();
+            sortOrder = new ArrayList<>();
         }
 
         public Builder select(String selectStatement) {
@@ -50,14 +52,13 @@ public class Query {
         }
 
 
-        public Builder orderBy(List<String> fields, SortOrder order) {
-            if (fields == null || fields.isEmpty()) {
+        public Builder orderBy(String field, SortOrder order) {
+            if (field == null) {
                 return this;
             }
 
-
-            this.sortColumns = fields;
-            this.sortOrder = order;
+            this.sortColumns.add(field);
+            this.sortOrder.add(order);
             return this;
         }
 
@@ -105,25 +106,40 @@ public class Query {
             return new Query(stmt);
         }
 
-        String createOrderByClause(List<String> sortColumns, SortOrder sortOrder) {
-            if (sortColumns == null) {
+        String createOrderByClause(List<String> sortColumns, List<SortOrder> sortOrder) {
+            if (sortColumns == null || sortColumns.isEmpty()) {
                 return "";
             }
-            if (sortOrder == null) {
-                sortOrder = SortOrder.DESCENDING;
+
+            if (sortColumns.size() != sortOrder.size()) {
+                throw new IllegalArgumentException("sort columns size must match sort order");
             }
 
-            String orderString = sortOrder == SortOrder.ASCENDING ? "ASC" : "DESC";
+
+            List<String> sortStrs = new ArrayList<>();
+
+
+            for (int i = 0; i < sortColumns.size(); i++) {
+
+                String col = sortColumns.get(i);
+                SortOrder order = sortOrder.get(i);
+                String orderStr = order == SortOrder.ASCENDING ? "ASC" : "DESC";
+
+                String sortStr = String.format("%s %s", col, orderStr);
+
+                sortStrs.add(sortStr);
+
+            }
+
             return String.format(
-                    "ORDER BY %s %s\n",
-                    String.join(", ", sortColumns),
-                    orderString
+                    "ORDER BY %s\n",
+                    String.join(", ", sortStrs)
             );
         }
 
 
         String createWhereClause(List<String> whereConditions) {
-            if (whereConditions.size() == 0) {
+            if (whereConditions.isEmpty()) {
                 return "\n";
             }
             return "WHERE\n" + String.join(" AND \n", whereConditions);

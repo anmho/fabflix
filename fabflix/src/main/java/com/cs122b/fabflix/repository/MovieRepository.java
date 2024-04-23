@@ -205,22 +205,9 @@ public class MovieRepository {
             }
         }
 
-        if (sortParams != null && sortParams.getSortFields() != null) {
-            List<String> sortCols = new ArrayList<>();
-            System.out.println("sort params: " + sortParams.getSortFields());
-            for (MovieSortField field : sortParams.getSortFields()) {
-                if (field == MovieSortField.YEAR) {
-                    sortCols.add("year");
-                } else if (field == MovieSortField.RATING) {
-                    sortCols.add("rating");
-                } else if (field == MovieSortField.TITLE) {
-                    sortCols.add("title");
-                }
-            }
-
-            queryBuilder.orderBy(sortCols, sortParams.getSortOrder());
+        for (var dimension : sortParams.getDimensions()) {
+            queryBuilder.orderBy(dimension.getFieldName(), dimension.getSortOrder());
         }
-
         int limit = pageParams.getLimit();
         int page = pageParams.getPage();
         int offset = Math.max(limit * (page-1), 0);
