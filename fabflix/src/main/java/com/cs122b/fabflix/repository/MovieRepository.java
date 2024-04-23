@@ -182,10 +182,15 @@ public class MovieRepository {
             }
 
             if (filters.getStartsWith() != null) {
-                System.out.println("startswith: " + filters.getStartsWith());
-                String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
-                System.out.println(pattern);
-                queryBuilder.where("title", "LIKE", pattern);
+                if (filters.getStartsWith().equals("*")) {
+                    queryBuilder.where("title", "NOT RLIKE", "^[A-Za-z0-9]+");
+                } else {
+                    System.out.println("startswith: " + filters.getStartsWith());
+                    String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
+
+                    System.out.println(pattern);
+                    queryBuilder.where("title", "LIKE", pattern);
+                }
             }
 
 
