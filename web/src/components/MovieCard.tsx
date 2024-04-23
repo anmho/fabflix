@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Movie } from "~/interfaces/movie";
@@ -40,6 +40,10 @@ const MovieCard = ({
   const handleRemove = () => {
     handleEditFromCart(movie.id, 0, updateMovies); // Set quantity to zero to trigger removal
   };
+
+  useEffect(() => {
+    console.log("movies", movie);
+  }, []);
   return (
     <CardContainer key={movie.id} className="w-full relative">
       <CardBody className="fg-primary relative group dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] mx-2 rounded-xl p-6 border">
@@ -96,15 +100,19 @@ const MovieCard = ({
               className="text-neutral-500 text-sm mt-2 dark:text-neutral-300"
             >
               Genres:{" "}
-              {movie.genres.slice(0, 3).map((genre, index, slicedArray) => (
-                <span key={genre.id}>
-                  {genre.name}
-                  {index < slicedArray.length - 1 ? ", " : ""}
-                </span>
-              ))}
+              {movie.genres
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .slice(0, 3)
+                .map((genre, index, slicedArray) => (
+                  <span key={genre.id}>
+                    {genre.name}
+                    {index < slicedArray.length - 1 ? ", " : ""}
+                  </span>
+                ))}
             </CardItem>
           </>
-        )}{" "}
+        )}
+
         <div className="flex justify-between items-center mt-4">
           <CardItem
             translateZ={20}
