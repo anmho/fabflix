@@ -6,6 +6,7 @@ import MovieCard from "~/components/MovieCard";
 import { handleAddToCart, handleEditFromCart } from "../../services/carts";
 import { isLoggedIn } from "~/services/login";
 import { useRouter } from "next/router";
+import { toast } from "sonner";
 
 const MovieListPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
@@ -24,8 +25,9 @@ const MovieListPage: React.FC = () => {
       }
     });
   }, [router]);
-  const updateMovies = () => {
-    alert("Item Added to the cart.");
+
+  const updateMovies = (movieName: string) => {
+    toast(`"${movieName}" added to your shopping cart.`);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -40,8 +42,10 @@ const MovieListPage: React.FC = () => {
           <MovieCard
             movie={movie}
             isCartPage={false}
-            handleAddToCart={() => handleAddToCart(movie.id, updateMovies)}
-            updateMovies={updateMovies}
+            handleAddToCart={() =>
+              handleAddToCart(movie.id, () => updateMovies(movie.title))
+            }
+            updateMovies={() => {}}
           />
         ))}
       </div>

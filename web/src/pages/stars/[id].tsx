@@ -18,12 +18,22 @@ const SingleStarPage: React.FC = () => {
         router.push("/login");
       } else if (router.query.id) {
         fetchStarById(router.query.id as string).then((fetchedStar) => {
+          fetchedStar?.movies.sort((a, b) => {
+            if (a.year !== b.year) {
+              return b.year - a.year;
+            }
+            return a.title.localeCompare(b.title);
+          });
           setStar(fetchedStar);
           setIsLoading(false);
         });
       }
     });
   }, [router]);
+
+  useEffect(() => {
+    console.log(star);
+  }, [star]);
 
   if (isLoading) return <div>Loading...</div>;
   if (!star) return <div>No star found...</div>;
