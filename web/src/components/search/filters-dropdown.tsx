@@ -1,6 +1,7 @@
 // import { CaretSortIcon } from "@radix-ui/react-icons";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { SlidersHorizontal } from "lucide-react";
+import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -10,11 +11,58 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 
-interface FiltersDropdownProps {
-  className?: string;
+export interface Filters {
+  title?: string;
+  star?: string;
+  director?: string;
+  year?: number;
 }
 
-export function FiltersDropdown({ className }: FiltersDropdownProps) {
+interface FiltersDropdownProps {
+  className?: string;
+  initialFilters: Filters;
+}
+
+export function FiltersDropdown({
+  className,
+  initialFilters,
+}: FiltersDropdownProps) {
+  const [filters, setFilters] = useState<Filters>(initialFilters);
+  const [title, setTitle] = useState<string | undefined>(initialFilters.title);
+
+  const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilters((filters) => {
+      return { ...filters, title: e.target.value };
+    });
+  };
+
+  const handleChangeStar = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(filters.star);
+    setFilters((filters) => {
+      return { ...filters, star: e.target.value };
+    });
+    setTitle(e.target.value);
+  };
+
+  const handleChangeDirector = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilters((filters) => {
+      return { ...filters, director: e.target.value };
+    });
+  };
+
+  const handleChangeYear = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilters((filters) => {
+      return { ...filters, year: parseInt(e.target.value) }; // handle
+    });
+  };
+
+  const handleClear = (e: FormEvent<HTMLButtonElement>) => {
+    setFilters(() => {
+      return {};
+    });
+    console.log("trying to clear filters", filters);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild className={className}>
@@ -37,6 +85,8 @@ export function FiltersDropdown({ className }: FiltersDropdownProps) {
               <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
+                onChange={handleChangeTitle}
+                value={filters.title ?? ""}
                 placeholder="The Terminator"
                 className="col-span-2 h-8"
               />
@@ -45,6 +95,8 @@ export function FiltersDropdown({ className }: FiltersDropdownProps) {
               <Label htmlFor="star">Star</Label>
               <Input
                 id="star"
+                onChange={handleChangeStar}
+                value={filters.star ?? ""}
                 placeholder="Arnold Schwarzenegger"
                 className="col-span-2 h-8"
               />
@@ -53,6 +105,8 @@ export function FiltersDropdown({ className }: FiltersDropdownProps) {
               <Label htmlFor="director">Director</Label>
               <Input
                 id="Director"
+                onChange={handleChangeDirector}
+                value={filters.director ?? ""}
                 placeholder="James Cameron"
                 className="col-span-2 h-8"
               />
@@ -61,6 +115,8 @@ export function FiltersDropdown({ className }: FiltersDropdownProps) {
               <Label htmlFor="year">Year</Label>
               <Input
                 id="year"
+                onChange={handleChangeYear}
+                value={filters.year ?? ""}
                 type="number"
                 placeholder={"1984"}
                 className="col-span-2 h-8"
@@ -69,10 +125,17 @@ export function FiltersDropdown({ className }: FiltersDropdownProps) {
           </div>
         </div>
 
-        {/* <div className="flex justify-between mt-4">
-          <Button variant="default">Apply</Button>
-          <Button variant="secondary">Clear</Button>
-        </div> */}
+        <div className="flex justify-between mt-4">
+          <Button
+            variant="default"
+            onClick={() => console.log("applying", filters)}
+          >
+            Apply
+          </Button>
+          <Button variant="secondary" onClick={(e) => handleClear(e)}>
+            Clear
+          </Button>
+        </div>
       </PopoverContent>
     </Popover>
   );

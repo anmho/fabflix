@@ -1,8 +1,9 @@
 import { Head } from "next/document";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ComboboxDemo } from "~/components/combobox";
 import MovieCard from "~/components/MovieCard";
-import { FiltersDropdown } from "~/components/search/filters-dropdown";
+import { Filters, FiltersDropdown } from "~/components/search/filters-dropdown";
 import SearchOptionsDropdown from "~/components/search/options-dropdown";
 import { PaginationDemo } from "~/components/search/pagination-demo";
 import { PaginationDropdown } from "~/components/search/pagination-dropdown";
@@ -14,12 +15,19 @@ import { handleAddToCart } from "~/services/carts";
 import { fetchTopMovies } from "~/services/movies";
 
 const SearchMoviesPage: React.FC = () => {
+  const searchParams = useSearchParams();
+  // const { title, star, director, year }: Filters = searchParams.getAll();
+  console.log(searchParams);
+
   return (
     <div className="flex align-center flex-col h-screen">
       <div className="flex justify-around align-center">
         <PaginationDropdown className="mr-1" />
         <div className="flex items-center justify-center">
-          <FiltersDropdown className="mr-1" />
+          <FiltersDropdown
+            className="mr-1"
+            initialFilters={{ title: "term", star: "arn", director: "james" }}
+          />
           <SortDropdown />
         </div>
       </div>
