@@ -65,6 +65,9 @@ export function PaginationDropdown({
           <DropdownMenuRadioItem value={"50"} onSelect={handleOnSelect}>
             50
           </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value={"100"} onSelect={handleOnSelect}>
+            100
+          </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
