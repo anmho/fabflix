@@ -9,19 +9,18 @@ import com.cs122b.fabflix.services.MovieService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MovieRepository {
-    private static final Logger logger = LogManager.getLogger(MovieService.class.getName());
+    private static final Logger log = LogManager.getLogger(MovieService.class.getName());
 
 
 
     public Movie getMovieById(String movieId) throws SQLException {
-        System.out.println("Called getMovieById");
+//        System.out.println("Called getMovieById");
 
         Movie movie = null;
 
@@ -74,8 +73,6 @@ public class MovieRepository {
     }
 
     public List<Movie> getMoviesWithStar(String starId) throws SQLException {
-        logger.info("Called getMoviesWithStar");
-
         String query = "SELECT m.id, m.title, m.year, m.director, r.rating, (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars FROM movies m JOIN ratings r ON m.id = r.movieId WHERE m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?) ORDER BY r.rating DESC;";
 
         Database db = Database.getInstance();
@@ -83,7 +80,7 @@ public class MovieRepository {
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, starId);
-            logger.info("Star id " + starId);
+            log.info("Star id " + starId);
             ResultSet rs = stmt.executeQuery();
 
             List<Movie> movies = new ArrayList<>();
@@ -116,6 +113,7 @@ public class MovieRepository {
             MovieSortParams sortParams,
             PaginationParams pageParams
         ) throws SQLException {
+        log.debug("Filtering movies");
 
         String baseQuery =
                 "SELECT DISTINCT " +
@@ -142,10 +140,12 @@ public class MovieRepository {
 
         Database db = Database.getInstance();
 
+
+
         try (Connection conn = db.getConnection()) {
             Query query = createFilterMoviesQuery(conn, baseQuery, filters, sortParams, pageParams);
             try (PreparedStatement stmt = query.getStatement()) {
-                System.out.println(stmt.toString());
+//                System.out.println(stmt.toString());
                 ResultSet rs = stmt.executeQuery();
 
                 List<Movie> movies = new ArrayList<>();
@@ -154,9 +154,11 @@ public class MovieRepository {
                     Movie movie = parseMovieRow(rs);
                     movies.add(movie);
                 }
+                log.debug("Finished filtering movies");
                 return movies;
             }
         }
+
     }
 
 
@@ -189,10 +191,10 @@ public class MovieRepository {
                 if (filters.getStartsWith().equals("*")) {
                     queryBuilder.where("title", "NOT RLIKE", "^[A-Za-z0-9]+");
                 } else {
-                    System.out.println("startswith: " + filters.getStartsWith());
+//                    System.out.println("startswith: " + filters.getStartsWith());
                     String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
 
-                    System.out.println(pattern);
+//                    System.out.println(pattern);
                     queryBuilder.where("title", "LIKE", pattern);
                 }
             }
@@ -224,7 +226,7 @@ public class MovieRepository {
         int page = pageParams.getPage();
         int offset = Math.max(limit * (page-1), 0);
 
-        System.out.println("offset:" + offset);
+//        System.out.println("offset:" + offset);
         queryBuilder.setLimit(limit+1);
         queryBuilder.setOffset(offset);
 

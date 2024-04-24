@@ -7,8 +7,10 @@ import com.cs122b.fabflix.params.MovieSortParams;
 import com.cs122b.fabflix.params.PaginationParams;
 import com.cs122b.fabflix.repository.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+//import org.apache.log4j.BasicConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,10 +20,14 @@ import java.util.Map;
 
 public class MovieService {
     private final MovieRepository movieRepository;
-    private static final Logger logger = LogManager.getLogger(MovieService.class.getName());
+    private final Logger log = LogManager.getLogger(MovieService.class.getName());
+
+
+
     public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
+
 
     public List<Movie> getMoviesWithStar(String starId) throws SQLException {
         return movieRepository.getMoviesWithStar(starId);
@@ -39,8 +45,7 @@ public class MovieService {
         for (var entry : queryParams.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            logger.debug("key: " + key);
-            logger.debug("value: " + value);
+
             if (value != null) {
                 pairs.add(String.format("%s=%s", key, value));
             }
@@ -64,13 +69,10 @@ public class MovieService {
 
         // change the page params thingy
         List<Movie> movies = movieRepository.filterMovies(filterParams, sortParams, pageParams);
-        logger.debug("movies size: " + movies.size());
 
         // determine if it is the first or last page
-
         boolean isFirstPage = page == 1;
 
-        System.out.println("limit + 1: " + (limit + 1));
         boolean isLastPage = movies.size() < limit + 1;
 
 
@@ -94,7 +96,7 @@ public class MovieService {
 
         String nextLink = null;
         String prevLink = null;
-        String selfLink;
+        String selfLink = null;
 
         if (!isFirstPage) {
             prevLink = createURL(baseUrl, params, limit, page-1);

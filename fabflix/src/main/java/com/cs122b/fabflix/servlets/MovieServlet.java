@@ -14,6 +14,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,6 +25,7 @@ import java.util.List;
 public class MovieServlet extends HttpServlet {
 
     private MovieService movieService;
+    private final Logger log = LogManager.getLogger(MovieServlet.class.getName());
 
     public void init() {
         movieService = new MovieService(new MovieRepository());
@@ -43,7 +46,7 @@ public class MovieServlet extends HttpServlet {
 
 
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            log.error(e.getStackTrace());
             ResponseBuilder.error(resp, 400, "invalid query params");
             return;
         }
@@ -52,17 +55,19 @@ public class MovieServlet extends HttpServlet {
         // sub endpoints to route from here
         try {
             if (filterParams.getId() != null) {
+                log.debug("Getting movie by id");
                 Movie movie = movieService.findMovieById(filterParams.getId());
                 ResponseBuilder.json(resp, movie, 200);
                 return;
             } else if (starId != null) { // should update the method
-
+                log.debug("getting movies featuring star: " + starId);
                 List<Movie> movies = movieService.getMoviesWithStar(starId);
                 ResponseBuilder.json(resp, movies, 200);
                 return;
 
             } else {
                 // filter many movies
+                log.debug("Getting movies with filters");
                 var results = movieService.filterMovies(filterParams, sortParams, pageParams);
                 ResponseBuilder.json(resp, results, 200);
                 return;
