@@ -36,7 +36,6 @@ public class CartServlet extends HttpServlet {
         RequestBody body = mapper.readValue(request.getReader(), RequestBody.class);
 
         String action = body.getAction();
-        System.out.println("Action: " + action);
         if ("add".equals(action)) {
             addMovieToCart(request, response, body);
         } else if ("edit".equals(action)) {
@@ -48,8 +47,6 @@ public class CartServlet extends HttpServlet {
 
     private void addMovieToCart(HttpServletRequest request, HttpServletResponse response, RequestBody body) throws IOException {
         String movieId = body.getMovieId();
-
-        System.out.println("Add Movie ID: " + movieId);
 
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
@@ -86,7 +83,6 @@ public class CartServlet extends HttpServlet {
                             rs.getDouble("price"),
                             1
                     );
-                    System.out.println("Adding movie to the cart");
                     cart.addMovie(movie);
                     session.setAttribute("cart", cart);
                     ResponseBuilder.json(response, cart.getMovies(), HttpServletResponse.SC_OK);

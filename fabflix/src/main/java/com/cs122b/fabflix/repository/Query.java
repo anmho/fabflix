@@ -103,6 +103,8 @@ public class Query {
                 }
             }
 
+            System.out.println(stmt.toString());
+
             return new Query(stmt);
         }
 
