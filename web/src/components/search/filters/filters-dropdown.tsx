@@ -10,21 +10,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-
-
+import { MovieFilters } from "~/services/movies";
 
 interface FiltersDropdownProps {
   className?: string;
-  initialFilters: Filters;
-  onApplyFilters: () => void;
+  initialFilters: MovieFilters;
+  handleApplyFilters: (filters: MovieFilters) => void;
 }
 
 export function FiltersDropdown({
   className,
   initialFilters,
-  onApplyFilters,
+  handleApplyFilters,
 }: FiltersDropdownProps) {
-  const [filters, setFilters] = useState<Filters>(initialFilters);
+  const [filters, setFilters] = useState<MovieFilters>(initialFilters);
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setFilters((filters) => {
@@ -61,7 +60,7 @@ export function FiltersDropdown({
 
   const handleApply = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    onApplyFilters();
+    handleApplyFilters(filters);
   };
 
   return (

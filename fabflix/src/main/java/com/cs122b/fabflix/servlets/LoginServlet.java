@@ -68,7 +68,7 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false); // do not create a session if one does not exist
         boolean isLoggedIn = false;
 

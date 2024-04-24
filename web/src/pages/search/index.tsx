@@ -10,9 +10,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { MovieSortDimension } from "~/components/search/sort/dimensions";
 import { MovieCard } from "~/components/MovieCard";
-import { PaginatedResult } from "~/interfaces/pagination";
+import { PaginatedResult } from "~/interfaces/paginated-result";
 import { Movie } from "~/interfaces/movie";
-import { findMovies, FindMoviesParams } from "~/services/movies";
+import { findMovies, FindMoviesParams, MovieFilters } from "~/services/movies";
 import { ParsedUrlQuery } from "querystring";
 
 const moviesSearchParamsSchema = z.object({
@@ -28,7 +28,7 @@ const moviesSearchParamsSchema = z.object({
     .optional()
     .transform((val) => {
       if (!val) return undefined;
-      Number.parseInt(val);
+      return Number.parseInt(val);
     }),
   startsWith: z.string().optional(),
   title: z.string().optional(),
@@ -49,37 +49,44 @@ const moviesSearchParamsSchema = z.object({
       if (!val) {
         return undefined;
       }
-      const [field, order] = val.split(":");
 
-      const fieldResults = z.ZodEnum.create(["title", "rating", "year"]).parse(
-        field
-      );
+      const sortStrs = val.split(",");
 
-      const orderResult = z.ZodEnum.create(["asc", "desc"]).parse(order);
-      new MovieSortDimension(fieldResults, orderResult);
+      const dimensions = sortStrs.map((sortStr) => {
+        const [field, order] = sortStr.split(":");
+        const fieldResults = z.ZodEnum.create([
+          "title",
+          "rating",
+          "year",
+        ]).parse(field);
+        const orderResult = z.ZodEnum.create(["asc", "desc"]).parse(order);
+
+        return new MovieSortDimension(fieldResults, orderResult);
+      });
+      return dimensions;
     }),
 });
 
-type MovieSearchParams = z.infer<typeof moviesSearchParamsSchema>;
-
-const getMovieQueryParams = (
+const parseMovieQueryParams = (
   searchParams: ParsedUrlQuery
 ): FindMoviesParams => {
   const dict: Record<string, unknown> = {};
   for (let key in searchParams) {
     const value = searchParams[key];
+    console.log(key, value);
+
     if (key === "sort-by") {
       key = "sortBy";
     }
     if (key === "starts-with") {
       key = "startsWith";
     }
-    dict[key] = value ?? null;
+
+    dict[key] = value;
   }
 
-  console.log(dict);
-
   const params = moviesSearchParamsSchema.parse(dict);
+  console.log("params", params);
 
   const findMovieParams = {
     filters: {
@@ -106,13 +113,10 @@ const SearchMoviesPage: React.FC = () => {
     PaginatedResult<Movie> | undefined
   >(undefined);
   const router = useRouter();
-  console.log(router.query);
 
   useEffect(() => {
     if (router.isReady) {
-      console.log(router.query);
-      const initialSearchParams = getMovieQueryParams(router.query);
-      console.log(initialSearchParams);
+      const initialSearchParams = parseMovieQueryParams(router.query);
       setSearchParams(() => initialSearchParams);
     }
   }, [router.query]);
@@ -121,31 +125,73 @@ const SearchMoviesPage: React.FC = () => {
     if (!searchParams) {
       return;
     }
+    console.log("searchParams", searchParams);
+
     findMovies(searchParams).then((res) => {
       setSearchResults(() => res);
     });
-  }, [searchParams]);
 
-  console.log(searchResults?.results.length);
+    console.log("as path", router.asPath);
+  }, [searchParams]);
 
   if (!searchResults) {
     return <div>loading...</div>;
   }
 
+  const handlePageChange = (page: number) => {
+    setSearchParams((prev) => {
+      return { ...prev, page };
+    });
+  };
+
+  const handleApplyFilters = (filters: MovieFilters) => {
+    console.log(filters);
+    setSearchParams((prev) => {
+      return { ...prev, filters };
+    });
+  };
+
+  const handleApplySort = (dimensions: MovieSortDimension[]) => {
+    console.log(dimensions);
+    setSearchParams((prev) => {
+      return { ...prev, sortBy: dimensions };
+    });
+  };
+
+  const handleChangeLimit = (limit: number) => {
+    console.log("changing limit", limit);
+    setSearchParams((prev) => {
+      return { ...prev, limit };
+    });
+  };
+
   return (
     <div className="flex align-center flex-col h-screen">
       <div className="flex justify-around align-center">
-        <PaginationDropdown className="mr-1" />
+        <PaginationDropdown
+          changeLimitParam={handleChangeLimit}
+          className="mr-1"
+        />
+        <PaginationBar
+          hasPrev={searchResults._links.prev !== null}
+          hasNext={searchResults._links.next !== null}
+          handlePageChange={handlePageChange}
+          page={searchResults.page}
+        />
+
         <div className="flex items-center justify-center">
+          {/* Filters */}
           <FiltersDropdown
-            onApplyFilters={() => console.log("applying filters")}
+            handleApplyFilters={handleApplyFilters}
             className="mr-1"
-            initialFilters={{ title: "term", star: "arn", director: "james" }}
+            initialFilters={searchParams?.filters ?? {}}
           />
-          <SortDropdown />
+          {/* Sort Options */}
+          <SortDropdown applySort={handleApplySort} />
         </div>
       </div>
-      <div className="flex items-center align-center w-screen bg-green-500 flex-col">
+
+      <div className="flex items-center align-center w-screen flex-wrap p-4">
         {searchResults.results.map((movie, i) => (
           <MovieCard
             key={i}
@@ -158,7 +204,12 @@ const SearchMoviesPage: React.FC = () => {
           />
         ))}
       </div>
-      <PaginationBar />
+      <PaginationBar
+        hasPrev={searchResults._links.prev !== null}
+        hasNext={searchResults._links.next !== null}
+        page={searchResults.page}
+        handlePageChange={handlePageChange}
+      />
       <BentoGrid />
     </div>
   );

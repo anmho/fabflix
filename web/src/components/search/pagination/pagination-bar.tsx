@@ -1,3 +1,4 @@
+import { NextURL } from "next/dist/server/web/next-url";
 import {
   Pagination,
   PaginationContent,
@@ -8,31 +9,53 @@ import {
   PaginationPrevious,
 } from "~/components/ui/pagination";
 
-Pagination;
+interface PaginationBarProps {
+  page: number;
+  handlePageChange: (page: number) => void;
+  hasPrev: boolean;
+  hasNext: boolean;
+}
 
-export function PaginationBar() {
+export function PaginationBar({
+  page,
+  handlePageChange,
+  hasPrev,
+  hasNext,
+}: PaginationBarProps) {
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious href="#" />
+          <PaginationPrevious
+            onClick={() => hasPrev && handlePageChange(page - 1)}
+          />
         </PaginationItem>
+        {hasPrev && (
+          <PaginationItem>
+            <PaginationLink onClick={() => handlePageChange(page - 1)}>
+              {page - 1}
+            </PaginationLink>
+          </PaginationItem>
+        )}
         <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
+          <PaginationLink isActive>{page}</PaginationLink>
         </PaginationItem>
+        {hasNext && (
+          <>
+            <PaginationItem>
+              <PaginationLink onClick={() => handlePageChange(page + 1)}>
+                {page + 1}
+              </PaginationLink>
+            </PaginationItem>
+            {/* <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem> */}
+          </>
+        )}
         <PaginationItem>
-          <PaginationLink href="#" isActive>
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">3</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
+          <PaginationNext
+            onClick={() => hasNext && handlePageChange(page + 1)}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

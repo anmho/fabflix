@@ -7,11 +7,9 @@ import com.cs122b.fabflix.params.MovieSortParams;
 import com.cs122b.fabflix.params.PaginationParams;
 import com.cs122b.fabflix.repository.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +18,7 @@ import java.util.Map;
 
 public class MovieService {
     private final MovieRepository movieRepository;
+    private static final Logger logger = LogManager.getLogger(MovieService.class.getName());
     public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
@@ -32,6 +31,25 @@ public class MovieService {
 
     public Movie findMovieById(String id) throws SQLException {
         return movieRepository.getMovieById(id);
+    }
+
+    private String createURL(String baseURL, Map<String, Object> queryParams, int limit, int page) {
+        List<String> pairs = new ArrayList<>();
+
+        for (var entry : queryParams.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            logger.debug("key: " + key);
+            logger.debug("value: " + value);
+            if (value != null) {
+                pairs.add(String.format("%s=%s", key, value));
+            }
+        }
+
+        pairs.add(String.format("%s=%d", "limit", limit));
+        pairs.add(String.format("%s=%d", "page", page));
+
+        return String.format("%s?%s", baseURL, String.join("&", pairs));
     }
     public PaginatedResults<Movie> filterMovies(
             MovieFilterParams filterParams,
@@ -46,16 +64,18 @@ public class MovieService {
 
         // change the page params thingy
         List<Movie> movies = movieRepository.filterMovies(filterParams, sortParams, pageParams);
-        System.out.println("movies size: " + movies.size());
+        logger.debug("movies size: " + movies.size());
 
         // determine if it is the first or last page
 
-        boolean isFirstPage = page == 0;
+        boolean isFirstPage = page == 1;
+
+        System.out.println("limit + 1: " + (limit + 1));
         boolean isLastPage = movies.size() < limit + 1;
 
 
         // we should hoist the logic up here. should request one more page.
-        // parameters for repository should be change to be limit offset for more granularity by the caller
+        // parameters for repository should be changed to be limit offset for more granularity by the caller
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -68,31 +88,22 @@ public class MovieService {
         // create the links
         // set the links
 
-        var baseUrl = "/api/movies";
+        var baseUrl = "/movies";
 
-        System.out.println(params);
 
 
         String nextLink = null;
         String prevLink = null;
-        String selfLink = null;
-        try {
-            var queryStr
-                    = makeQueryString(params);
-            if (!isFirstPage) {
-                prevLink = String.format("%s?%s&page=%d&limit=%d", baseUrl, queryStr, page-1, limit);
-            }
-            if (!isLastPage) {
-                nextLink = String.format("%s?%s&page=%d&limit=%d", baseUrl, queryStr, page+1, limit);
-            }
-            selfLink = String.format("%s?%s&page=%d&limit=%d", baseUrl, queryStr, page, limit);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        String selfLink;
+
+        if (!isFirstPage) {
+            prevLink = createURL(baseUrl, params, limit, page-1);
+        }
+        if (!isLastPage) {
+            nextLink = createURL(baseUrl, params, limit, page+1);
         }
 
-
-
-
+        selfLink = createURL(baseUrl, params, limit, page);
 
 
 
@@ -111,19 +122,5 @@ public class MovieService {
 
 
 
-    String makeQueryString(Map<String, Object> queryParams) throws UnsupportedEncodingException {
-        List<String> pairs = new ArrayList<>();
 
-        for (var entry : queryParams.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            System.out.println("key: " + key);
-            System.out.println("value: " + value);
-            if (value != null) {
-                pairs.add(String.format("%s=%s", key, value));
-            }
-        }
-
-        return String.join("&", pairs);
-    }
 }

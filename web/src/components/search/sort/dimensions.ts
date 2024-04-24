@@ -9,7 +9,6 @@ export enum SortActionEnum {
   YEAR_ASC,
 }
 
-
 export type MovieSortField = "title" | "rating" | "year";
 export type SortOrder = "asc" | "desc";
 
@@ -47,7 +46,8 @@ export class MovieSortDimension {
 
     return new MovieSortDimension(params.field, params.order);
   }
-  public toString() {
+  public toString(): string {
+    console.log("Stringing ", `${this.field}:${this.order}`);
     return `${this.field}:${this.order}`;
   }
 }

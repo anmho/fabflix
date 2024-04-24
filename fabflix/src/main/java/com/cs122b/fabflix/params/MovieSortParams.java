@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MovieSortParams {
 
@@ -142,7 +143,7 @@ public class MovieSortParams {
         if (dimensions == null || dimensions.isEmpty()) {
             return null;
         }
-        return String.join(",", (CharSequence) dimensions.stream().map(SortDimension::toString));
+        return String.join(",", dimensions.stream().map(SortDimension::toString).collect(Collectors.toList()));
     }
 
 }

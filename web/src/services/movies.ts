@@ -1,6 +1,6 @@
 import { MovieSortDimension } from "~/components/search/sort/dimensions";
 import { Movie } from "~/interfaces/movie";
-import { PaginatedResult } from "~/interfaces/pagination";
+import { PaginatedResult } from "~/interfaces/paginated-result";
 
 export interface MovieFilters {
   title?: string;
@@ -9,6 +9,9 @@ export interface MovieFilters {
   year?: number;
   startsWith?: string;
   genre?: string;
+  // toString: () => {
+
+  // };
 }
 
 export interface FindMoviesParams {
@@ -17,8 +20,6 @@ export interface FindMoviesParams {
   limit?: number;
   page?: number;
 }
-
-interface MovieList {}
 
 export const findMovies = async ({
   filters,
@@ -31,22 +32,23 @@ export const findMovies = async ({
   page = page ?? 1;
 
   if (filters) {
-    for (const key in filters) {
+    for (let key in filters) {
       const value = filters[key as keyof typeof filters];
-      console.log("HELLO", key, value);
+
       if (value) {
+        if (key === "startsWith") key = "starts-with";
         url.searchParams.append(key, value.toString());
       }
     }
   }
-  if (sortBy) {
+  if (sortBy && sortBy.length > 0) {
     const sortByString = sortBy
-      .map((dimension) => {
-        dimension.toString();
-      })
+      .map((dimension) =>
+        new MovieSortDimension(dimension.field, dimension.order).toString()
+      )
       .join(",");
-
     console.log(sortByString);
+    url.searchParams.append("sort-by", sortByString);
   }
 
   url.searchParams.append("limit", limit.toString());
@@ -59,9 +61,7 @@ export const findMovies = async ({
     window.location.href = "/login";
   }
 
-  console.log(res.url);
   if (!res.ok) {
-    console.log(res);
     throw new Error("Failed to fetch movies");
   }
   const data = await res.json();

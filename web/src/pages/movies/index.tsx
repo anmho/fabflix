@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Movie } from "~/interfaces/movie";
 import { fetchTopMovies } from "../../services/movies";
-import MovieCard from "~/components/MovieCard";
+import { MovieCard } from "~/components/MovieCard";
 import { handleAddToCart, handleEditFromCart } from "../../services/carts";
 import { isLoggedIn } from "~/services/login";
 import { useRouter } from "next/router";

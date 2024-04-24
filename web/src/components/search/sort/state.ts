@@ -70,7 +70,10 @@ export function createInitSortState(
   return state;
 }
 
-export function sortReducer(state: MovieSortState, action: SortAction) {
+export function sortReducer(
+  state: MovieSortState,
+  action: SortAction
+): MovieSortState {
   const dimension = SortDimensionMapping[action.type];
   console.log(state);
 

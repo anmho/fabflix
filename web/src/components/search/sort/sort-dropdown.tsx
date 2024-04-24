@@ -25,18 +25,19 @@ import {
   MovieSortField,
   SortActionEnum,
 } from "./dimensions";
-import { StringToBoolean } from "class-variance-authority/types";
 
 interface SortDropdownProps {
   initDimensions?: MovieSortDimension[];
+  applySort: (dimensions: MovieSortDimension[]) => void;
 }
 
-export const SortDropdown: React.FC = ({
+export const SortDropdown: React.FC<SortDropdownProps> = ({
   initDimensions,
+  applySort,
 }: SortDropdownProps) => {
   const [sortState, dispatch] = useReducer(
     sortReducer,
-    createInitSortState(initDimensions)
+    createInitSortState(initDimensions ?? [])
   );
 
   const handleCheckedChange = (checked: Checked, type: SortActionEnum) => {
@@ -44,9 +45,9 @@ export const SortDropdown: React.FC = ({
   };
 
   const handleOpenChange = (open: boolean) => {
-    // apply filters on close if filters are different
-
-    console.log(open);
+    if (!open) {
+      applySort(sortState.dimensions);
+    }
   };
 
   const menuItems: {

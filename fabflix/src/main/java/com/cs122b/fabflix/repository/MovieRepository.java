@@ -5,6 +5,9 @@ import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.params.*;
+import com.cs122b.fabflix.services.MovieService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.crypto.Data;
 import java.sql.*;
@@ -13,6 +16,7 @@ import java.util.List;
 
 
 public class MovieRepository {
+    private static final Logger logger = LogManager.getLogger(MovieService.class.getName());
 
 
 
@@ -70,7 +74,7 @@ public class MovieRepository {
     }
 
     public List<Movie> getMoviesWithStar(String starId) throws SQLException {
-        System.out.println("Called getMoviesWithStar");
+        logger.info("Called getMoviesWithStar");
 
         String query = "SELECT m.id, m.title, m.year, m.director, r.rating, (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars FROM movies m JOIN ratings r ON m.id = r.movieId WHERE m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?) ORDER BY r.rating DESC;";
 
@@ -79,7 +83,7 @@ public class MovieRepository {
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, starId);
-            System.out.println(starId);
+            logger.info("Star id " + starId);
             ResultSet rs = stmt.executeQuery();
 
             List<Movie> movies = new ArrayList<>();
@@ -220,6 +224,7 @@ public class MovieRepository {
         int page = pageParams.getPage();
         int offset = Math.max(limit * (page-1), 0);
 
+        System.out.println("offset:" + offset);
         queryBuilder.setLimit(limit+1);
         queryBuilder.setOffset(offset);
 
