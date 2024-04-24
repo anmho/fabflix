@@ -205,9 +205,17 @@ public class MovieRepository {
             }
         }
 
-        for (var dimension : sortParams.getDimensions()) {
-            queryBuilder.orderBy(dimension.getFieldName(), dimension.getSortOrder());
+        if (sortParams != null) {
+            var dimensions = sortParams.getDimensions();
+            if (dimensions != null) {
+                for (var dimension : dimensions) {
+                    queryBuilder.orderBy(dimension.getFieldName(), dimension.getSortOrder());
+                }
+
+            }
+
         }
+
         int limit = pageParams.getLimit();
         int page = pageParams.getPage();
         int offset = Math.max(limit * (page-1), 0);

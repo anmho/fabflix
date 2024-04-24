@@ -8,6 +8,7 @@ export interface MovieFilters {
   director?: string;
   year?: number;
   startsWith?: string;
+  genre?: string;
 }
 
 export interface FindMoviesParams {
@@ -32,6 +33,7 @@ export const findMovies = async ({
   if (filters) {
     for (const key in filters) {
       const value = filters[key as keyof typeof filters];
+      console.log("HELLO", key, value);
       if (value) {
         url.searchParams.append(key, value.toString());
       }
@@ -59,6 +61,7 @@ export const findMovies = async ({
 
   console.log(res.url);
   if (!res.ok) {
+    console.log(res);
     throw new Error("Failed to fetch movies");
   }
   const data = await res.json();

@@ -13,6 +13,7 @@ import { MovieCard } from "~/components/MovieCard";
 import { PaginatedResult } from "~/interfaces/pagination";
 import { Movie } from "~/interfaces/movie";
 import { findMovies, FindMoviesParams } from "~/services/movies";
+import { ParsedUrlQuery } from "querystring";
 
 const moviesSearchParamsSchema = z.object({
   limit: z
@@ -40,6 +41,7 @@ const moviesSearchParamsSchema = z.object({
     }),
   director: z.string().optional(),
   star: z.string().optional(),
+  genre: z.string().optional(),
   sortBy: z
     .string()
     .optional()
@@ -61,10 +63,11 @@ const moviesSearchParamsSchema = z.object({
 type MovieSearchParams = z.infer<typeof moviesSearchParamsSchema>;
 
 const getMovieQueryParams = (
-  searchParams: URLSearchParams
+  searchParams: ParsedUrlQuery
 ): FindMoviesParams => {
   const dict: Record<string, unknown> = {};
-  searchParams.forEach((value, key) => {
+  for (let key in searchParams) {
+    const value = searchParams[key];
     if (key === "sort-by") {
       key = "sortBy";
     }
@@ -72,7 +75,8 @@ const getMovieQueryParams = (
       key = "startsWith";
     }
     dict[key] = value ?? null;
-  });
+  }
+
   console.log(dict);
 
   const params = moviesSearchParamsSchema.parse(dict);
@@ -84,6 +88,7 @@ const getMovieQueryParams = (
       star: params.star,
       year: params.year,
       startsWith: params.startsWith,
+      genre: params.genre,
     },
     limit: params.limit,
     page: params.page,
@@ -94,23 +99,34 @@ const getMovieQueryParams = (
 };
 
 const SearchMoviesPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useState<FindMoviesParams>({});
+  const [searchParams, setSearchParams] = useState<
+    FindMoviesParams | undefined
+  >();
   const [searchResults, setSearchResults] = useState<
     PaginatedResult<Movie> | undefined
   >(undefined);
-  const query = useSearchParams();
+  const router = useRouter();
+  console.log(router.query);
 
   useEffect(() => {
-    const initialSearchParams = getMovieQueryParams(query);
-    console.log(initialSearchParams);
-  }, [query]);
+    if (router.isReady) {
+      console.log(router.query);
+      const initialSearchParams = getMovieQueryParams(router.query);
+      console.log(initialSearchParams);
+      setSearchParams(() => initialSearchParams);
+    }
+  }, [router.query]);
 
   useEffect(() => {
-    console.log(searchParams);
+    if (!searchParams) {
+      return;
+    }
     findMovies(searchParams).then((res) => {
-      setSearchResults(res);
+      setSearchResults(() => res);
     });
   }, [searchParams]);
+
+  console.log(searchResults?.results.length);
 
   if (!searchResults) {
     return <div>loading...</div>;
