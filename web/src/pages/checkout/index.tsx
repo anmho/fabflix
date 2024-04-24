@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { handleCheckout } from "~/services/checkout";
 import { isLoggedIn } from "~/services/login";
-import { fetchCartItems, handleEditFromCart } from "~/services/carts";
+import { getCart, handleEditFromCart } from "~/services/cart";
 import { Movie } from "~/interfaces/movie";
 import { MovieCard } from "~/components/MovieCard";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { cn } from "~/utils/cn";
+
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+
+import { Button } from "~/components/ui/button";
+import { BackButton } from "~/components/navigation/back-button";
 
 const CheckoutPage: React.FC = () => {
   const [creditCardId, setCreditCardId] = useState("");
@@ -40,8 +45,8 @@ const CheckoutPage: React.FC = () => {
   }, [cartItems]);
   const getCartItems = async () => {
     try {
-      const items = await fetchCartItems();
-      setCartItems(items);
+      const cart = await getCart();
+      setCartItems(cart.movies);
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch cart items:", error);
@@ -93,8 +98,10 @@ const CheckoutPage: React.FC = () => {
 
   return (
     <div className="mx-auto px-4 bg-background">
+      <BackButton />
       <div className="max-w-md w-full mx-auto rounded-lg p-4 shadow-md bg-white">
         <h2 className="font-bold text-xl mb-4">Checkout Details</h2>
+
         <form onSubmit={handleSubmit}>
           <LabelInputContainer className="mb-4">
             <Label htmlFor="firstName">First Name</Label>

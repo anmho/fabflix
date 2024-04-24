@@ -53,9 +53,11 @@ const BrowseMoviesPage: React.FC = () => {
       </div>
       <div className=" flex justify-center items-center flex-wrap ">
         {genres.map((genre) => (
-          <Button className="bg-green-500 m-1 p-2 rounded-md text-primary">
-            {genre.name}
-          </Button>
+          <Link href={`/search?genre=${genre.name.toLowerCase()}`}>
+            <Button className="bg-green-500 m-1 p-2 rounded-md text-primary">
+              {genre.name}
+            </Button>
+          </Link>
         ))}
       </div>
     </>

@@ -28,8 +28,7 @@ public class CartServlet extends HttpServlet {
             session.setAttribute("cart", cart);
         }
 
-        ArrayList<Movie> cartItems = cart.getMovies();
-        ResponseBuilder.json(response, cartItems, HttpServletResponse.SC_OK);
+        ResponseBuilder.json(response, cart, HttpServletResponse.SC_OK);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -117,7 +116,7 @@ public class CartServlet extends HttpServlet {
             }
         }
         session.setAttribute("cart", cart);
-        ResponseBuilder.json(response, cart.getMovies(), HttpServletResponse.SC_OK);
+        ResponseBuilder.json(response, cart, HttpServletResponse.SC_OK);
     }
 
 

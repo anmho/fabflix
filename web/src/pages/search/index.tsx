@@ -14,6 +14,8 @@ import { PaginatedResult } from "~/interfaces/paginated-result";
 import { Movie } from "~/interfaces/movie";
 import { findMovies, FindMoviesParams, MovieFilters } from "~/services/movies";
 import { ParsedUrlQuery } from "querystring";
+import { handleAddToCart } from "~/services/cart";
+import { updateMovies } from "../movies";
 
 const moviesSearchParamsSchema = z.object({
   limit: z
@@ -166,8 +168,8 @@ const SearchMoviesPage: React.FC = () => {
   };
 
   return (
-    <div className="flex align-center flex-col h-screen">
-      <div className="flex justify-around align-center">
+    <div className="flex align-center flex-col dark bg-background">
+      <div className="flex justify-around align-center ">
         <PaginationDropdown
           changeLimitParam={handleChangeLimit}
           className="mr-1"
@@ -197,10 +199,10 @@ const SearchMoviesPage: React.FC = () => {
             key={i}
             isCartPage={false}
             movie={movie}
-            handleAddToCart={() => {}}
-            updateMovies={function (): void {
-              throw new Error("Function not implemented.");
-            }}
+            handleAddToCart={() =>
+              handleAddToCart(movie.id, () => updateMovies(movie.title))
+            }
+            updateMovies={() => {}}
           />
         ))}
       </div>

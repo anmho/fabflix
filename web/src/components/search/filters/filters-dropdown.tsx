@@ -66,13 +66,16 @@ export function FiltersDropdown({
   return (
     <Popover>
       <PopoverTrigger asChild className={className}>
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          className="bg-background dark text-foreground"
+        >
           {/* Filters */}
           {/* <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
           <SlidersHorizontal className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent className="w-80 dark border-border bg-background">
         <div className="grid gap-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Filters</h4>

@@ -90,11 +90,14 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
   return (
     <DropdownMenu onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="flex justify-center items-center">
-          <ArrowDownWideNarrow className="h-4 w-4 shrink-0 opacity-50" />
+        <Button
+          variant="outline"
+          className="flex justify-center items-center dark bg-background text-foreground"
+        >
+          <ArrowDownWideNarrow className="h-4 w-4 shrink-0 opacity-50 " />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56 dark bg-background text-popover-foreground border-border">
         <DropdownMenuLabel>Sort by</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {menuItems.map((item, i) => (

@@ -41,12 +41,15 @@ export function PaginationDropdown({
   return (
     <DropdownMenu onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild className={className}>
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          className="bg-background text-foreground border-border"
+        >
           {limit}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="dark bg-popover text-popover-foreground border-border">
         <DropdownMenuLabel>Per Page</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup

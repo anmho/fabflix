@@ -1,31 +1,18 @@
 // services/api.ts
-import { Movie } from "~/interfaces/movie";
+import { http } from "./http";
+import { Cart } from "~/interfaces/cart";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const fetchCartItems = async (): Promise<Movie[]> => {
-  try {
-    const response = await fetch(`${API_URL}/cart`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    if (response.status === 401) {
-      window.location.href = "/login";
-    }
-    if (!response.ok) {
-      throw new Error("Failed to fetch cart items");
-    }
-    const cartItems: Movie[] = await response.json();
-    console.log("Cart Items Fetched:", cartItems);
-    return cartItems;
-  } catch (error) {
-    console.error("Error fetching cart items:", error);
-    return [];
-  }
+// gets the cart for the current user
+export const getCart = async (): Promise<Cart> => {
+  const response = await http.get("/cart");
+  const cart = response.data;
+  console.log("Cart Fetched:", cart);
+  return cart;
 };
+
+// export const updateCart = async (cart: Cart): Promise<Cart> => {};
 
 export const handleAddToCart = async (
   movieId: string,

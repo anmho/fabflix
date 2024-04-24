@@ -1,4 +1,10 @@
-import { useContext } from "react";
+import { createContext, useContext } from "react";
+
+interface AuthContextValue {}
+
+// const AuthContext =  createContext<AuthContextValue>({
+
+// });
 
 // const AuthProvider: React.FC = () => {
 //   return <div>AuthProvider</div>;
@@ -6,6 +12,6 @@ import { useContext } from "react";
 
 // const useAuth = useContext({ auth: "hello" });
 
-// AuthContext
+// AuthContext;
 
 // export { AuthProvider, useAuth };
