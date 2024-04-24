@@ -163,7 +163,7 @@ const MovieCard = ({
           className="rounded-t-lg object-cover h-48
         w-96"
           src={
-            "https://in.originalfilmart.com/cdn/shop/products/terminator_1984_italian_original_film_art_f2_600x.jpg?v=1597393984"
+            "https://m.media-amazon.com/images/I/61sQGAWUOWL._AC_UF894,1000_QL80_DpWeblab_.jpg"
           }
         />
       </div>
@@ -180,7 +180,7 @@ const MovieCard = ({
             <span key={star.id}>
               <Link
                 href={`/stars/${star.id}`}
-                className="text-blue-600 hover:text-blue-800"
+                className="text-muted-foreground hover:text-blue-800"
               >
                 {star.name}
               </Link>
