@@ -72,13 +72,6 @@ public class MovieSortParams {
     }
 
     public static MovieSortParams parse(HttpServletRequest req) throws IllegalArgumentException {
-        String orderQueryParam = req.getParameter("order");
-        SortOrder order = null;
-
-        if (orderQueryParam != null) {
-
-        }
-
         MovieSortParams params = new MovieSortParams();
 
         String sortString = req.getParameter("sort-by");
@@ -90,6 +83,7 @@ public class MovieSortParams {
         if (sortString != null) {
 
             List<String> dimensionStrs = new ArrayList<>(Arrays.asList(sortString.split(",")));
+
 
             List<SortDimension> dimensions = new ArrayList<>();
             for (String dimStr : dimensionStrs) {
@@ -118,7 +112,7 @@ public class MovieSortParams {
                         throw new IllegalArgumentException("invalid filter parameter");
                 }
 
-
+                SortOrder order = SortOrder.DESCENDING;
                 if (orderStr.equalsIgnoreCase("asc")) {
                     order = SortOrder.ASCENDING;
                 } else if (orderStr.equalsIgnoreCase("desc")){
