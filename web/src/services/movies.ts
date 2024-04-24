@@ -1,6 +1,7 @@
 import { MovieSortDimension } from "~/components/search/sort/dimensions";
 import { Movie } from "~/interfaces/movie";
 import { PaginatedResult } from "~/interfaces/paginated-result";
+import { http } from "./http";
 
 export interface MovieFilters {
   title?: string;
@@ -27,7 +28,7 @@ export const findMovies = async ({
   limit,
   page,
 }: FindMoviesParams): Promise<PaginatedResult<Movie>> => {
-  const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/movies`);
+  const params = new URLSearchParams();
   limit = limit ?? 20;
   page = page ?? 1;
 
@@ -37,7 +38,7 @@ export const findMovies = async ({
 
       if (value) {
         if (key === "startsWith") key = "starts-with";
-        url.searchParams.append(key, value.toString());
+        params.append(key, value.toString());
       }
     }
   }
@@ -48,24 +49,20 @@ export const findMovies = async ({
       )
       .join(",");
     console.log(sortByString);
-    url.searchParams.append("sort-by", sortByString);
+    params.append("sort-by", sortByString);
   }
 
-  url.searchParams.append("limit", limit.toString());
-  url.searchParams.append("page", page.toString());
-
-  const res = await fetch(url.toString(), {
-    credentials: "include",
+  params.append("limit", limit.toString());
+  params.append("page", page.toString());
+  const res = await http.get("/movies?", { params }).catch((error) => {
+    if (error.status === 401) {
+      window.location.href = "/login";
+    }
+    console.error("Failed to fetch movies", error);
+    throw error;
   });
-  if (res.status === 401) {
-    window.location.href = "/login";
-  }
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch movies");
-  }
-  const data = await res.json();
-  return data;
+  return res.data;
 };
 
 export const fetchTopMovies = async (): Promise<Movie[]> => {
@@ -78,12 +75,6 @@ export const fetchTopMovies = async (): Promise<Movie[]> => {
 };
 
 export const getMovieById = async (id: string): Promise<Movie> => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/movies?id=${id}`,
-    {
-      credentials: "include",
-    }
-  );
-  const movie = await res.json();
+  const movie = await http.get(`/movies?id=${id}`).then((res) => res.data);
   return movie;
 };

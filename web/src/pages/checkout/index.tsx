@@ -9,6 +9,12 @@ import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { cn } from "~/utils/cn";
 
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+
+import { Button } from "~/components/ui/button";
+
+
+
 const CheckoutPage: React.FC = () => {
   const [creditCardId, setCreditCardId] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -93,8 +99,10 @@ const CheckoutPage: React.FC = () => {
 
   return (
     <div className="mx-auto px-4 bg-background">
+      <BackButton />
       <div className="max-w-md w-full mx-auto rounded-lg p-4 shadow-md bg-white">
         <h2 className="font-bold text-xl mb-4">Checkout Details</h2>
+
         <form onSubmit={handleSubmit}>
           <LabelInputContainer className="mb-4">
             <Label htmlFor="firstName">First Name</Label>
