@@ -5,7 +5,7 @@ import { NavMenu } from "./navigation-menu";
 import { CartDrawer } from "./cart-drawer";
 export function NavigationBar() {
   return (
-    <div className="flex justify-center items-center p-4">
+    <div className="flex justify-center items-center p-4 border-border text-foreground backdrop-blur-sm dark bg-background">
       <NavMenu />
       <CartDrawer />
     </div>

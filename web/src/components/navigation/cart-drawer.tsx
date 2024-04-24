@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { MovieCard } from "~/components/MovieCard";
 import { isLoggedIn } from "~/services/login";
-import { fetchCartItems, handleAddToCart } from "~/services/carts";
+import { getCart, handleAddToCart } from "~/services/cart";
 import { Movie } from "~/interfaces/movie";
 
 export function CartDrawer() {
@@ -36,10 +36,13 @@ export function CartDrawer() {
   }, [router.pathname]);
 
   const getCartItems = async () => {
-    await fetchCartItems().then((items) => {
-      setCartItems(items);
-      setIsLoading(false);
-    });
+    await getCart()
+      .then((cart) => cart.movies)
+      .then((movies) => {
+        console.log(movies);
+        setCartItems(movies);
+        setIsLoading(false);
+      });
   };
 
   const updateMovies = () => {
@@ -48,14 +51,21 @@ export function CartDrawer() {
 
   if (!showDrawer) return <></>;
 
+  console.log("cartItems", cartItems);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" onClick={getCartItems}>
+        <Button
+          variant="outline"
+          onClick={getCartItems}
+          className="dark bg-primary text-primary-foreground hover:bg-primary/90
+        border-none"
+        >
           Shopping Cart
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="dark bg-background text-foreground border-border">
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
           {cartItems.length > 0 && (

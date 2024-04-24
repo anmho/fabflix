@@ -3,10 +3,14 @@ import Head from "next/head";
 import { Movie } from "~/interfaces/movie";
 import { fetchTopMovies } from "../../services/movies";
 import { MovieCard } from "~/components/MovieCard";
-import { handleAddToCart, handleEditFromCart } from "../../services/carts";
+import { handleAddToCart, handleEditFromCart } from "../../services/cart";
 import { isLoggedIn } from "~/services/login";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
+
+export const updateMovies = (movieName: string) => {
+  toast(`"${movieName}" added to your shopping cart.`);
+};
 
 const MovieListPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
@@ -25,10 +29,6 @@ const MovieListPage: React.FC = () => {
       }
     });
   }, [router]);
-
-  const updateMovies = (movieName: string) => {
-    toast(`"${movieName}" added to your shopping cart.`);
-  };
 
   if (isLoading) return <div>Loading...</div>;
   return (

@@ -8,7 +8,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { MdAddShoppingCart } from "react-icons/md";
 
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
-import { handleEditFromCart } from "../services/carts";
+import { handleEditFromCart } from "../services/cart";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 
@@ -156,19 +156,18 @@ const MovieCard = ({
     //   </CardBody>
     // </CardContainer>
 
-    <Card className="w-full max-w-xs m-2">
-      <img
-        alt="Movie Poster"
-        className="rounded-t-lg object-cover"
-        height="300"
-        src={"https://generated.vusercontent.net/placeholder.svg"}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-        width="200"
-      />
+    <Card className="w-full max-w-xs m-2 border-border bg-card text-card-foreground shadow-sm ">
+      <div>
+        <img
+          alt="Movie Poster"
+          className="rounded-t-lg object-cover h-48
+        w-96"
+          src={
+            "https://in.originalfilmart.com/cdn/shop/products/terminator_1984_italian_original_film_art_f2_600x.jpg?v=1597393984"
+          }
+        />
+      </div>
+
       <CardContent className="p-6 space-y-4">
         <div className="space-y-2">
           <h3 className="text-xl font-bold">{movie.title}</h3>

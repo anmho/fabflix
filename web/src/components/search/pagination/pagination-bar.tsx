@@ -23,7 +23,7 @@ export function PaginationBar({
   hasNext,
 }: PaginationBarProps) {
   return (
-    <Pagination>
+    <Pagination className="bg-background text-foreground">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
@@ -47,9 +47,9 @@ export function PaginationBar({
                 {page + 1}
               </PaginationLink>
             </PaginationItem>
-            {/* <PaginationItem>
+            <PaginationItem>
               <PaginationEllipsis />
-            </PaginationItem> */}
+            </PaginationItem>
           </>
         )}
         <PaginationItem>
