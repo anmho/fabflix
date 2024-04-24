@@ -117,33 +117,33 @@ public class MovieRepository {
             PaginationParams pageParams
         ) throws SQLException {
 
-        String baseQuery =
-                "SELECT DISTINCT " +
-                    "m.id, " +
-                    "m.title, " +
-                    "m.year, " +
-                    "m.director, " +
-                    "m.price, " +
-                    "r.rating, " +
-                    "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
-                        "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                        "WHERE gim.movieId = m.id) AS genres, " +
-                    "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
-                        "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
-                        "WHERE sim.movieId = m.id) AS stars " +
-                "FROM movies m " +
-                    "JOIN ratings r ON m.id = r.movieId " +
-                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +
-                    "JOIN stars s ON s.id = sim.starId " +
-                    "JOIN genres_in_movies gim ON m.id = gim.movieId " +
-                    "JOIN genres g ON gim.genreId = g.id ";
+//        String baseQuery =
+//                "SELECT DISTINCT " +
+//                    "m.id, " +
+//                    "m.title, " +
+//                    "m.year, " +
+//                    "m.director, " +
+//                    "m.price, " +
+//                    "r.rating, " +
+//                    "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+//                        "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+//                        "WHERE gim.movieId = m.id) AS genres, " +
+//                    "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
+//                        "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+//                        "WHERE sim.movieId = m.id) AS stars " +
+//                "FROM movies m ";
+//                    "JOIN ratings r ON m.id = r.movieId " +
+//                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+//                    "JOIN stars s ON s.id = sim.starId " +
+//                    "JOIN genres_in_movies gim ON m.id = gim.movieId " +
+//                    "JOIN genres g ON gim.genreId = g.id ";
 
 
 
         Database db = Database.getInstance();
 
         try (Connection conn = db.getConnection()) {
-            Query query = createFilterMoviesQuery(conn, baseQuery, filters, sortParams, pageParams);
+            Query query = createFilterMoviesQuery(conn, filters, sortParams, pageParams);
             try (PreparedStatement stmt = query.getStatement()) {
                 System.out.println(stmt.toString());
                 ResultSet rs = stmt.executeQuery();
@@ -162,13 +162,32 @@ public class MovieRepository {
 
     Query createFilterMoviesQuery(
             Connection conn,
-            String baseQuery,
             MovieFilterParams filters,
             MovieSortParams sortParams,
             PaginationParams pageParams
     ) throws SQLException {
         Query.Builder queryBuilder = new Query.Builder(conn);
-        queryBuilder.select(baseQuery);
+//        String baseQuery =
+
+//                        "FROM movies m ";
+        queryBuilder.select("SELECT DISTINCT " +
+//        queryBuilder.select("SELECT " +
+                "m.id, " +
+                "m.title, " +
+                "m.year, " +
+                "m.director, " +
+                "m.price, " +
+                "r.rating, " +
+                "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+                "FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+                "WHERE gim.movieId = m.id) AS genres, " +
+                "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') " +
+                "FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId " +
+                "WHERE sim.movieId = m.id) AS stars ");
+
+        queryBuilder.from("movies m");
+        queryBuilder.join("ratings r", "m.id=r.movieId");
+
         if (filters != null) {
             if (filters.getTitle() != null) {
                 // fix this
@@ -201,10 +220,19 @@ public class MovieRepository {
             // need to change the query since it will include anyone but the star
             if (filters.getStar() != null) {
                 String pattern = String.format("%%%s%%", filters.getStar()); // THIS IS UNSAFE. MUST FIX
+                // "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                // "JOIN stars s ON s.id = sim.starId " +
+                queryBuilder.join("stars_in_movies sim", "m.id = sim.movieId");
+                queryBuilder.join("stars s", "s.id = sim.starId");
                 queryBuilder.where("s.name", "LIKE", pattern);
+
             }
 
             if (filters.getGenre() != null) {
+                // "JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                // "JOIN genres g ON gim.genreId = g.id ";
+                queryBuilder.join("genres_in_movies gim", "m.id = gim.movieId");
+                queryBuilder.join("genres g", "gim.genreId = g.id");
                 queryBuilder.where("g.name", "=", filters.getGenre());
             }
         }
