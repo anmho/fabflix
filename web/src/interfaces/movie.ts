@@ -21,3 +21,10 @@ export interface Movie {
   quantity: number;
   price: number;
 }
+
+
+
+export interface MovieList {
+  movies: Movie[];
+  total: number;
+}

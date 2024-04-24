@@ -34,8 +34,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({ date, setDate }) => {
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={setDate}
+          selected={date || undefined}
+          onSelect={(date: Date | null | undefined) => setDate(date || null)}
           initialFocus={true}
         />
       </PopoverContent>

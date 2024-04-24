@@ -15,18 +15,16 @@ import {
   navigationMenuTriggerStyle,
 } from "~/components/ui/navigation-menu";
 
-const components: { title: string; href: string; description: string }[] = [
+const categories: { title: string; href: string; description: string }[] = [
   {
     title: "Highest Rated Movies",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+    href: "/search?sort-by=rating:desc",
+    description: "Highest rated movies based on user reviews and ratings.",
   },
   {
     title: "Newest Movies",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
+    href: "/search?sort-by=year:desc",
+    description: "Today's latest and greatest movies.",
   },
 ];
 
@@ -35,7 +33,7 @@ export function NavMenu() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link href="/browse" legacyBehavior passHref>
+          <Link href="/" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Home
             </NavigationMenuLink>
@@ -91,25 +89,24 @@ function BrowseMenuContent() {
         <NavigationMenuLink asChild>
           <a
             className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-            href="/"
+            href="/browse"
           >
             <Icons.logo className="h-6 w-6" />
-            <div className="mb-2 mt-4 text-lg font-medium">shadcn/ui</div>
+            <div className="mb-2 mt-4 text-lg font-medium">Browse</div>
             <p className="text-sm leading-tight text-muted-foreground">
-              Beautifully designed components that you can copy and paste into
-              your apps. Accessible. Customizable. Open Source.
+              Browse through our collection of movies and TV shows.
             </p>
           </a>
         </NavigationMenuLink>
       </li>
-      <ListItem href="/docs" title="Introduction">
-        Re-usable components built using Radix UI and Tailwind CSS.
+      <ListItem href="/search?genre=action" title="Action">
+        Exciting films filled with thrilling sequences and intense battles.
       </ListItem>
-      <ListItem href="/docs/installation" title="Installation">
-        How to install dependencies and structure your app.
+      <ListItem href="/search?genre=comedy" title="Comedy">
+        Hilarious movies guaranteed to make you laugh out loud.
       </ListItem>
-      <ListItem href="/docs/primitives/typography" title="Typography">
-        Styles for headings, paragraphs, lists...etc
+      <ListItem href="/search?genre=animation" title="Animation">
+        Colorful and imaginative animated features for all ages.
       </ListItem>
     </ul>
   );
@@ -118,7 +115,7 @@ function BrowseMenuContent() {
 function CategoriesMenuContent() {
   return (
     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-      {components.map((component) => (
+      {categories.map((component) => (
         <ListItem
           key={component.title}
           title={component.title}

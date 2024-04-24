@@ -148,4 +148,4 @@ const MovieCard = ({
   );
 };
 
-export default MovieCard;
+export { MovieCard };

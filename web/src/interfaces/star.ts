@@ -6,3 +6,4 @@ export interface StarDetail {
   birthYear: number | 'N/A';
   movies: Movie[];
 }
+

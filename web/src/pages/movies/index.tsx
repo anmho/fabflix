@@ -36,8 +36,9 @@ const MovieListPage: React.FC = () => {
       </Head>
       <h1 className="text-2xl font-bold my-6">Top 20 Rated Movies</h1>
       <div className="flex flex-wrap justify-around items-start">
-        {movies.map((movie) => (
+        {movies.map((movie, i) => (
           <MovieCard
+            key={i}
             movie={movie}
             isCartPage={false}
             handleAddToCart={() => handleAddToCart(movie.id, updateMovies)}

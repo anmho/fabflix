@@ -8,9 +8,9 @@ import {
   PaginationPrevious,
 } from "~/components/ui/pagination";
 
-Pagination
+Pagination;
 
-export function PaginationDemo() {
+export function PaginationBar() {
   return (
     <Pagination>
       <PaginationContent>

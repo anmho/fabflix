@@ -11,24 +11,20 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 
-export interface Filters {
-  title?: string;
-  star?: string;
-  director?: string;
-  year?: number;
-}
+
 
 interface FiltersDropdownProps {
   className?: string;
   initialFilters: Filters;
+  onApplyFilters: () => void;
 }
 
 export function FiltersDropdown({
   className,
   initialFilters,
+  onApplyFilters,
 }: FiltersDropdownProps) {
   const [filters, setFilters] = useState<Filters>(initialFilters);
-  const [title, setTitle] = useState<string | undefined>(initialFilters.title);
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setFilters((filters) => {
@@ -41,7 +37,6 @@ export function FiltersDropdown({
     setFilters((filters) => {
       return { ...filters, star: e.target.value };
     });
-    setTitle(e.target.value);
   };
 
   const handleChangeDirector = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,10 +52,16 @@ export function FiltersDropdown({
   };
 
   const handleClear = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setFilters(() => {
       return {};
     });
     console.log("trying to clear filters", filters);
+  };
+
+  const handleApply = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    onApplyFilters();
   };
 
   return (
@@ -126,13 +127,10 @@ export function FiltersDropdown({
         </div>
 
         <div className="flex justify-between mt-4">
-          <Button
-            variant="default"
-            onClick={() => console.log("applying", filters)}
-          >
+          <Button variant="default" onClick={handleApply}>
             Apply
           </Button>
-          <Button variant="secondary" onClick={(e) => handleClear(e)}>
+          <Button variant="secondary" onClick={handleClear}>
             Clear
           </Button>
         </div>

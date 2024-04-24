@@ -10,7 +10,7 @@ import {
 } from "~/components/ui/sheet";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import MovieCard from "~/components/MovieCard";
+import { MovieCard } from "~/components/MovieCard";
 import { isLoggedIn } from "~/services/login";
 import { fetchCartItems, handleAddToCart } from "~/services/carts";
 import { Movie } from "~/interfaces/movie";
