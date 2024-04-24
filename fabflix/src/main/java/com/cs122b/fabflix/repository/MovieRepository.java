@@ -5,13 +5,18 @@ import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.params.*;
+import com.cs122b.fabflix.services.MovieService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MovieRepository {
+    private static final Logger logger = LogManager.getLogger(MovieService.class.getName());
 
 
 
@@ -36,7 +41,10 @@ public class MovieRepository {
                         "WHERE m.id = ? " +
                         "LIMIT 1;";
 
-        Connection conn = Database.getConnection();
+//        Connection conn = Database.getConnection();
+
+        Database db = Database.getInstance();
+        Connection conn = db.getConnection();
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, movieId);
@@ -66,15 +74,16 @@ public class MovieRepository {
     }
 
     public List<Movie> getMoviesWithStar(String starId) throws SQLException {
-        System.out.println("Called getMoviesWithStar");
+        logger.info("Called getMoviesWithStar");
 
         String query = "SELECT m.id, m.title, m.year, m.director, r.rating, (SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, (SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars FROM movies m JOIN ratings r ON m.id = r.movieId WHERE m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?) ORDER BY r.rating DESC;";
 
-        Connection conn = Database.getConnection();
+        Database db = Database.getInstance();
+        Connection conn = db.getConnection();
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, starId);
-            System.out.println(starId);
+            logger.info("Star id " + starId);
             ResultSet rs = stmt.executeQuery();
 
             List<Movie> movies = new ArrayList<>();
@@ -131,7 +140,9 @@ public class MovieRepository {
 
 
 
-        try (Connection conn = Database.getConnection()) {
+        Database db = Database.getInstance();
+
+        try (Connection conn = db.getConnection()) {
             Query query = createFilterMoviesQuery(conn, baseQuery, filters, sortParams, pageParams);
             try (PreparedStatement stmt = query.getStatement()) {
                 System.out.println(stmt.toString());
@@ -175,10 +186,15 @@ public class MovieRepository {
             }
 
             if (filters.getStartsWith() != null) {
-                System.out.println("startswith: " + filters.getStartsWith());
-                String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
-                System.out.println(pattern);
-                queryBuilder.where("title", "LIKE", pattern);
+                if (filters.getStartsWith().equals("*")) {
+                    queryBuilder.where("title", "NOT RLIKE", "^[A-Za-z0-9]+");
+                } else {
+                    System.out.println("startswith: " + filters.getStartsWith());
+                    String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
+
+                    System.out.println(pattern);
+                    queryBuilder.where("title", "LIKE", pattern);
+                }
             }
 
 
@@ -193,26 +209,22 @@ public class MovieRepository {
             }
         }
 
-        if (sortParams != null && sortParams.getSortFields() != null) {
-            List<String> sortCols = new ArrayList<>();
-            System.out.println("sort params: " + sortParams.getSortFields());
-            for (MovieSortField field : sortParams.getSortFields()) {
-                if (field == MovieSortField.YEAR) {
-                    sortCols.add("year");
-                } else if (field == MovieSortField.RATING) {
-                    sortCols.add("rating");
-                } else if (field == MovieSortField.TITLE) {
-                    sortCols.add("title");
+        if (sortParams != null) {
+            var dimensions = sortParams.getDimensions();
+            if (dimensions != null) {
+                for (var dimension : dimensions) {
+                    queryBuilder.orderBy(dimension.getFieldName(), dimension.getSortOrder());
                 }
+
             }
 
-            queryBuilder.orderBy(sortCols, sortParams.getSortOrder());
         }
 
         int limit = pageParams.getLimit();
         int page = pageParams.getPage();
         int offset = Math.max(limit * (page-1), 0);
 
+        System.out.println("offset:" + offset);
         queryBuilder.setLimit(limit+1);
         queryBuilder.setOffset(offset);
 

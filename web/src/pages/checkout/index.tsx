@@ -4,7 +4,7 @@ import { handleCheckout } from "~/services/checkout";
 import { isLoggedIn } from "~/services/login";
 import { fetchCartItems, handleEditFromCart } from "~/services/carts";
 import { Movie } from "~/interfaces/movie";
-import MovieCard from "~/components/MovieCard";
+import { MovieCard } from "~/components/MovieCard";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { cn } from "~/utils/cn";

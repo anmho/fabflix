@@ -18,7 +18,6 @@ public class MovieRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        conn = Database.getConnection();
     }
 
 

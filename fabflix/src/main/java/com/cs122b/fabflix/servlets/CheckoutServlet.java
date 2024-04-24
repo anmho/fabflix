@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -42,7 +43,9 @@ public class CheckoutServlet extends HttpServlet {
         System.out.println("Last Name ==> " + lastName);
         System.out.println("Expiration Date ==> " + expirationDate);
 
-        try (Connection conn = Database.getConnection()) {
+        Database db = Database.getInstance();
+
+        try (Connection conn = db.getConnection()) {
             if (!validateCreditCard(conn, creditCardId, firstName, lastName, expirationDate)) {
                 ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Invalid credit card details.");
                 return;
@@ -64,11 +67,13 @@ public class CheckoutServlet extends HttpServlet {
 
                 ResponseBuilder.json(response, responseData, HttpServletResponse.SC_OK);
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("A database error occurred while processing your request.");
                 conn.rollback();
                 ResponseBuilder.error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred while processing your request.");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("A database error occurred while processing your request.");
             ResponseBuilder.error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred while processing your request.");
         }

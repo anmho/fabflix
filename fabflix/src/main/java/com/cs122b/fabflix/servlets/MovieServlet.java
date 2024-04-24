@@ -25,19 +25,12 @@ public class MovieServlet extends HttpServlet {
     private MovieService movieService;
 
     public void init() {
-        Connection conn = Database.getConnection();
         movieService = new MovieService(new MovieRepository());
-
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        // So far we just have very basic filtering. Only one filter at a time
-        String movieId = req.getParameter("id");
         String starId = req.getParameter("starId");
-
-
-
 
         MovieFilterParams filterParams;
         MovieSortParams sortParams;

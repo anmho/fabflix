@@ -7,19 +7,65 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MovieSortParams {
 
+    private List<SortDimension> dimensions;
 
-    List<String> fieldStrings;
-    List<MovieSortField> sortFields;
-    SortOrder sortOrder;
+    public static class SortDimension {
+        private MovieSortField field;
+        private SortOrder sortOrder;
+
+        public SortDimension(MovieSortField field, SortOrder sortOrder) {
+            this.field = field;
+            this.sortOrder = sortOrder;
+        }
+
+        public String getFieldName() {
+            switch (field) {
+                case RATING:
+                    return "rating";
+                case TITLE:
+                    return "title";
+                case YEAR:
+                    return "year";
+                default:
+                    throw new IllegalStateException("invalid field name found");
+            }
+
+        }
+
+        public String getOrderStr() {
+
+            switch (sortOrder) {
+                case DESCENDING:
+                    return "desc";
+                case ASCENDING:
+                    return "asc";
+                default:
+                    throw new IllegalStateException("invalid sort order found");
+            }
+        }
+
+        public MovieSortField getField() {
+            return field;
+        }
+
+        public SortOrder getSortOrder() {
+            return sortOrder;
+        }
+
+        @Override
+        public String toString() {
+            return String.join(":", getFieldName(), getOrderStr());
+        }
+    }
 
 
 
-    public MovieSortParams(List<MovieSortField> sortFields, SortOrder sortOrder) {
-        this.sortFields = sortFields;
-        this.sortOrder = sortOrder;
+    public MovieSortParams(List<SortDimension> dimensions) {
+        this.dimensions = dimensions;
     }
 
     public MovieSortParams() {
@@ -27,83 +73,77 @@ public class MovieSortParams {
     }
 
     public static MovieSortParams parse(HttpServletRequest req) throws IllegalArgumentException {
-        String orderQueryParam = req.getParameter("order");
-        SortOrder order = null;
-
-        if (orderQueryParam != null) {
-            if (orderQueryParam.equals("asc")) {
-                order = SortOrder.ASCENDING;
-            } else if (orderQueryParam.equals("desc")){
-                order = SortOrder.DESCENDING;
-            }
-        }
-
         MovieSortParams params = new MovieSortParams();
 
-        String sortByString = req.getParameter("sort-by");
+        String sortString = req.getParameter("sort-by");
         // encoded as a comma separated string
-        // field1,field2,field3
+        // field1:asc,field2:desc,field3:asc
 
 
-        List<MovieSortField> sortFields = new ArrayList<>();
-        if (sortByString != null) {
-            List<String> fieldStrings = new ArrayList<>(Arrays.asList(sortByString.split(",")));
+
+        if (sortString != null) {
+
+            List<String> dimensionStrs = new ArrayList<>(Arrays.asList(sortString.split(",")));
 
 
-            // each sort field must be unique
-            for (String field : fieldStrings) {
-                switch (field) {
+            List<SortDimension> dimensions = new ArrayList<>();
+            for (String dimStr : dimensionStrs) {
+                String[] parts = dimStr.split(":");
+                if (parts.length != 2) {
+                    throw new IllegalArgumentException("invalid dimension string: " + dimStr);
+                }
+
+
+                String fieldStr = parts[0];
+                String orderStr = parts[1];
+
+                MovieSortField field;
+
+                switch (fieldStr) {
                     case "title":
-                        sortFields.add(MovieSortField.TITLE);
+                        field = MovieSortField.TITLE;
                         break;
                     case "year":
-                        sortFields.add(MovieSortField.YEAR);
+                        field = MovieSortField.YEAR;
                         break;
                     case "rating":
-                        sortFields.add(MovieSortField.RATING);
+                        field = MovieSortField.RATING;
                         break;
                     default:
                         throw new IllegalArgumentException("invalid filter parameter");
                 }
+
+                SortOrder order = SortOrder.DESCENDING;
+                if (orderStr.equalsIgnoreCase("asc")) {
+                    order = SortOrder.ASCENDING;
+                } else if (orderStr.equalsIgnoreCase("desc")){
+                    order = SortOrder.DESCENDING;
+                }
+
+
+                SortDimension dimension = new SortDimension(field, order);
+                dimensions.add(dimension);
             }
 
-            params = new MovieSortParams(sortFields, order);
-
-            params.fieldStrings = fieldStrings;
+            // each sort field must be unique
+            params = new MovieSortParams(dimensions);
         }
 
         return params;
     }
 
     @JsonIgnore
-    public List<MovieSortField> getSortFields() {
-        return sortFields;
+    public List<SortDimension> getDimensions() {
+        return dimensions;
     }
-    public void setSortFields(List<MovieSortField> sortFields) {
-        this.sortFields = sortFields;
-    }
+
 
     @JsonProperty("sort-by")
     public String getSortBy() {
-        if (fieldStrings == null) {
+        if (dimensions == null || dimensions.isEmpty()) {
             return null;
         }
-        return String.join(",", fieldStrings);
+        return String.join(",", dimensions.stream().map(SortDimension::toString).collect(Collectors.toList()));
     }
-    @JsonProperty("order")
-    public String getOrder() {
-        return sortOrder == SortOrder.ASCENDING ? "asc" : "desc";
-    }
-
-
-    @JsonIgnore
-    public SortOrder getSortOrder() {
-        return sortOrder;
-    }
-
-    public void setSortOrder(SortOrder sortOrder) {
-        this.sortOrder = sortOrder;
-    }
-
 
 }

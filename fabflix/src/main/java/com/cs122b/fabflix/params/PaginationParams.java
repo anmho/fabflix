@@ -35,6 +35,7 @@ public class PaginationParams {
             return new PaginationParams(page, limit);
         } catch (NumberFormatException e) {
             e.printStackTrace();
+
             throw new IllegalArgumentException("page and limit must be numbers");
         }
     }

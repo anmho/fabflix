@@ -1,35 +1,216 @@
-import { Head } from "next/document";
-import { useEffect, useState } from "react";
-import { ComboboxDemo } from "~/components/combobox";
-import MovieCard from "~/components/MovieCard";
-import { FiltersDropdown } from "~/components/search/filters-dropdown";
-import SearchOptionsDropdown from "~/components/search/options-dropdown";
-import { PaginationDemo } from "~/components/search/pagination-demo";
-import { PaginationDropdown } from "~/components/search/pagination-dropdown";
-import { SortDropdown } from "~/components/search/sort-dropdown";
+import { useSearchParams } from "next/navigation";
+import { FiltersDropdown } from "~/components/search/filters/filters-dropdown";
+import { PaginationBar } from "~/components/search/pagination/pagination-bar";
+import { PaginationDropdown } from "~/components/search/pagination/pagination-dropdown";
+import { SortDropdown } from "~/components/search/sort/sort-dropdown";
 import { BentoGrid } from "~/components/ui/bento-grid";
-import { Pagination } from "~/components/ui/pagination";
+
+import { z } from "zod";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { MovieSortDimension } from "~/components/search/sort/dimensions";
+import { MovieCard } from "~/components/MovieCard";
+import { PaginatedResult } from "~/interfaces/paginated-result";
 import { Movie } from "~/interfaces/movie";
-import { handleAddToCart } from "~/services/carts";
-import { fetchTopMovies } from "~/services/movies";
+import { findMovies, FindMoviesParams, MovieFilters } from "~/services/movies";
+import { ParsedUrlQuery } from "querystring";
+
+const moviesSearchParamsSchema = z.object({
+  limit: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return undefined;
+      return Number.parseInt(val);
+    }),
+  page: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return undefined;
+      return Number.parseInt(val);
+    }),
+  startsWith: z.string().optional(),
+  title: z.string().optional(),
+  year: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return undefined;
+      return Number.parseInt(val);
+    }),
+  director: z.string().optional(),
+  star: z.string().optional(),
+  genre: z.string().optional(),
+  sortBy: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) {
+        return undefined;
+      }
+
+      const sortStrs = val.split(",");
+
+      const dimensions = sortStrs.map((sortStr) => {
+        const [field, order] = sortStr.split(":");
+        const fieldResults = z.ZodEnum.create([
+          "title",
+          "rating",
+          "year",
+        ]).parse(field);
+        const orderResult = z.ZodEnum.create(["asc", "desc"]).parse(order);
+
+        return new MovieSortDimension(fieldResults, orderResult);
+      });
+      return dimensions;
+    }),
+});
+
+const parseMovieQueryParams = (
+  searchParams: ParsedUrlQuery
+): FindMoviesParams => {
+  const dict: Record<string, unknown> = {};
+  for (let key in searchParams) {
+    const value = searchParams[key];
+    console.log(key, value);
+
+    if (key === "sort-by") {
+      key = "sortBy";
+    }
+    if (key === "starts-with") {
+      key = "startsWith";
+    }
+
+    dict[key] = value;
+  }
+
+  const params = moviesSearchParamsSchema.parse(dict);
+  console.log("params", params);
+
+  const findMovieParams = {
+    filters: {
+      title: params.title,
+      director: params.director,
+      star: params.star,
+      year: params.year,
+      startsWith: params.startsWith,
+      genre: params.genre,
+    },
+    limit: params.limit,
+    page: params.page,
+    sortBy: params.sortBy,
+  };
+
+  return findMovieParams;
+};
 
 const SearchMoviesPage: React.FC = () => {
+  const [searchParams, setSearchParams] = useState<
+    FindMoviesParams | undefined
+  >();
+  const [searchResults, setSearchResults] = useState<
+    PaginatedResult<Movie> | undefined
+  >(undefined);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      const initialSearchParams = parseMovieQueryParams(router.query);
+      setSearchParams(() => initialSearchParams);
+    }
+  }, [router.query]);
+
+  useEffect(() => {
+    if (!searchParams) {
+      return;
+    }
+    console.log("searchParams", searchParams);
+
+    findMovies(searchParams).then((res) => {
+      setSearchResults(() => res);
+    });
+
+    console.log("as path", router.asPath);
+  }, [searchParams]);
+
+  if (!searchResults) {
+    return <div>loading...</div>;
+  }
+
+  const handlePageChange = (page: number) => {
+    setSearchParams((prev) => {
+      return { ...prev, page };
+    });
+  };
+
+  const handleApplyFilters = (filters: MovieFilters) => {
+    console.log(filters);
+    setSearchParams((prev) => {
+      return { ...prev, filters };
+    });
+  };
+
+  const handleApplySort = (dimensions: MovieSortDimension[]) => {
+    console.log(dimensions);
+    setSearchParams((prev) => {
+      return { ...prev, sortBy: dimensions };
+    });
+  };
+
+  const handleChangeLimit = (limit: number) => {
+    console.log("changing limit", limit);
+    setSearchParams((prev) => {
+      return { ...prev, limit };
+    });
+  };
+
   return (
     <div className="flex align-center flex-col h-screen">
-      <div className="flex justify-center align-center ">
-        <PaginationDropdown className="mr-1" />
-        <FiltersDropdown className="mr-1" />
-        <SortDropdown />
+      <div className="flex justify-around align-center">
+        <PaginationDropdown
+          changeLimitParam={handleChangeLimit}
+          className="mr-1"
+        />
+        <PaginationBar
+          hasPrev={searchResults._links.prev !== null}
+          hasNext={searchResults._links.next !== null}
+          handlePageChange={handlePageChange}
+          page={searchResults.page}
+        />
+
+        <div className="flex items-center justify-center">
+          {/* Filters */}
+          <FiltersDropdown
+            handleApplyFilters={handleApplyFilters}
+            className="mr-1"
+            initialFilters={searchParams?.filters ?? {}}
+          />
+          {/* Sort Options */}
+          <SortDropdown applySort={handleApplySort} />
+        </div>
       </div>
-      <div className="flex items-center align-center w-screen bg-green-500 flex-col">
-        <div className="bg-red-500 w-5 h-5"></div>
-        <div className="bg-red-500 w-5 h-5"></div>
-        <div className="bg-red-500 w-5 h-5"></div>
-        <div className="bg-red-500 w-5 h-5"></div>
+
+      <div className="flex items-center align-center w-screen flex-wrap p-4">
+        {searchResults.results.map((movie, i) => (
+          <MovieCard
+            key={i}
+            isCartPage={false}
+            movie={movie}
+            handleAddToCart={() => {}}
+            updateMovies={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
+        ))}
       </div>
-      <PaginationDemo />
+      <PaginationBar
+        hasPrev={searchResults._links.prev !== null}
+        hasNext={searchResults._links.next !== null}
+        page={searchResults.page}
+        handlePageChange={handlePageChange}
+      />
       <BentoGrid />
-      <ComboboxDemo />
     </div>
   );
 };
