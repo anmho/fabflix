@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
+    private final Logger log = LogManager.getLogger(LoginFilter.class.getName());
 
     @Override
     public void init(FilterConfig fConfig) throws ServletException {
@@ -32,13 +35,13 @@ public class LoginFilter implements Filter {
 
         String requestURI = httpRequest.getRequestURI();
 
-        System.out.println("LoginFilter: " + requestURI);
+        log.debug("LoginFilter: " + requestURI);
         HttpSession session = httpRequest.getSession();
-        System.out.println("session.getId==> " + session.getId() );
-        System.out.println("session.getAttribute(\"customer\")==> " + session.getAttribute("customer") );
+        log.debug("session.getId==> " + session.getId() );
+        log.debug("session.getAttribute(\"customer\")==> " + session.getAttribute("customer") );
 
         if (isUrlAllowedWithoutLogin(requestURI) || session.getAttribute("customer") != null) {
-            System.out.println("allowed URI || session hit");
+            log.debug("allowed URI || session hit");
             System.out.println("requestURI => " + requestURI);
 
             System.out.println("isUrlAllowedWithoutLogin(requestURI) => " + isUrlAllowedWithoutLogin(requestURI));

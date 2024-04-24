@@ -11,5 +11,4 @@
             <AppenderRef ref="stdout" />
         </Root>
     </Loggers>
-
 </Configuration>
