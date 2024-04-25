@@ -12,9 +12,9 @@ import { MovieSortDimension } from "~/components/search/sort/dimensions";
 import { MovieCard } from "~/components/MovieCard";
 import { PaginatedResult } from "~/interfaces/paginated-result";
 import { Movie } from "~/interfaces/movie";
-import { findMovies, FindMoviesParams, MovieFilters } from "~/services/movies";
+import { findMovies, FindMoviesParams, MovieFilters } from "~/api/movies";
 import { ParsedUrlQuery } from "querystring";
-import { handleAddToCart } from "~/services/cart";
+import { handleAddToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
 
 const moviesSearchParamsSchema = z.object({
@@ -121,7 +121,7 @@ const SearchMoviesPage: React.FC = () => {
       const initialSearchParams = parseMovieQueryParams(router.query);
       setSearchParams(() => initialSearchParams);
     }
-  }, [router.query]);
+  }, [router.query, router.isReady]);
 
   useEffect(() => {
     if (!searchParams) {

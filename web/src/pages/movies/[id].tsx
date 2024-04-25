@@ -3,8 +3,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Movie } from "~/interfaces/movie";
-import { getMovieById as fetchMovieById } from "~/services/movies";
-import { isLoggedIn } from "~/services/login";
+import { getMovieById as fetchMovieById } from "~/api/movies";
+import { isLoggedIn } from "~/api/login";
 
 const SingleMoviePage: React.FC = () => {
   // const fetchMovie = async (movieID: string): Promise<Movie> => {

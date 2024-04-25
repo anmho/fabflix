@@ -5,7 +5,7 @@ import { StarDetail } from "../../interfaces/star";
 import { isLoggedIn } from "~/services/login";
 import { useRouter } from "next/router";
 import { fetchStarById } from "~/services/stars";
-import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
+import { CardBody, CardContaine~/api/starsom "../../components/ui/3d-card";
 
 const SingleStarPage: React.FC = () => {
   const [star, setStar] = useState<StarDetail | null>(null);

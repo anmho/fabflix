@@ -10,7 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { MovieFilters } from "~/services/movies";
+import { MovieFilters } from "~/api/movies";
 
 interface FiltersDropdownProps {
   className?: string;
