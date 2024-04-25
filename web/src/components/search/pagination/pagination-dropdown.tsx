@@ -49,7 +49,7 @@ export function PaginationDropdown({
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="dark bg-popover text-popover-foreground border-border">
+      <DropdownMenuContent className="dark bg-background text-popover-foreground border-border">
         <DropdownMenuLabel>Per Page</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup

@@ -13,28 +13,42 @@ public class Query {
     public static class Builder {
         private final Connection conn;
         private final List<Object> params;
-        private String selectStatement;
+        private String selectClause;
+        private String fromClause;
+        private List<String> joinClauses;
+
 
         private final List<String> whereConditions;
 
         private List<String> sortColumns;
         private List<SortOrder> sortOrder;
+        private List<String> groupByColumns;
         private Integer offset;
         private Integer limit;
 
         public Builder (Connection conn) {
             this.conn = conn;
+            fromClause = null;
+            joinClauses = new ArrayList<>();
             whereConditions = new ArrayList<>();
             params = new ArrayList<>();
             sortColumns = new ArrayList<>();
             sortOrder = new ArrayList<>();
+            groupByColumns = new ArrayList<>();
         }
 
         public Builder select(String selectStatement) {
-            this.selectStatement = selectStatement;
+            this.selectClause = selectStatement;
             return this;
         }
 
+
+        // table name or alias
+        public Builder from(String table) {
+            fromClause = String.format("FROM %s", table);
+
+            return this;
+        }
 
         // For now all of them will be and logic
         public Builder where(String column, String operator, Object value) {
@@ -65,22 +79,37 @@ public class Query {
 
 
         public Query build() throws SQLException {
-            if (selectStatement == null) {
+            if (selectClause == null) {
                 throw new IllegalStateException("select must be set");
             }
 
             StringBuilder query = new StringBuilder();
 
-            // Add select statement
+            // SELECT
+            query.append(selectClause);
 
-            query.append(selectStatement);
-            // Add clauses
+            // FROM
+            query.append(fromClause);
+            query.append("\n");
+
+            // JOIN
+            query.append(String.join("\n", joinClauses));
+            query.append("\n");
+
+            // WHERE
             query.append(createWhereClause(whereConditions));
             query.append("\n");
+            // ORDER BY
             query.append(createOrderByClause(sortColumns, sortOrder));
             query.append("\n");
+
+            // GROUP BY
+            String groupByClause = String.format("GROUP BY %s\n", String.join(",", groupByColumns));
+            query.append(groupByClause);
+            // LIMIT
             query.append(createLimitClause(limit));
             query.append("\n");
+            // OFFSET
             query.append(createOffsetClause(offset));
             query.append(";");
             String queryString = query.toString();
@@ -106,6 +135,17 @@ public class Query {
             System.out.println(stmt.toString());
 
             return new Query(stmt);
+        }
+
+        public Builder groupBy(String column) {
+            groupByColumns.add(column);
+            return this;
+        }
+
+        // JOIN stars s ON
+        public Builder join(String table, String on) {
+            joinClauses.add(String.format("JOIN %s ON %s", table, on));
+            return this;
         }
 
         String createOrderByClause(List<String> sortColumns, List<SortOrder> sortOrder) {
