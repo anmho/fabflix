@@ -19,10 +19,8 @@ public class CorsFilter implements Filter {
        response.setHeader("Access-Control-Allow-Credentials", "true");
 
        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-//           System.out.println("CorsFilter line 22");
            response.setStatus(HttpServletResponse.SC_OK);
        } else {
-//           System.out.println("CorsFilter line 25");
            chain.doFilter(req, res);
        }
    }

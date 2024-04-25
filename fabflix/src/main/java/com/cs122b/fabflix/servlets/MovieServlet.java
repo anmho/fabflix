@@ -33,6 +33,9 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        var start = System.currentTimeMillis();
+
+
         String starId = req.getParameter("starId");
 
         MovieFilterParams filterParams;
@@ -43,8 +46,6 @@ public class MovieServlet extends HttpServlet {
             filterParams = MovieFilterParams.parse(req);
             sortParams = MovieSortParams.parse(req);
             pageParams = PaginationParams.parse(req);
-
-
         } catch (IllegalArgumentException e) {
             log.error(e.getStackTrace());
             ResponseBuilder.error(resp, 400, "invalid query params");
@@ -58,27 +59,23 @@ public class MovieServlet extends HttpServlet {
                 log.debug("Getting movie by id");
                 Movie movie = movieService.findMovieById(filterParams.getId());
                 ResponseBuilder.json(resp, movie, 200);
-                return;
             } else if (starId != null) { // should update the method
                 log.debug("getting movies featuring star: " + starId);
                 List<Movie> movies = movieService.getMoviesWithStar(starId);
                 ResponseBuilder.json(resp, movies, 200);
-                return;
 
             } else {
                 // filter many movies
                 log.debug("Getting movies with filters");
                 var results = movieService.filterMovies(filterParams, sortParams, pageParams);
                 ResponseBuilder.json(resp, results, 200);
-                return;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             ResponseBuilder.error(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
 
-
+        log.info(String.format("/movies response time (ms): %d", System.currentTimeMillis() - start));
     }
 
     public void destroy() {

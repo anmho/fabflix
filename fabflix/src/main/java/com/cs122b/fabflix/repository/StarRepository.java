@@ -6,8 +6,6 @@ import javax.xml.crypto.Data;
 import java.sql.*;
 
 public class StarRepository {
-
-
     public Star getStarById(String id) throws SQLException {
         String query = "SELECT id, name, birthYear " +
                 "FROM stars " +
