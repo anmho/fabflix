@@ -178,6 +178,7 @@ const SearchMoviesPage: React.FC = () => {
 
   const handleApplyFilters = (filters: MovieFilters) => {
     console.log(filters);
+    handlePageChange(1);
     setSearchParams((prev) => {
       return { ...prev, filters };
     });
@@ -185,6 +186,7 @@ const SearchMoviesPage: React.FC = () => {
 
   const handleApplySort = (dimensions: MovieSortDimension[]) => {
     console.log(dimensions);
+    handlePageChange(1);
     setSearchParams((prev) => {
       return { ...prev, sortBy: dimensions };
     });
