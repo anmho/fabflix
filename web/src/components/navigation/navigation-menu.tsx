@@ -26,6 +26,11 @@ const categories: { title: string; href: string; description: string }[] = [
     href: "/search?sort-by=year:desc",
     description: "Today's latest and greatest movies.",
   },
+  {
+    title: "Newest Movies",
+    href: "/search?sort-by=year:desc",
+    description: "Today's latest and greatest movies.",
+  },
 ];
 
 export function NavMenu() {
