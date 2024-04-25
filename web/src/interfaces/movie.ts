@@ -1,14 +1,5 @@
-export interface Genre {
-  id: number;
-  name: string;
-}
-
-export interface Star {
-  birthYear: number;
-  id: number;
-  name: string;
-  url: string;
-}
+import { Genre } from "./genre";
+import { Star } from "./star";
 
 export interface Movie {
   id: string;
@@ -21,8 +12,6 @@ export interface Movie {
   quantity: number;
   price: number;
 }
-
-
 
 export interface MovieList {
   movies: Movie[];

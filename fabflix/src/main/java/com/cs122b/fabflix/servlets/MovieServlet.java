@@ -58,6 +58,10 @@ public class MovieServlet extends HttpServlet {
             if (filterParams.getId() != null) {
                 log.debug("Getting movie by id");
                 Movie movie = movieService.findMovieById(filterParams.getId());
+                if (movie == null) {
+                    ResponseBuilder.error(resp, 404, "movie not found");
+
+                }
                 ResponseBuilder.json(resp, movie, 200);
             } else if (starId != null) { // should update the method
                 log.debug("getting movies featuring star: " + starId);

@@ -19,31 +19,36 @@ public class MovieRepository {
     private static final Logger log = LogManager.getLogger(MovieService.class.getName());
 
 
-
-
     public Movie getMovieById(String movieId) throws SQLException {
-//        log.("Called getMovieById");
-
         Movie movie = null;
 
         String query =
-                "SELECT " +
-                        "m.id, " +
-                        "m.title, " +
-                        "m.year, " +
-                        "m.director, " +
-                        "r.rating, " +
-                        "(SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') FROM genres g " +
-                        "JOIN genres_in_movies gim ON g.id = gim.genreId WHERE gim.movieId = m.id) AS genres, " +
-                        "(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A')) SEPARATOR ';') FROM stars s " +
-                        "JOIN stars_in_movies sim ON s.id = sim.starId WHERE sim.movieId = m.id) AS stars " +
-                        "FROM movies m " +
-                        "LEFT JOIN ratings r ON m.id = r.movieId " +
-                        "WHERE m.id = ? " +
-                        "LIMIT 1;";
-
-//        Connection conn = Database.getConnection();
-
+                 "SELECT\n" +
+                         "m.id, " +
+                         "m.title, " +
+                         "m.year, " +
+                         "m.director, " +
+                         "m.price, " +
+                         "r.rating, " +
+                         "    (\n" +
+                         "        SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';')\n" +
+                         "        FROM genres g\n" +
+                         "        JOIN genres_in_movies gim ON g.id = gim.genreId\n" +
+                         "        WHERE gim.movieId = m.id\n" +
+                         "    ) AS genres,\n" +
+                         "(" +
+                         "   SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A'), ':', nmsi.numMovies) SEPARATOR ';')\n" +
+                         "   FROM stars s " +
+                         "   JOIN stars_in_movies sim ON s.id = sim.starId " +
+                         "   JOIN num_movies_starred_in nmsi ON s.id = nmsi.starId " +
+                         "   WHERE sim.movieId = m.id\n" +
+                         ") AS stars\n" +
+                         "FROM\n" +
+                         "    movies m\n" +
+                         "LEFT JOIN ratings r ON m.id = r.movieId\n" +
+                         "WHERE\n" +
+                         "    m.id = ?\n" +
+                         "LIMIT 1;\n";
         Database db = Database.getInstance();
         Connection conn = db.getConnection();
 
@@ -173,7 +178,7 @@ public class MovieRepository {
     }
 
 
-    Query createFilterMoviesQuery(
+    private Query createFilterMoviesQuery(
             Connection conn,
             MovieFilterParams filters,
             MovieSortParams sortParams,
@@ -313,7 +318,7 @@ public class MovieRepository {
             log.info("Star piece: " + Arrays.toString(parts));
 
             if (parts.length != 4) {
-                throw new IllegalStateException("expected 4 parts returned from star string (id, First Last, DOB, num_movies");
+                throw new IllegalStateException("expected 4 parts returned from star string (id, First Last, DOB, num_movies: " + Arrays.toString(parts));
             }
 
             String starId = parts[0];

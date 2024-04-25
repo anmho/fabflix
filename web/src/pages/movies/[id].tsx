@@ -7,14 +7,6 @@ import { getMovieById as fetchMovieById } from "~/api/movies";
 import { isLoggedIn } from "~/api/login";
 
 const SingleMoviePage: React.FC = () => {
-  // const fetchMovie = async (movieID: string): Promise<Movie> => {
-  //   const res = await fetch(`http://localhost:8080/api/movies?id=${movieID}`);
-  //   const movie = await res.json();
-  //   // setIsLoading(false);
-  //   console.log(movie);
-  //   return movie;
-  // };
-
   const [movie, setMovie] = useState<Movie | null>(null);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +17,15 @@ const SingleMoviePage: React.FC = () => {
         router.push("/login");
       } else if (router.query.id) {
         fetchMovieById(router.query.id as string).then((movie) => {
+          movie.genres.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+          });
+          movie.stars.sort((a, b) => {
+            if (b.numMovies - a.numMovies === 0) {
+              return a.name.localeCompare(b.name);
+            }
+            return b.numMovies - a.numMovies;
+          });
           setMovie(movie);
           setIsLoading(false);
         });
@@ -68,7 +69,8 @@ const SingleMoviePage: React.FC = () => {
                   href={`/stars/${star?.id}`}
                 >
                   {star.name}{" "}
-                  {`(${star?.birthYear > 0 ? star?.birthYear : "N/A"})`}
+                  {`(${star?.birthYear > 0 ? star?.birthYear : "N/A"})`}{" "}
+                  {star.numMovies}
                 </Link>
               </React.Fragment>
             ))}

@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class StarRepository {
     public Star getStarById(String id) throws SQLException {
-        String query = "SELECT id, name, birthYear " +
+        String query = "SELECT id, name, birthYear, numMovies " +
                 "FROM stars s " +
                 "JOIN num_movies_starred_in nmsi ON id = nmsi.starId "  +
                 "WHERE s.id = ?;"

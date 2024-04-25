@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ComboboxDemo } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
-import { Genre } from "~/interfaces/movie";
+import { Genre } from "~/interfaces/genre";
 import { getGenres } from "~/api/genres";
 
 const startsWithOptions = [

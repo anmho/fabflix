@@ -76,5 +76,6 @@ export const fetchTopMovies = async (): Promise<Movie[]> => {
 
 export const getMovieById = async (id: string): Promise<Movie> => {
   const movie = await http.get(`/movies?id=${id}`).then((res) => res.data);
+  console.log(movie);
   return movie;
 };
