@@ -16,14 +16,16 @@ import {
 
 interface PaginationDropdownProps {
   className?: string;
+  initLimit: number;
   changeLimitParam: (limit: number) => void;
 }
 
 export function PaginationDropdown({
   className,
+  initLimit,
   changeLimitParam,
 }: PaginationDropdownProps) {
-  const [limit, setLimit] = React.useState(25);
+  const [limit, setLimit] = React.useState<number>(initLimit ?? 20);
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
