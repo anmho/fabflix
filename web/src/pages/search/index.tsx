@@ -21,6 +21,8 @@ import {
 import { ParsedUrlQuery } from "querystring";
 import { addMovieToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
+import { Loading } from "~/components/navigation/loading";
+import { set } from "date-fns";
 
 const moviesSearchParamsSchema = z.object({
   limit: z
@@ -113,6 +115,7 @@ const parseMovieQueryParams = (
 };
 
 const SearchMoviesPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useState<
     MovieSearchParams | undefined
   >();
@@ -122,7 +125,8 @@ const SearchMoviesPage: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.isReady && searchParams === undefined) { // IMPORTANT will cause infinite loop if not checked since router state is updated on filter change
+    if (router.isReady && searchParams === undefined) {
+      // IMPORTANT will cause infinite loop if not checked since router state is updated on filter change
       const initialSearchParams = parseMovieQueryParams(router.query);
       setSearchParams(() => initialSearchParams);
     }
@@ -133,8 +137,10 @@ const SearchMoviesPage: React.FC = () => {
       return;
     }
 
+    setIsLoading(true);
     findMovies(searchParams).then((res) => {
       setSearchResults(() => res);
+      setIsLoading(false);
     });
 
     const params = movieSearchParamsToURLParams(searchParams);
@@ -151,8 +157,8 @@ const SearchMoviesPage: React.FC = () => {
     );
   }, [searchParams]);
 
-  if (!searchResults) {
-    return <div>loading...</div>;
+  if (isLoading) {
+    return <Loading />;
   }
 
   const handlePageChange = (page: number) => {

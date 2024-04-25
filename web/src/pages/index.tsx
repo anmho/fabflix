@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import { ParallaxScroll } from "~/components/ui/ParallaxScroll";
+import { Loading } from "~/components/navigation/loading";
 
 const inter = Inter({ subsets: ["latin"] });
 const images = [
@@ -63,7 +64,6 @@ export default function Home() {
           </Link>
         </motion.div>
       </AuroraBackground>
-      {/* <ParallaxScroll images={images} className="bg-gray-900" /> */}
     </React.Fragment>
   );
 }
