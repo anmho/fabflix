@@ -12,10 +12,17 @@ import { MovieSortDimension } from "~/components/search/sort/dimensions";
 import { MovieCard } from "~/components/MovieCard";
 import { PaginatedResult } from "~/interfaces/paginated-result";
 import { Movie } from "~/interfaces/movie";
-import { findMovies, FindMoviesParams, MovieFilters } from "~/api/movies";
+import {
+  findMovies,
+  MovieSearchParams,
+  MovieFilters,
+  movieSearchParamsToURLParams,
+} from "~/api/movies";
 import { ParsedUrlQuery } from "querystring";
-import { handleAddToCart } from "~/api/cart";
+import { addMovieToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
+import { Loading } from "~/components/navigation/loading";
+import { set } from "date-fns";
 
 const moviesSearchParamsSchema = z.object({
   limit: z
@@ -71,23 +78,28 @@ const moviesSearchParamsSchema = z.object({
 
 const parseMovieQueryParams = (
   searchParams: ParsedUrlQuery
-): FindMoviesParams => {
+): MovieSearchParams | null => {
   const dict: Record<string, unknown> = {};
   for (let key in searchParams) {
     const value = searchParams[key];
     console.log(key, value);
 
-    if (key === "sort-by") {
-      key = "sortBy";
-    }
-    if (key === "starts-with") {
-      key = "startsWith";
-    }
+    // if (key === "sort-by") {
+    //   key = "sortBy";
+    // }
+    // if (key === "starts-with") {
+    //   key = "startsWith";
+    // }
 
     dict[key] = value;
   }
 
-  const params = moviesSearchParamsSchema.parse(dict);
+  const result = moviesSearchParamsSchema.safeParse(dict);
+  if (!result.success) {
+    return null;
+  }
+
+  const params = result.data;
   console.log("params", params);
 
   const findMovieParams = {
@@ -108,8 +120,9 @@ const parseMovieQueryParams = (
 };
 
 const SearchMoviesPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useState<
-    FindMoviesParams | undefined
+    MovieSearchParams | undefined
   >();
   const [searchResults, setSearchResults] = useState<
     PaginatedResult<Movie> | undefined
@@ -117,8 +130,13 @@ const SearchMoviesPage: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && searchParams === undefined) {
+      // IMPORTANT will cause infinite loop if not checked since router state is updated on filter change
       const initialSearchParams = parseMovieQueryParams(router.query);
+      if (initialSearchParams === null) {
+        router.push("/404");
+        return;
+      }
       setSearchParams(() => initialSearchParams);
     }
   }, [router.query, router.isReady, router.asPath]);
@@ -127,19 +145,31 @@ const SearchMoviesPage: React.FC = () => {
     if (!searchParams) {
       return;
     }
-    console.log("searchParams", searchParams);
 
+    setIsLoading(true);
     findMovies(searchParams).then((res) => {
       setSearchResults(() => res);
+      setIsLoading(false);
     });
 
+    const params = movieSearchParamsToURLParams(searchParams);
+    console.log("searchParams", searchParams);
     console.log("as path", router.asPath);
+    console.log(params.toString());
+    router.replace(
+      "/search",
+      {
+        pathname: router.pathname,
+        query: params.toString(),
+      },
+      { shallow: true }
+    );
   }, [searchParams]);
 
-  if (!searchResults) {
-    return <div>loading...</div>;
+  if (isLoading || !searchResults) {
+    return <Loading />;
   }
-
+  console.log("searchParams", searchParams);
   const handlePageChange = (page: number) => {
     setSearchParams((prev) => {
       return { ...prev, page };
@@ -172,6 +202,7 @@ const SearchMoviesPage: React.FC = () => {
     <div className="flex align-center flex-col dark bg-background">
       <div className="flex justify-around align-center ">
         <PaginationDropdown
+          initLimit={searchResults.limit}
           changeLimitParam={handleChangeLimit}
           className="mr-1"
         />
@@ -201,7 +232,7 @@ const SearchMoviesPage: React.FC = () => {
             isCartPage={false}
             movie={movie}
             handleAddToCart={() =>
-              handleAddToCart(movie.id, () => updateMovies(movie.title))
+              addMovieToCart(movie.id, () => updateMovies(movie.title))
             }
             updateMovies={() => {}}
           />

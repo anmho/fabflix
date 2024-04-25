@@ -18,12 +18,12 @@ import {
 const categories: { title: string; href: string; description: string }[] = [
   {
     title: "Highest Rated Movies",
-    href: "/search?sort-by=rating:desc",
+    href: "/search?sortBy=rating:desc",
     description: "Highest rated movies based on user reviews and ratings.",
   },
   {
     title: "Newest Movies",
-    href: "/search?sort-by=year:desc",
+    href: "/search?sortBy=year:desc",
     description: "Today's latest and greatest movies.",
   },
 ];
@@ -99,13 +99,31 @@ function BrowseMenuContent() {
           </Link>
         </NavigationMenuLink>
       </li>
-      <ListItem href="/search?genre=action" title="Action">
+      <ListItem
+        href="/search?genre=action"
+        onClick={() => {
+          window.location.href = "/search?genre=action";
+        }}
+        title="Action"
+      >
         Exciting films filled with thrilling sequences and intense battles.
       </ListItem>
-      <ListItem href="/search?genre=comedy" title="Comedy">
+      <ListItem
+        href="/search?genre=comedy"
+        onClick={() => {
+          window.location.href = "/search?genre=comedy";
+        }}
+        title="Comedy"
+      >
         Hilarious movies guaranteed to make you laugh out loud.
       </ListItem>
-      <ListItem href="/search?genre=animation" title="Animation">
+      <ListItem
+        href="/search?genre=animation"
+        onClick={() => {
+          window.location.href = "/search?genre=animation";
+        }}
+        title="Animation"
+      >
         Colorful and imaginative animated features for all ages.
       </ListItem>
     </ul>
@@ -120,6 +138,7 @@ function CategoriesMenuContent() {
           key={component.title}
           title={component.title}
           href={component.href}
+          onClick={() => window.location.href = component.href}
         >
           {component.description}
         </ListItem>

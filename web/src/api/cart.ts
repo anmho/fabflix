@@ -14,7 +14,7 @@ export const getCart = async (): Promise<Cart> => {
 
 // export const updateCart = async (cart: Cart): Promise<Cart> => {};
 
-export const handleAddToCart = async (
+export const addMovieToCart = async (
   movieId: string,
   updateMovies: () => void
 ) => {

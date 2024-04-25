@@ -6,7 +6,7 @@ import { cn } from "~/utils/cn";
 import { useRouter } from "next/router";
 import { handleLogin } from "~/api/login";
 
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const router = useRouter();
@@ -25,7 +25,7 @@ const Login: React.FC = () => {
       .then((res) => {
         if (res.success) {
           setErrorMsg("");
-          router.push("/movies");
+          router.push("/search");
         } else {
           setErrorMsg(res?.message || "Error login in");
         }
@@ -112,4 +112,4 @@ const LabelInputContainer = ({
   );
 };
 
-export default Login;
+export default LoginPage;

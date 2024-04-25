@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { MovieCard } from "~/components/MovieCard";
 import { isLoggedIn } from "~/api/login";
-import { getCart, handleAddToCart } from "~/api/cart";
+import { getCart, addMovieToCart } from "~/api/cart";
 import { Movie } from "~/interfaces/movie";
 
 export function CartDrawer() {
@@ -92,7 +92,7 @@ export function CartDrawer() {
                     movie={item}
                     isCartPage={true}
                     handleAddToCart={() =>
-                      handleAddToCart(item.id, updateMovies)
+                      addMovieToCart(item.id, updateMovies)
                     }
                     updateMovies={updateMovies}
                   />

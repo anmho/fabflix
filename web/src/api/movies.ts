@@ -10,16 +10,40 @@ export interface MovieFilters {
   year?: number;
   startsWith?: string;
   genre?: string;
-  // toString: () => {
-
-  // };
 }
 
-export interface FindMoviesParams {
+export interface MovieSearchParams {
   filters?: MovieFilters;
   sortBy?: MovieSortDimension[];
   limit?: number;
   page?: number;
+}
+
+export function movieSearchParamsToURLParams(
+  movieSearchParams: MovieSearchParams
+): URLSearchParams {
+  const { filters, sortBy, limit, page } = movieSearchParams;
+  const params = new URLSearchParams();
+
+  for (let key in filters) {
+    const value = filters[key as keyof typeof filters];
+    if (value) {
+      params.set(key, value.toString());
+    }
+  }
+  if (sortBy) {
+    const sortStrings = sortBy.map((dimension) =>
+      new MovieSortDimension(dimension.field, dimension.order).toString()
+    );
+    params.append("sortBy", sortStrings.join(","));
+  }
+  if (limit) {
+    params.append("limit", limit.toString());
+  }
+  if (page) {
+    params.append("page", page.toString());
+  }
+  return params;
 }
 
 export const findMovies = async ({
@@ -27,7 +51,7 @@ export const findMovies = async ({
   sortBy,
   limit,
   page,
-}: FindMoviesParams): Promise<PaginatedResult<Movie>> => {
+}: MovieSearchParams): Promise<PaginatedResult<Movie>> => {
   const params = new URLSearchParams();
   limit = limit ?? 20;
   page = page ?? 1;
@@ -49,7 +73,7 @@ export const findMovies = async ({
       )
       .join(",");
     console.log(sortByString);
-    params.append("sort-by", sortByString);
+    params.append("sortBy", sortByString);
   }
 
   params.append("limit", limit.toString());

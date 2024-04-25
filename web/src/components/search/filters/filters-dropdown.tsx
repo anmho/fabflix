@@ -52,10 +52,17 @@ export function FiltersDropdown({
 
   const handleClear = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setFilters(() => {
-      return {};
+    setFilters((filters) => {
+      return {
+        ...filters,
+        title: undefined,
+        star: undefined,
+        director: undefined,
+        year: undefined,
+      };
     });
     console.log("trying to clear filters", filters);
+    handleApplyFilters(filters);
   };
 
   const handleApply = (e: FormEvent<HTMLButtonElement>) => {

@@ -75,7 +75,7 @@ public class MovieSortParams {
     public static MovieSortParams parse(HttpServletRequest req) throws IllegalArgumentException {
         MovieSortParams params = new MovieSortParams();
 
-        String sortString = req.getParameter("sort-by");
+        String sortString = req.getParameter("sortBy");
         // encoded as a comma separated string
         // field1:asc,field2:desc,field3:asc
 
@@ -138,7 +138,6 @@ public class MovieSortParams {
     }
 
 
-    @JsonProperty("sort-by")
     public String getSortBy() {
         if (dimensions == null || dimensions.isEmpty()) {
             return null;

@@ -45,7 +45,7 @@ const MovieCard = ({
   };
 
   useEffect(() => {
-    console.log("movie", movie);
+    // console.log("moviecard", movie);
   }, [movie]);
 
   return (

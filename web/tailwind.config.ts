@@ -1,4 +1,5 @@
-import { nextui } from "@nextui-org/theme";
+const { nextui } = require("@nextui-org/react");
+
 import type { Config } from "tailwindcss";
 const {
   default: flattenColorPalette,
@@ -12,6 +13,7 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
     "./node_modules/@nextui-org/theme/dist/components/[object Object].js",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   prefix: "",
   theme: {
