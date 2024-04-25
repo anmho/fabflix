@@ -18,12 +18,12 @@ import {
 const categories: { title: string; href: string; description: string }[] = [
   {
     title: "Highest Rated Movies",
-    href: "/search?sort-by=rating:desc",
+    href: "/search?sortBy=rating:desc",
     description: "Highest rated movies based on user reviews and ratings.",
   },
   {
     title: "Newest Movies",
-    href: "/search?sort-by=year:desc",
+    href: "/search?sortBy=year:desc",
     description: "Today's latest and greatest movies.",
   },
 ];

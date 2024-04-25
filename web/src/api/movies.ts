@@ -10,9 +10,6 @@ export interface MovieFilters {
   year?: number;
   startsWith?: string;
   genre?: string;
-  // toString: () => {
-
-  // };
 }
 
 export interface FindMoviesParams {
@@ -49,7 +46,7 @@ export const findMovies = async ({
       )
       .join(",");
     console.log(sortByString);
-    params.append("sort-by", sortByString);
+    params.append("sortBy", sortByString);
   }
 
   params.append("limit", limit.toString());

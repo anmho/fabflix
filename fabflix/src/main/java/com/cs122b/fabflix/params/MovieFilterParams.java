@@ -10,7 +10,6 @@ public class MovieFilterParams {
     private String id;
     private String title;
 
-    @JsonProperty("starts-with")
     private String startsWith;
 
     private String director;
@@ -44,7 +43,7 @@ public class MovieFilterParams {
 
     public static MovieFilterParams parse(HttpServletRequest req) throws NumberFormatException {
         String id = req.getParameter("id");
-        String startsWith = req.getParameter("starts-with");
+        String startsWith = req.getParameter("startsWith");
         String title = req.getParameter("title");
         String director = req.getParameter("director");
         String yearString = req.getParameter("year");

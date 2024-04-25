@@ -14,7 +14,7 @@ import { PaginatedResult } from "~/interfaces/paginated-result";
 import { Movie } from "~/interfaces/movie";
 import { findMovies, FindMoviesParams, MovieFilters } from "~/api/movies";
 import { ParsedUrlQuery } from "querystring";
-import { handleAddToCart } from "~/api/cart";
+import { addMovieToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
 
 const moviesSearchParamsSchema = z.object({
@@ -127,12 +127,12 @@ const SearchMoviesPage: React.FC = () => {
     if (!searchParams) {
       return;
     }
-    console.log("searchParams", searchParams);
 
     findMovies(searchParams).then((res) => {
       setSearchResults(() => res);
     });
 
+    console.log("searchParams", searchParams);
     console.log("as path", router.asPath);
   }, [searchParams]);
 
@@ -168,6 +168,7 @@ const SearchMoviesPage: React.FC = () => {
     });
   };
 
+
   return (
     <div className="flex align-center flex-col dark bg-background">
       <div className="flex justify-around align-center ">
@@ -201,7 +202,7 @@ const SearchMoviesPage: React.FC = () => {
             isCartPage={false}
             movie={movie}
             handleAddToCart={() =>
-              handleAddToCart(movie.id, () => updateMovies(movie.title))
+              addMovieToCart(movie.id, () => updateMovies(movie.title))
             }
             updateMovies={() => {}}
           />
