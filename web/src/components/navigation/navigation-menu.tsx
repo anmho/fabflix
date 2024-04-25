@@ -51,6 +51,11 @@ const components: { title: string; href: string; description: string }[] = [
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
+  {
+    title: "Newest Movies",
+    href: "/search?sort-by=year:desc",
+    description: "Today's latest and greatest movies.",
+  },
 ];
 
 export function NavMenu() {
