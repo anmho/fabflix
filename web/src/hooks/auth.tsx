@@ -1,3 +1,10 @@
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { createContext, useContext, useState } from "react";
 import { Cart } from "~/interfaces/cart";
 
@@ -29,6 +36,14 @@ const AuthContext = createContext<AuthContextValue>({
 
 function AuthProvider({ children }: any) {
   const [session, setSession] = useState<Session | null>(null);
+
+  // const { isPending, error, data } = useQuery({
+  //   queryKey: ["repoData"],
+  //   queryFn: () =>
+  //     fetch("https://api.github.com/repos/TanStack/query").then((res) =>
+  //       res.json()
+  //     ),
+  // });
 
   const login = async () => {
     console.log("logging in");

@@ -50,6 +50,9 @@ dependencies:
   '@tabler/icons-react':
     specifier: ^3.2.0
     version: 3.2.0(react@18.2.0)
+  '@tanstack/react-query':
+    specifier: ^5.32.0
+    version: 5.32.0(react@18.2.0)
   '@types/prop-types':
     specifier: ^15.7.12
     version: 15.7.12
@@ -3898,6 +3901,19 @@ packages:
 
   /@tabler/icons@3.2.0:
     resolution: {integrity: sha512-h8GQ2rtxgiSjltrVz4vcopAxTPSpUSUi5nBfJ09H3Bk4fJk6wZ/dVUjzhv/BHfDwGTkAxZBiYe/Q/T95cPeg5Q==}
+    dev: false
+
+  /@tanstack/query-core@5.32.0:
+    resolution: {integrity: sha512-Z3flEgCat55DRXU5UMwYU1U+DgFZKA3iufyOKs+II7iRAo0uXkeU7PH5e6sOH1CGEag0IpKmZxlUFpCg6roSKw==}
+    dev: false
+
+  /@tanstack/react-query@5.32.0(react@18.2.0):
+    resolution: {integrity: sha512-+E3UudQtarnx9A6xhpgMZapyF+aJfNBGFMgI459FnduEZqT/9KhOWnMOneZahLRt52yzskSA0AuOyLkXHK0yBA==}
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      '@tanstack/query-core': 5.32.0
+      react: 18.2.0
     dev: false
 
   /@types/date-fns@2.6.0:
