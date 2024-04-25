@@ -17,7 +17,12 @@ public class MovieFilterParams {
     private Integer year;
     private String genre;
     private String star;
+
     public MovieFilterParams() {
+
+    }
+    public MovieFilterParams(String id) {
+        this.id = id;
     }
 
     public MovieFilterParams(

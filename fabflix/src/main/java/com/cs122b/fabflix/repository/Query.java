@@ -1,6 +1,8 @@
 package com.cs122b.fabflix.repository;
 
 import com.cs122b.fabflix.params.SortOrder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,28 +15,44 @@ public class Query {
     public static class Builder {
         private final Connection conn;
         private final List<Object> params;
-        private String selectStatement;
+        private String selectClause;
+        private String fromClause;
+        private List<String> joinClauses;
+
 
         private final List<String> whereConditions;
 
         private List<String> sortColumns;
         private List<SortOrder> sortOrder;
+        private List<String> groupByColumns;
         private Integer offset;
         private Integer limit;
 
+        private final Logger log = LogManager.getLogger(Query.class.getName());
+
         public Builder (Connection conn) {
             this.conn = conn;
+            fromClause = null;
+            joinClauses = new ArrayList<>();
             whereConditions = new ArrayList<>();
             params = new ArrayList<>();
             sortColumns = new ArrayList<>();
             sortOrder = new ArrayList<>();
+            groupByColumns = new ArrayList<>();
         }
 
         public Builder select(String selectStatement) {
-            this.selectStatement = selectStatement;
+            this.selectClause = selectStatement;
             return this;
         }
 
+
+        // table name or alias
+        public Builder from(String table) {
+            fromClause = String.format("FROM %s", table);
+
+            return this;
+        }
 
         // For now all of them will be and logic
         public Builder where(String column, String operator, Object value) {
@@ -62,25 +80,44 @@ public class Query {
             return this;
         }
 
+        private String createGroupByClause(List<String> groupByColumns) {
+            if (groupByColumns == null || groupByColumns.isEmpty())
+                return "";
+            return String.format("GROUP BY %s", String.join(",", groupByColumns));
+        }
+
+
 
 
         public Query build() throws SQLException {
-            if (selectStatement == null) {
+            if (selectClause == null) {
                 throw new IllegalStateException("select must be set");
             }
 
             StringBuilder query = new StringBuilder();
 
-            // Add select statement
+            // SELECT
+            query.append(selectClause).append("\n");
 
-            query.append(selectStatement);
-            // Add clauses
-            query.append(createWhereClause(whereConditions));
-            query.append("\n");
-            query.append(createOrderByClause(sortColumns, sortOrder));
-            query.append("\n");
-            query.append(createLimitClause(limit));
-            query.append("\n");
+
+            // FROM
+            query.append(fromClause).append("\n");
+
+            // JOIN
+            query.append(String.join("\n", joinClauses)).append("\n");
+
+            // WHERE
+            query.append(createWhereClause(whereConditions)).append("\n");
+            // ORDER BY
+            query.append(createOrderByClause(sortColumns, sortOrder)).append("\n");
+
+            // GROUP BY
+            String groupByClause = createGroupByClause(groupByColumns);
+            query.append(groupByClause).append("\n");
+            // LIMIT
+            query.append(createLimitClause(limit)).append("\n");
+
+            // OFFSET
             query.append(createOffsetClause(offset));
             query.append(";");
             String queryString = query.toString();
@@ -103,9 +140,20 @@ public class Query {
                 }
             }
 
-            System.out.println(stmt.toString());
+            log.debug("Query to be executed: \n" + stmt.toString());
 
             return new Query(stmt);
+        }
+
+        public Builder groupBy(String column) {
+            groupByColumns.add(column);
+            return this;
+        }
+
+        // JOIN stars s ON
+        public Builder join(String table, String on) {
+            joinClauses.add(String.format("JOIN %s ON %s", table, on));
+            return this;
         }
 
         String createOrderByClause(List<String> sortColumns, List<SortOrder> sortOrder) {
@@ -142,22 +190,22 @@ public class Query {
 
         String createWhereClause(List<String> whereConditions) {
             if (whereConditions.isEmpty()) {
-                return "\n";
+                return "";
             }
-            return "WHERE\n" + String.join(" AND \n", whereConditions);
+            return "WHERE " + String.join(" AND\n", whereConditions);
         }
 
 
         String createOffsetClause(Integer offset) {
             if (offset == null) {
-                return "\n";
+                return "";
             }
             return String.format("OFFSET %d\n", offset);
         }
 
         String createLimitClause(Integer limit) {
             if (limit == null) {
-                return "\n";
+                return "";
             }
             return String.format("LIMIT %d\n", limit);
         }

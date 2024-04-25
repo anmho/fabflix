@@ -1,18 +1,26 @@
 package com.cs122b.fabflix.models;
 
 
-import java.util.List;
-
 public class Star {
+    private int numMovies;
     private String id;
     private String name;
-    private int birthYear;
+    private Integer birthYear;
 
-    public Star(String id, String name, int birthYear) {
+    public Star(String id, String name, Integer birthYear, int numMovies) {
         this.id = id;
         this.name = name;
         this.birthYear = birthYear;
+        this.numMovies = numMovies;
 
+    }
+
+    public int getNumMovies() {
+        return numMovies;
+    }
+
+    public void setNumMovies(int numMovies) {
+        this.numMovies = numMovies;
     }
 
     public String getId() {
@@ -31,11 +39,11 @@ public class Star {
         this.name = name;
     }
 
-    public int getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(int birthYear) {
+    public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
 }

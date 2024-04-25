@@ -4,7 +4,7 @@ import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "~/utils/cn";
 import { useRouter } from "next/router";
-import { handleLogin } from "~/services/login";
+import { handleLogin } from "~/api/login";
 
 const Login: React.FC = () => {
   const [emailInput, setEmailInput] = useState("");

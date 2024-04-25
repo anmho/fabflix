@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Movie } from "~/interfaces/movie";
-import { fetchTopMovies } from "../../services/movies";
+import { fetchTopMovies } from "../../api/movies";
 import { MovieCard } from "~/components/MovieCard";
-import { handleAddToCart, handleEditFromCart } from "../../services/cart";
-import { isLoggedIn } from "~/services/login";
+import { handleAddToCart, handleEditFromCart } from "../../api/cart";
+import { isLoggedIn } from "~/api/login";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 

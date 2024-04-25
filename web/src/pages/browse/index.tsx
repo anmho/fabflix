@@ -2,8 +2,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ComboboxDemo } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
-import { Genre } from "~/interfaces/movie";
-import { getGenres } from "~/services/genres";
+import { Genre } from "~/interfaces/genre";
+import { getGenres } from "~/api/genres";
 
 const startsWithOptions = [
   "A",
@@ -45,15 +45,15 @@ const BrowseMoviesPage: React.FC = () => {
   return (
     <>
       <div className="flex justify-center items-center flex-wrap">
-        {startsWithOptions.map((letter) => (
-          <Link href={`/search?starts-with=${letter.toLowerCase()}`}>
+        {startsWithOptions.map((letter, i) => (
+          <Link key={i} href={`/search?starts-with=${letter.toLowerCase()}`}>
             <Button className="p-2 bg-red-500 rounded-md m-1">{letter}</Button>
           </Link>
         ))}
       </div>
       <div className=" flex justify-center items-center flex-wrap ">
-        {genres.map((genre) => (
-          <Link href={`/search?genre=${genre.name.toLowerCase()}`}>
+        {genres.map((genre, i) => (
+          <Link key={i} href={`/search?genre=${genre.name.toLowerCase()}`}>
             <Button className="bg-green-500 m-1 p-2 rounded-md text-primary">
               {genre.name}
             </Button>

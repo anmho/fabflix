@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { handleCheckout } from "~/services/checkout";
-import { isLoggedIn } from "~/services/login";
-import { getCart, handleEditFromCart } from "~/services/cart";
+import { handleCheckout } from "~/api/checkout";
+import { isLoggedIn } from "~/api/login";
+import { getCart, handleEditFromCart } from "~/api/cart";
 import { Movie } from "~/interfaces/movie";
 import { MovieCard } from "~/components/MovieCard";
 import { Label } from "../../components/ui/label";

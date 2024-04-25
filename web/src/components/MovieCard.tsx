@@ -8,9 +8,10 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { MdAddShoppingCart } from "react-icons/md";
 
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
-import { handleEditFromCart } from "../services/cart";
+import { handleEditFromCart } from "../api/cart";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 const MovieCard = ({
   movie,
@@ -44,8 +45,8 @@ const MovieCard = ({
   };
 
   useEffect(() => {
-    console.log("movies", movie);
-  }, []);
+    console.log("movie", movie);
+  }, [movie]);
 
   return (
     <Card className="w-full max-w-xs m-2 border-border bg-card text-card-foreground shadow-sm">

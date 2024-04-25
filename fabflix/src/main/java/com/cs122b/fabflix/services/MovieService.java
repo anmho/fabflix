@@ -61,7 +61,7 @@ public class MovieService {
             MovieSortParams sortParams,
             PaginationParams pageParams
     ) throws SQLException {
-
+        var start = System.currentTimeMillis();
         int limit = pageParams.getLimit();
         int page = pageParams.getPage();
 
@@ -118,6 +118,7 @@ public class MovieService {
         results.setSelfLink(selfLink);
         results.setNextLink(nextLink);
 
+        log.info(String.format("MovieService filterMovies response time (ms): %d", System.currentTimeMillis() - start));
 
         return results;
     }
