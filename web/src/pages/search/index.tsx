@@ -84,12 +84,12 @@ const parseMovieQueryParams = (
     const value = searchParams[key];
     console.log(key, value);
 
-    if (key === "sort-by") {
-      key = "sortBy";
-    }
-    if (key === "starts-with") {
-      key = "startsWith";
-    }
+    // if (key === "sort-by") {
+    //   key = "sortBy";
+    // }
+    // if (key === "starts-with") {
+    //   key = "startsWith";
+    // }
 
     dict[key] = value;
   }
@@ -157,10 +157,10 @@ const SearchMoviesPage: React.FC = () => {
     );
   }, [searchParams]);
 
-  if (isLoading) {
+  if (isLoading || !searchResults) {
     return <Loading />;
   }
-
+  console.log("searchParams", searchParams);
   const handlePageChange = (page: number) => {
     setSearchParams((prev) => {
       return { ...prev, page };
