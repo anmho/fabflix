@@ -11,6 +11,7 @@ import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { handleEditFromCart } from "../api/cart";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 const MovieCard = ({
   movie,

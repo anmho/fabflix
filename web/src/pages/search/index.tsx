@@ -121,7 +121,7 @@ const SearchMoviesPage: React.FC = () => {
       const initialSearchParams = parseMovieQueryParams(router.query);
       setSearchParams(() => initialSearchParams);
     }
-  }, [router.query, router.isReady]);
+  }, [router.query, router.isReady, router.asPath]);
 
   useEffect(() => {
     if (!searchParams) {
