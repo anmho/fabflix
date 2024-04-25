@@ -162,6 +162,7 @@ const SearchMoviesPage: React.FC = () => {
 
   const handleChangeLimit = (limit: number) => {
     console.log("changing limit", limit);
+    handlePageChange(1);
     setSearchParams((prev) => {
       return { ...prev, limit };
     });

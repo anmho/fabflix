@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.cs122b.fabflix.AppConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 
 public class Database {
     private static Connection connection;
+    private Logger log = LogManager.getLogger(Database.class.getName());
     private static DataSource dataSource;
 
     private static Database database;
@@ -20,10 +23,9 @@ public class Database {
         String username = AppConfig.getProperty("db.username");
         String password = AppConfig.getProperty("db.password");
 
-        System.out.println(url);
-        System.out.println(username);
-        System.out.println(password);
-
+        log.info(String.format("mysql url %s", url));
+        log.info(String.format("username: %s", username));
+        log.info(String.format("password: %s", password));
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -34,8 +36,6 @@ public class Database {
 
         PoolProperties poolProperties = new PoolProperties();
 
-
-        System.out.println(url);
         poolProperties.setUrl(url);
         poolProperties.setUsername(username);
         poolProperties.setPassword(password);

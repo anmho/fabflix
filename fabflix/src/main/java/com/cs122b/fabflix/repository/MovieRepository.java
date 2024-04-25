@@ -20,7 +20,7 @@ public class MovieRepository {
 
 
     public Movie getMovieById(String movieId) throws SQLException {
-//        System.out.println("Called getMovieById");
+//        log.("Called getMovieById");
 
         Movie movie = null;
 
@@ -145,16 +145,23 @@ public class MovieRepository {
         try (Connection conn = db.getConnection()) {
             Query query = createFilterMoviesQuery(conn, filters, sortParams, pageParams);
             try (PreparedStatement stmt = query.getStatement()) {
-//                System.out.println(stmt.toString());
+
+                var queryStart = System.currentTimeMillis();
                 ResultSet rs = stmt.executeQuery();
+                log.info(String.format("Time to execute filter movies query: %d", System.currentTimeMillis() - queryStart));
 
                 List<Movie> movies = new ArrayList<>();
+
+                var parseStart = System.currentTimeMillis();
                 // parse the result set row
                 while (rs.next()) {
                     Movie movie = parseMovieRow(rs);
                     movies.add(movie);
                 }
-                log.debug("Finished filtering movies");
+
+                log.info(String.format("Time to parse %d rows: %d", movies.size(), System.currentTimeMillis() - parseStart));
+
+                log.info(String.format("Execute and parse filter movies query: %d", System.currentTimeMillis() - start));
                 return movies;
             }
         }
@@ -210,10 +217,10 @@ public class MovieRepository {
                 if (filters.getStartsWith().equals("*")) {
                     queryBuilder.where("title", "NOT RLIKE", "^[A-Za-z0-9]+");
                 } else {
-//                    System.out.println("startswith: " + filters.getStartsWith());
+                    log.debug("startswith: " + filters.getStartsWith());
                     String pattern = String.format("%s%%", filters.getStartsWith()); // unsafe potentially
 
-//                    System.out.println(pattern);
+                    log.debug("LIKE pattern string: " + pattern);
                     queryBuilder.where("title", "LIKE", pattern);
                 }
             }
@@ -254,7 +261,7 @@ public class MovieRepository {
         int page = pageParams.getPage();
         int offset = Math.max(limit * (page-1), 0);
 
-//        System.out.println("offset:" + offset);
+//        log.("offset:" + offset);
         queryBuilder.setLimit(limit+1);
         queryBuilder.setOffset(offset);
 

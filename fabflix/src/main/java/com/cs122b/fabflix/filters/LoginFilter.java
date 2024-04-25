@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,20 +38,23 @@ public class LoginFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
 
         log.debug("LoginFilter: " + requestURI);
+        log.debug("LoginFilter: " + requestURI);
         HttpSession session = httpRequest.getSession();
+        log.debug("session.getId==> " + session.getId() );
+        log.debug("session.getAttribute(\"customer\")==> " + session.getAttribute("customer") );
         log.debug("session.getId==> " + session.getId() );
         log.debug("session.getAttribute(\"customer\")==> " + session.getAttribute("customer") );
 
         if (isUrlAllowedWithoutLogin(requestURI) || session.getAttribute("customer") != null) {
             log.debug("allowed URI || session hit");
-            System.out.println("requestURI => " + requestURI);
+            log.debug("requestURI => " + requestURI);
 
-            System.out.println("isUrlAllowedWithoutLogin(requestURI) => " + isUrlAllowedWithoutLogin(requestURI));
+            log.debug("isUrlAllowedWithoutLogin(requestURI) => " + isUrlAllowedWithoutLogin(requestURI));
             chain.doFilter(request, response);
         } else {
-            System.out.println("requestURI NOT Allowed: " + requestURI);
-            System.out.println("isUrlAllowedWithoutLogin(requestURI) => " + isUrlAllowedWithoutLogin(requestURI));
-            System.out.println("httpRequest.getSession().getAttribute('customer') ==> " + httpRequest.getSession().getAttribute("customer") );
+            log.debug("requestURI NOT Allowed: " + requestURI);
+            log.debug("isUrlAllowedWithoutLogin(requestURI) => " + isUrlAllowedWithoutLogin(requestURI));
+            log.debug("httpRequest.getSession().getAttribute('customer') ==> " + httpRequest.getSession().getAttribute("customer") );
 
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.getWriter().write("Access Denied: User is not logged in.");

@@ -1,6 +1,8 @@
 package com.cs122b.fabflix.repository;
 
 import com.cs122b.fabflix.params.SortOrder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +27,8 @@ public class Query {
         private List<String> groupByColumns;
         private Integer offset;
         private Integer limit;
+
+        private final Logger log = LogManager.getLogger(Query.class.getName());
 
         public Builder (Connection conn) {
             this.conn = conn;
@@ -132,7 +136,7 @@ public class Query {
                 }
             }
 
-            System.out.println(stmt.toString());
+            log.debug("Query to be executed: " + stmt.toString());
 
             return new Query(stmt);
         }
