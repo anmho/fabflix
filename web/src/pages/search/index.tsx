@@ -147,18 +147,15 @@ const SearchMoviesPage: React.FC = () => {
     if (!searchParams) {
       return;
     }
-    // console.log("22", searchParams);
 
     setIsLoading(true);
     findMovies(searchParams).then((res) => {
-      // console.log("33res", res);
-
       setSearchResults(() => res);
       setIsLoading(false);
     });
 
     const params = movieSearchParamsToURLParams(searchParams);
-    updateSearchQuery(router.asPath);
+    updateSearchQuery(`/search?${params.toString()}`);
     router.replace(
       "/search",
       {
