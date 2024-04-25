@@ -12,7 +12,12 @@ import { MovieSortDimension } from "~/components/search/sort/dimensions";
 import { MovieCard } from "~/components/MovieCard";
 import { PaginatedResult } from "~/interfaces/paginated-result";
 import { Movie } from "~/interfaces/movie";
-import { findMovies, FindMoviesParams, MovieFilters } from "~/api/movies";
+import {
+  findMovies,
+  MovieSearchParams,
+  MovieFilters,
+  movieSearchParamsToURLParams,
+} from "~/api/movies";
 import { ParsedUrlQuery } from "querystring";
 import { addMovieToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
@@ -71,7 +76,7 @@ const moviesSearchParamsSchema = z.object({
 
 const parseMovieQueryParams = (
   searchParams: ParsedUrlQuery
-): FindMoviesParams => {
+): MovieSearchParams => {
   const dict: Record<string, unknown> = {};
   for (let key in searchParams) {
     const value = searchParams[key];
@@ -109,7 +114,7 @@ const parseMovieQueryParams = (
 
 const SearchMoviesPage: React.FC = () => {
   const [searchParams, setSearchParams] = useState<
-    FindMoviesParams | undefined
+    MovieSearchParams | undefined
   >();
   const [searchResults, setSearchResults] = useState<
     PaginatedResult<Movie> | undefined
@@ -117,7 +122,7 @@ const SearchMoviesPage: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && searchParams === undefined) { // IMPORTANT will cause infinite loop if not checked since router state is updated on filter change
       const initialSearchParams = parseMovieQueryParams(router.query);
       setSearchParams(() => initialSearchParams);
     }
@@ -132,8 +137,18 @@ const SearchMoviesPage: React.FC = () => {
       setSearchResults(() => res);
     });
 
+    const params = movieSearchParamsToURLParams(searchParams);
     console.log("searchParams", searchParams);
     console.log("as path", router.asPath);
+    console.log(params.toString());
+    router.replace(
+      "/search",
+      {
+        pathname: router.pathname,
+        query: params.toString(),
+      },
+      { shallow: true }
+    );
   }, [searchParams]);
 
   if (!searchResults) {
@@ -167,7 +182,6 @@ const SearchMoviesPage: React.FC = () => {
       return { ...prev, limit };
     });
   };
-
 
   return (
     <div className="flex align-center flex-col dark bg-background">
