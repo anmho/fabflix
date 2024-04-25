@@ -113,7 +113,7 @@ public class MovieRepository {
             MovieSortParams sortParams,
             PaginationParams pageParams
         ) throws SQLException {
-        log.debug("Filtering movies");
+        var start = System.currentTimeMillis();
 
 //        String baseQuery =
 //                "SELECT DISTINCT " +

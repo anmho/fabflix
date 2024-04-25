@@ -80,6 +80,13 @@ public class Query {
             return this;
         }
 
+        private String createGroupByClause(List<String> groupByColumns) {
+            if (groupByColumns == null || groupByColumns.isEmpty())
+                return "";
+            return String.format("GROUP BY %s", String.join(",", groupByColumns));
+        }
+
+
 
 
         public Query build() throws SQLException {
@@ -90,29 +97,26 @@ public class Query {
             StringBuilder query = new StringBuilder();
 
             // SELECT
-            query.append(selectClause);
+            query.append(selectClause).append("\n");
+
 
             // FROM
-            query.append(fromClause);
-            query.append("\n");
+            query.append(fromClause).append("\n");
 
             // JOIN
-            query.append(String.join("\n", joinClauses));
-            query.append("\n");
+            query.append(String.join("\n", joinClauses)).append("\n");
 
             // WHERE
-            query.append(createWhereClause(whereConditions));
-            query.append("\n");
+            query.append(createWhereClause(whereConditions)).append("\n");
             // ORDER BY
-            query.append(createOrderByClause(sortColumns, sortOrder));
-            query.append("\n");
+            query.append(createOrderByClause(sortColumns, sortOrder)).append("\n");
 
             // GROUP BY
-            String groupByClause = String.format("GROUP BY %s\n", String.join(",", groupByColumns));
-            query.append(groupByClause);
+            String groupByClause = createGroupByClause(groupByColumns);
+            query.append(groupByClause).append("\n");
             // LIMIT
-            query.append(createLimitClause(limit));
-            query.append("\n");
+            query.append(createLimitClause(limit)).append("\n");
+
             // OFFSET
             query.append(createOffsetClause(offset));
             query.append(";");
@@ -136,7 +140,7 @@ public class Query {
                 }
             }
 
-            log.debug("Query to be executed: " + stmt.toString());
+            log.debug("Query to be executed: \n" + stmt.toString());
 
             return new Query(stmt);
         }
@@ -186,22 +190,22 @@ public class Query {
 
         String createWhereClause(List<String> whereConditions) {
             if (whereConditions.isEmpty()) {
-                return "\n";
+                return "";
             }
-            return "WHERE\n" + String.join(" AND \n", whereConditions);
+            return "WHERE " + String.join(" AND\n", whereConditions);
         }
 
 
         String createOffsetClause(Integer offset) {
             if (offset == null) {
-                return "\n";
+                return "";
             }
             return String.format("OFFSET %d\n", offset);
         }
 
         String createLimitClause(Integer limit) {
             if (limit == null) {
-                return "\n";
+                return "";
             }
             return String.format("LIMIT %d\n", limit);
         }
