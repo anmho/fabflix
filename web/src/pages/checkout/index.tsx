@@ -87,7 +87,7 @@ const CheckoutPage: React.FC = () => {
       }
 
       setIsLoading(false);
-      console.log(data);
+      // console.log(data);
     } catch (err: any) {
       setError(err.message || "An error occurred");
       setIsLoading(false);

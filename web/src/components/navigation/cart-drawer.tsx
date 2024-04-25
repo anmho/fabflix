@@ -39,7 +39,7 @@ export function CartDrawer() {
     await getCart()
       .then((cart) => cart.movies)
       .then((movies) => {
-        console.log(movies);
+        // console.log(movies);
         setCartItems(movies);
         setIsLoading(false);
       });
@@ -51,7 +51,7 @@ export function CartDrawer() {
 
   if (!showDrawer) return <></>;
 
-  console.log("cartItems", cartItems);
+  // console.log("cartItems", cartItems);
 
   return (
     <Sheet>
