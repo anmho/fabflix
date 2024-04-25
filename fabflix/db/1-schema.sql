@@ -69,3 +69,5 @@ CREATE TABLE ratings (
     PRIMARY KEY(movieId),
     FOREIGN KEY(movieId) REFERENCES movies(id)
 );
+
+
