@@ -31,13 +31,13 @@ public class MovieRepository {
                          "m.price, " +
                          "r.rating, " +
                          "    (\n" +
-                         "        SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';')\n" +
+                         "        SELECT GROUP_CONCAT(CONCAT(g.id, '#', g.name) SEPARATOR ';')\n" +
                          "        FROM genres g\n" +
                          "        JOIN genres_in_movies gim ON g.id = gim.genreId\n" +
                          "        WHERE gim.movieId = m.id\n" +
                          "    ) AS genres,\n" +
                          "(" +
-                         "   SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A'), ':', nmsi.numMovies) SEPARATOR ';')\n" +
+                         "   SELECT GROUP_CONCAT(CONCAT(s.id, '#', s.name, '#', COALESCE(s.birthYear, 'N/A'), '#', nmsi.numMovies) SEPARATOR ';')\n" +
                          "   FROM stars s " +
                          "   JOIN stars_in_movies sim ON s.id = sim.starId " +
                          "   JOIN num_movies_starred_in nmsi ON s.id = nmsi.starId " +
@@ -88,13 +88,13 @@ public class MovieRepository {
                 "    m.director,\n" +
                 "    r.rating,\n" +
                 "    (\n" +
-                "        SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';')\n" +
+                "        SELECT GROUP_CONCAT(CONCAT(g.id, '#', g.name) SEPARATOR ';')\n" +
                 "        FROM genres g\n" +
                 "        JOIN genres_in_movies gim ON g.id = gim.genreId\n" +
                 "        WHERE gim.movieId = m.id\n" +
                 "    ) AS genres,\n" +
                 "    (\n" +
-                "        SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A'), ':', nmsi.numMovies) SEPARATOR ';')\n" +
+                "        SELECT GROUP_CONCAT(CONCAT(s.id, '#', s.name, '#', COALESCE(s.birthYear, 'N/A'), '#', nmsi.numMovies) SEPARATOR ';')\n" +
                 "        FROM stars s\n" +
                 "        JOIN stars_in_movies sim ON s.id = sim.starId\n" +
                 "        JOIN num_movies_starred_in nmsi ON s.id = nmsi.starId\n" +
@@ -193,11 +193,11 @@ public class MovieRepository {
                 "m.price, " +
                 "r.rating, " +
                 "(" +
-                "   SELECT GROUP_CONCAT(CONCAT(g.id, ':', g.name) SEPARATOR ';') " +
+                "   SELECT GROUP_CONCAT(CONCAT(g.id, '#', g.name) SEPARATOR ';') " +
                 "   FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
                 "   WHERE gim.movieId = m.id) AS genres, " +
                 "(" +
-                "   SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name, ':', COALESCE(s.birthYear, 'N/A'), ':', nmsi.numMovies) SEPARATOR ';')\n" +
+                "   SELECT GROUP_CONCAT(CONCAT(s.id, '#', s.name, '#', COALESCE(s.birthYear, 'N/A'), '#', nmsi.numMovies) SEPARATOR ';')\n" +
                 "   FROM stars s " +
                 "   JOIN stars_in_movies sim ON s.id = sim.starId " +
                 "   JOIN num_movies_starred_in nmsi ON s.id = nmsi.starId " +
@@ -314,7 +314,7 @@ public class MovieRepository {
         String[] starPairs = starsString.split(";");
         List<Star> stars = new ArrayList<>();
         for (String pair : starPairs) {
-            String[] parts = pair.split(":");
+            String[] parts = pair.split("#");
             log.info("Star piece: " + Arrays.toString(parts));
 
             if (parts.length != 4) {

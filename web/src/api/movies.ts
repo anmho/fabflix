@@ -32,7 +32,9 @@ export function movieSearchParamsToURLParams(
     }
   }
   if (sortBy) {
-    const sortStrings = sortBy.map((dimension) => dimension.toString());
+    const sortStrings = sortBy.map((dimension) =>
+      new MovieSortDimension(dimension.field, dimension.order).toString()
+    );
     params.append("sortBy", sortStrings.join(","));
   }
   if (limit) {

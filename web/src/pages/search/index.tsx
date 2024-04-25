@@ -78,23 +78,28 @@ const moviesSearchParamsSchema = z.object({
 
 const parseMovieQueryParams = (
   searchParams: ParsedUrlQuery
-): MovieSearchParams => {
+): MovieSearchParams | null => {
   const dict: Record<string, unknown> = {};
   for (let key in searchParams) {
     const value = searchParams[key];
     console.log(key, value);
 
-    if (key === "sort-by") {
-      key = "sortBy";
-    }
-    if (key === "starts-with") {
-      key = "startsWith";
-    }
+    // if (key === "sort-by") {
+    //   key = "sortBy";
+    // }
+    // if (key === "starts-with") {
+    //   key = "startsWith";
+    // }
 
     dict[key] = value;
   }
 
-  const params = moviesSearchParamsSchema.parse(dict);
+  const result = moviesSearchParamsSchema.safeParse(dict);
+  if (!result.success) {
+    return null;
+  }
+
+  const params = result.data;
   console.log("params", params);
 
   const findMovieParams = {
@@ -128,6 +133,10 @@ const SearchMoviesPage: React.FC = () => {
     if (router.isReady && searchParams === undefined) {
       // IMPORTANT will cause infinite loop if not checked since router state is updated on filter change
       const initialSearchParams = parseMovieQueryParams(router.query);
+      if (initialSearchParams === null) {
+        router.push("/404");
+        return;
+      }
       setSearchParams(() => initialSearchParams);
     }
   }, [router.query, router.isReady, router.asPath]);
@@ -157,10 +166,10 @@ const SearchMoviesPage: React.FC = () => {
     );
   }, [searchParams]);
 
-  if (isLoading) {
+  if (isLoading || !searchResults) {
     return <Loading />;
   }
-
+  console.log("searchParams", searchParams);
   const handlePageChange = (page: number) => {
     setSearchParams((prev) => {
       return { ...prev, page };
@@ -193,6 +202,7 @@ const SearchMoviesPage: React.FC = () => {
     <div className="flex align-center flex-col dark bg-background">
       <div className="flex justify-around align-center ">
         <PaginationDropdown
+          initLimit={searchResults.limit}
           changeLimitParam={handleChangeLimit}
           className="mr-1"
         />
