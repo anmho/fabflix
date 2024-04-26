@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchCart } from "~/api/cart";
+import { handleLogin } from "~/api/login";
 import { ErrorPage } from "~/components/error";
 import { Loading } from "~/components/navigation/loading";
 import { Cart } from "~/interfaces/cart";
@@ -32,12 +33,15 @@ export interface Session {
 export interface AuthContextValue {
   session: Session | null;
   // login: (() => void) | undefined;
+  login: (
+    formData: URLSearchParams
+  ) => Promise<{ success: boolean; message?: string }>;
   // logout: (() => void) | undefined;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   session: null,
-  // login: undefined,
+  login: handleLogin,
   // logout: undefined,
 });
 
@@ -45,7 +49,6 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 function AuthProvider({ children }: AuthProviderProps) {
-  const router = useRouter();
   const {
     isPending,
     error,
@@ -68,6 +71,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const session = cart ? { cart } : null;
   const value = {
     session,
+    login: handleLogin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

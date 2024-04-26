@@ -4,7 +4,7 @@ import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "~/utils/cn";
 import { useRouter } from "next/router";
-import { handleLogin } from "~/api/login";
+import { handleLogin, isLoggedIn } from "~/api/login";
 import { Loading } from "~/components/navigation/loading";
 import { useAuth } from "~/hooks/auth";
 
@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
   const [passwordInput, setPasswordInput] = useState("");
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<String>("");
-  const { session } = useAuth();
+  const { session, login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,12 +23,12 @@ const LoginPage: React.FC = () => {
     formData.append("password", passwordInput);
 
     if (!emailInput || !passwordInput) return;
-
-    await handleLogin(formData)
+    // await login(formData);
+    await login(formData)
       .then((res) => {
         if (res.success) {
           setErrorMsg("");
-          router.push("/search");
+          router.push("/browse");
         } else {
           setErrorMsg(res?.message || "Error login in");
         }
@@ -39,10 +39,6 @@ const LoginPage: React.FC = () => {
         alert("Login failed: " + error.message);
       });
   };
-  if (session != null) {
-    router.push("/browse");
-    return <Loading />;
-  }
 
   return (
     <>

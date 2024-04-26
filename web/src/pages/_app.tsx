@@ -11,13 +11,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
-// queryClient.setDefaultOptions({
-//   queries: {
-
-//   }
-
-// });
-
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 

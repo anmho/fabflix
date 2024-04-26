@@ -7,8 +7,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const handleLogin = async (
   formData: URLSearchParams
 ): Promise<{ success: boolean; message?: string }> => {
-  const router = useRouter();
-  const { session } = useAuth();
   
 
   try {
