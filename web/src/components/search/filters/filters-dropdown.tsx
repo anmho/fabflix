@@ -11,6 +11,8 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { MovieFilters } from "~/api/movies";
+import { cn } from "~/utils/cn";
+import { useTheme } from "next-themes";
 
 interface FiltersDropdownProps {
   className?: string;
@@ -24,6 +26,7 @@ export function FiltersDropdown({
   handleApplyFilters,
 }: FiltersDropdownProps) {
   const [filters, setFilters] = useState<MovieFilters>(initialFilters);
+  const { theme } = useTheme();
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setFilters((filters) => {
@@ -75,14 +78,14 @@ export function FiltersDropdown({
       <PopoverTrigger asChild className={className}>
         <Button
           variant="outline"
-          className="bg-background dark text-foreground"
+          className={cn(theme, "bg-background text-foreground")}
         >
           {/* Filters */}
           {/* <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
           <SlidersHorizontal className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 dark border-border bg-background">
+      <PopoverContent className={cn(theme, "w-80 border-border bg-background")}>
         <div className="grid gap-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Filters</h4>
