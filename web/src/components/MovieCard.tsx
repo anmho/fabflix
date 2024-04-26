@@ -124,19 +124,19 @@ const MovieCard = ({
             <div className="mt-2">
               <div className="flex justify-between mt-5">
                 <div className="flex items-center">
-                  <button
+                  <Button
                     onClick={handleDecrease}
-                    className="text-red-500 mr-2"
+                    className="bg-background border-border hover:bg-muted text-red-500 mr-2"
                   >
                     <FaMinus />
-                  </button>
+                  </Button>
                   <span>{quantity}</span>
-                  <button
+                  <Button
                     onClick={handleIncrease}
-                    className="text-blue-500 ml-2"
+                    className="bg-background hover:bg-muted text-blue-500 ml-2"
                   >
                     <FaPlus />
-                  </button>
+                  </Button>
                 </div>
                 <button
                   onClick={handleRemove}
