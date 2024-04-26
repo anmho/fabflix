@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Movie } from "~/interfaces/movie";
 import { getMovieById as fetchMovieById } from "~/api/movies";
 import { isLoggedIn } from "~/api/login";
+import { Loading } from "~/components/navigation/loading";
 
 const SingleMoviePage: React.FC = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
@@ -33,7 +34,7 @@ const SingleMoviePage: React.FC = () => {
     });
   }, [router]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (!movie) return <div>NO MOVIE HAS FOUND...</div>;
 
   return (

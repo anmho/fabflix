@@ -10,7 +10,7 @@ import {
 } from "~/components/ui/sheet";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { MovieCard } from "~/components/MovieCard";
+import { MovieCartItem } from "~/components/cart/movie-item";
 import { isLoggedIn } from "~/api/login";
 import { fetchCart, addMovieToCart } from "~/api/cart";
 import { Movie } from "~/interfaces/movie";
@@ -96,7 +96,7 @@ export function CartDrawer() {
             {cartItems.length > 0 ? (
               cartItems.map((item) => (
                 <React.Fragment key={item.id}>
-                  <MovieCard
+                  <MovieCartItem
                     movie={item}
                     isCartPage={true}
                     handleAddToCart={() =>

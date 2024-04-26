@@ -6,22 +6,34 @@ import {
   IconBoxAlignRightFilled,
   IconBoxAlignTopLeft,
   IconClipboardCopy,
+  IconMovie,
   IconFileBroken,
   IconSignature,
   IconTableColumn,
 } from "@tabler/icons-react";
+import { Movie } from "~/interfaces/movie";
+import { useTheme } from "next-themes";
 
-export function BentoGridDemo() {
+interface MovieBentoGridItemProps {
+  movies: Movie[];
+}
+export function MoviesBentoGrid({ movies }: MovieBentoGridItemProps) {
+  const { theme } = useTheme();
   return (
-    <BentoGrid className="max-w-4xl mx-auto">
-      {items.map((item, i) => (
+    <BentoGrid className={cn(theme, "max-w-4xl mx-auto")}>
+      {movies.map((movie, i) => (
         <BentoGridItem
           key={i}
-          title={item.title}
-          description={item.description}
-          header={item.header}
-          icon={item.icon}
-          className={i === 3 || i === 6 ? "md:col-span-2" : ""}
+          title={`${movie.title} • ${movie.year}`}
+          description={`${movie.director}`}
+          header={<Skeleton />}
+          icon={<IconMovie className="h-4 w-4 text-neutral-500" />}
+          className={cn(
+            theme,
+            i === 3 || i === 6
+              ? "md:col-span-2 border border-border"
+              : "border border-border"
+          )}
         />
       ))}
     </BentoGrid>

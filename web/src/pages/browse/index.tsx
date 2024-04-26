@@ -51,7 +51,8 @@ const BrowseMoviesPage: React.FC = () => {
   return (
     <div className="xl:max-w-[1440px] w-full flex flex-col text-center sm:px-20 px-5 justify-center">
       <div>
-        <h1 className="text-4xl mb-4">Browse by genre</h1>
+        <h1 className="text-6xl mb-4 items-left flex">Browse</h1>
+        <h3 className="text-3xl my-3">Genres</h3>
         <div className=" flex justify-center items-center flex-wrap">
           <Link href={"/search"}>
             <Badge
