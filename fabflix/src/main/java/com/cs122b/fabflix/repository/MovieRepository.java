@@ -349,7 +349,7 @@ public class MovieRepository {
         String[] genrePairs = genresString.split(";");
         List<Genre> genres = new ArrayList<>();
         for (String pair : genrePairs) {
-            String[] parts = pair.split(":");
+            String[] parts = pair.split("#");
             if (parts.length == 2) {
                 int genreId = Integer.parseInt(parts[0]);
                 String genreName = parts[1];
