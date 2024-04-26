@@ -14,12 +14,17 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<String>("");
   const { session, login } = useAuth();
-
   if (!login) return <Loading />;
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: LoginParams) =>
       login({ email, password }),
   });
+
+  if (session !== null) {
+    router.push("/browse");
+    return <Loading />;
+  }
+
   if (loginMutation.isPending) return <Loading />;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +39,7 @@ const LoginPage: React.FC = () => {
 
     if (result.success) {
       setErrorMsg("");
-      router.push("/browse");
+      return;
     } else {
       setErrorMsg(result?.message || "Error login in");
     }

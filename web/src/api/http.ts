@@ -1,4 +1,4 @@
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient } from "@tanstack/react-query";
 import axios, { Axios, AxiosError } from "axios";
 
 export const http = axios.create({

@@ -69,11 +69,13 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   const handleLogin = async ({ email, password }: LoginParams) => {
     const response = await login({ email, password });
+    refetchCart();
     return response;
   };
 
   const handleLogout = async () => {
     const response = await logout();
+    refetchCart();
     console.log("AuthProvider", response);
     return response;
   };
