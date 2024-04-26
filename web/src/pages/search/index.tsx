@@ -237,7 +237,7 @@ const SearchMoviesPage: React.FC = () => {
         page={searchResults.page}
         handlePageChange={handlePageChange}
       />
-      <BentoGrid />
+      {/* <BentoGrid /> */}
     </div>
   );
 };

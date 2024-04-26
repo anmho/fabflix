@@ -5,12 +5,15 @@ import { Input } from "../components/ui/input";
 import { cn } from "~/utils/cn";
 import { useRouter } from "next/router";
 import { handleLogin } from "~/api/login";
+import { Loading } from "~/components/navigation/loading";
+import { useAuth } from "~/hooks/auth";
 
 const LoginPage: React.FC = () => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<String>("");
+  const { session } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,6 +39,10 @@ const LoginPage: React.FC = () => {
         alert("Login failed: " + error.message);
       });
   };
+  if (session != null) {
+    router.push("/search");
+    return <Loading />;
+  }
 
   return (
     <>

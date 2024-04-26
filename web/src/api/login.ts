@@ -1,8 +1,16 @@
+import { useRouter } from "next/router";
+import { useAuth } from "~/hooks/auth";
+import { Loading } from "~/components/navigation/loading";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const handleLogin = async (
   formData: URLSearchParams
 ): Promise<{ success: boolean; message?: string }> => {
+  const router = useRouter();
+  const { session } = useAuth();
+  
+
   try {
     const response = await fetch(`${API_URL}/login`, {
       method: "POST",

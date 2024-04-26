@@ -45,6 +45,7 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 function AuthProvider({ children }: AuthProviderProps) {
+  const router = useRouter();
   const {
     isPending,
     error,
@@ -68,6 +69,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const value = {
     session,
   };
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

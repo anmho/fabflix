@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <NextUIProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          {/* {router.pathname !== "/" && <NavigationBar />} */}
+          {router.pathname !== "/" && <NavigationBar />}
           <Component className="dark" {...pageProps} />
         </AuthProvider>
         <Toaster />
