@@ -47,7 +47,7 @@ export class MovieSortDimension {
     return new MovieSortDimension(params.field, params.order);
   }
   public toString(): string {
-    console.log("Stringing ", `${this.field}:${this.order}`);
+    // console.log("Stringing ", `${this.field}:${this.order}`);
     return `${this.field}:${this.order}`;
   }
 }

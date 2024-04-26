@@ -32,7 +32,7 @@ export function FiltersDropdown({
   };
 
   const handleChangeStar = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(filters.star);
+    // console.log(filters.star);
     setFilters((filters) => {
       return { ...filters, star: e.target.value };
     });
@@ -61,7 +61,7 @@ export function FiltersDropdown({
         year: undefined,
       };
     });
-    console.log("trying to clear filters", filters);
+    // console.log("trying to clear filters", filters);
     handleApplyFilters(filters);
   };
 

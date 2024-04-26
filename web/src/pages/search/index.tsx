@@ -23,6 +23,7 @@ import { addMovieToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
 import { Loading } from "~/components/navigation/loading";
 import { set } from "date-fns";
+import { useSearch } from "~/hooks/SearchContextProvider";
 
 const moviesSearchParamsSchema = z.object({
   limit: z
@@ -128,8 +129,9 @@ const SearchMoviesPage: React.FC = () => {
     PaginatedResult<Movie> | undefined
   >(undefined);
   const router = useRouter();
-
+  const { recentMovieQuery, updateSearchQuery } = useSearch();
   useEffect(() => {
+    // console.log("router.query", router);
     if (router.isReady && searchParams === undefined) {
       // IMPORTANT will cause infinite loop if not checked since router state is updated on filter change
       const initialSearchParams = parseMovieQueryParams(router.query);
@@ -153,9 +155,7 @@ const SearchMoviesPage: React.FC = () => {
     });
 
     const params = movieSearchParamsToURLParams(searchParams);
-    console.log("searchParams", searchParams);
-    console.log("as path", router.asPath);
-    console.log(params.toString());
+    updateSearchQuery(`/search?${params.toString()}`);
     router.replace(
       "/search",
       {
@@ -169,7 +169,7 @@ const SearchMoviesPage: React.FC = () => {
   if (isLoading || !searchResults) {
     return <Loading />;
   }
-  console.log("searchParams", searchParams);
+  // console.log("searchParams", searchParams);
   const handlePageChange = (page: number) => {
     setSearchParams((prev) => {
       return { ...prev, page };
@@ -178,6 +178,7 @@ const SearchMoviesPage: React.FC = () => {
 
   const handleApplyFilters = (filters: MovieFilters) => {
     console.log(filters);
+    handlePageChange(1);
     setSearchParams((prev) => {
       return { ...prev, filters };
     });
@@ -185,6 +186,7 @@ const SearchMoviesPage: React.FC = () => {
 
   const handleApplySort = (dimensions: MovieSortDimension[]) => {
     console.log(dimensions);
+    handlePageChange(1);
     setSearchParams((prev) => {
       return { ...prev, sortBy: dimensions };
     });

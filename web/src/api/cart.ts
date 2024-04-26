@@ -8,7 +8,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const getCart = async (): Promise<Cart> => {
   const response = await http.get("/cart");
   const cart = response.data;
-  console.log("Cart Fetched:", cart);
+  // console.log("Cart Fetched:", cart);
   return cart;
 };
 
@@ -34,7 +34,7 @@ export const addMovieToCart = async (
       window.location.href = "/login";
     }
     const data = await response.json();
-    console.log("Add to Cart Response:", data);
+    // console.log("Add to Cart Response:", data);
     updateMovies(); // Update parent component's movie list
   } catch (error) {
     console.error("Error adding to cart:", error);
@@ -63,7 +63,7 @@ export const handleEditFromCart = async (
       window.location.href = "/login";
     }
     const data = await response.json();
-    console.log("Delete Response:", data);
+    // console.log("Delete Response:", data);
     updateMovies(); // Update parent component's movie list
   } catch (error) {
     console.error("Error deleting movie:", error);
