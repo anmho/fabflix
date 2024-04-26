@@ -2,24 +2,36 @@ import "~/styles/globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { NavigationBar } from "~/components/navigation/navigation-bar";
+import { NavBar } from "~/components/navigation/nav-bar";
 import { Toaster } from "~/components/ui/sonner";
+import { useEffect } from "react";
+import { AuthProvider } from "~/hooks/AuthProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import {
   SearchContextProvider,
   useSearch,
 } from "~/hooks/SearchContextProvider";
+import { queryClient } from "~/api/http";
+import { ThemeProvider } from "~/hooks/ThemeProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   return (
-    <SearchContextProvider>
+    <ThemeProvider>
       <NextUIProvider>
-        {router.pathname !== "/" && <NavigationBar />}
-        <ComponentWithSearch Component={Component} {...pageProps} />
-        <Toaster />
+        <QueryClientProvider client={queryClient}>
+          <SearchContextProvider>
+            <AuthProvider>
+              {router.pathname !== "/" && <NavBar />}
+              <Component {...pageProps} />
+            </AuthProvider>
+            <Toaster />
+          </SearchContextProvider>
+        </QueryClientProvider>
       </NextUIProvider>
-    </SearchContextProvider>
+    </ThemeProvider>
   );
 }
 

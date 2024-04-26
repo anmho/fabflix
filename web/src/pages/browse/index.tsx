@@ -4,6 +4,10 @@ import { ComboboxDemo } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
 import { Genre } from "~/interfaces/genre";
 import { getGenres } from "~/api/genres";
+import { PrivatePage } from "~/components/auth/private-page";
+import { Badge } from "~/components/ui/badge";
+import { useTheme } from "next-themes";
+import { cn } from "~/lib/utils";
 
 const startsWithOptions = [
   "A",
@@ -42,26 +46,52 @@ const BrowseMoviesPage: React.FC = () => {
     getGenres().then((genres) => setGenres(() => genres));
   }, []);
 
+  const { theme } = useTheme();
+
   return (
-    <>
-      <div className="flex justify-center items-center flex-wrap">
+    <div className="xl:max-w-[1440px] w-full flex flex-col text-center sm:px-20 px-5 justify-center">
+      <div>
+        <h1 className="text-4xl mb-4">Browse by genre</h1>
+        <div className=" flex justify-center items-center flex-wrap">
+          <Link href={"/search"}>
+            <Badge
+              className={cn(
+                theme,
+                "bg-primary text-primary-foreground py-1 px-2 m-1"
+              )}
+            >
+              All
+            </Badge>
+          </Link>
+          {genres.map((genre, i) => (
+            <Link key={i} href={`/search?genre=${genre.name.toLowerCase()}`}>
+              <Badge
+                className={cn(theme, "text-primary-foreground py-1 px-2 m-1")}
+              >
+                {genre.name}
+              </Badge>
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div>
+        <h1 className="text-4xl mb-4 mt-10">Browse by title</h1>
+
         {startsWithOptions.map((letter, i) => (
           <Link key={i} href={`/search?starts-with=${letter.toLowerCase()}`}>
-            <Button className="p-2 bg-red-500 rounded-md m-1">{letter}</Button>
-          </Link>
-        ))}
-      </div>
-      <div className=" flex justify-center items-center flex-wrap ">
-        {genres.map((genre, i) => (
-          <Link key={i} href={`/search?genre=${genre.name.toLowerCase()}`}>
-            <Button className="bg-green-500 m-1 p-2 rounded-md text-primary">
-              {genre.name}
+            <Button
+              className={cn(
+                theme,
+                "border border-border h-36 w-36 bg-background text-foreground rounded-xl m-1 "
+              )}
+            >
+              <h1 className="text-3xl ">{letter}</h1>
             </Button>
           </Link>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
-export default BrowseMoviesPage;
+export default PrivatePage(<BrowseMoviesPage />);

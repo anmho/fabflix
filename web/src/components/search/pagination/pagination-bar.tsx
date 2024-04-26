@@ -1,3 +1,4 @@
+import { useTheme } from "next-themes";
 import { NextURL } from "next/dist/server/web/next-url";
 import {
   Pagination,
@@ -8,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/components/ui/pagination";
+import { cn } from "~/lib/utils";
 
 interface PaginationBarProps {
   page: number;
@@ -22,8 +24,9 @@ export function PaginationBar({
   hasPrev,
   hasNext,
 }: PaginationBarProps) {
+  const { theme } = useTheme();
   return (
-    <Pagination className="bg-background text-foreground">
+    <Pagination className={cn(theme, "bg-background text-foreground")}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

@@ -25,12 +25,50 @@ import {
   MovieSortField,
   SortActionEnum,
 } from "./dimensions";
+import { cn } from "~/lib/utils";
+import { useTheme } from "next-themes";
 
 interface SortDropdownProps {
   initDimensions?: MovieSortDimension[];
   applySort: (dimensions: MovieSortDimension[]) => void;
 }
 
+const menuItems: {
+  type: SortActionEnum;
+  field: MovieSortField;
+  label: string;
+}[] = [
+  {
+    type: SortActionEnum.TITLE_DESC,
+    field: "title",
+    label: "Title (Z to A)",
+  },
+  {
+    type: SortActionEnum.TITLE_ASC,
+    field: "title",
+    label: "Title (A to Z)",
+  },
+  {
+    type: SortActionEnum.RATING_DESC,
+    field: "rating",
+    label: "Rating (High to Low)",
+  },
+  {
+    type: SortActionEnum.RATING_ASC,
+    field: "rating",
+    label: "Rating (Low to High)",
+  },
+  {
+    type: SortActionEnum.YEAR_DESC,
+    field: "year",
+    label: "Release Year (Newest First)",
+  },
+  {
+    type: SortActionEnum.YEAR_ASC,
+    field: "year",
+    label: "Release Year (Oldest First)",
+  },
+];
 export const SortDropdown: React.FC<SortDropdownProps> = ({
   initDimensions,
   applySort,
@@ -40,6 +78,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
     createInitSortState(initDimensions ?? [])
   );
 
+  const { theme } = useTheme();
   const handleCheckedChange = (checked: Checked, type: SortActionEnum) => {
     dispatch({ checked, type });
   };
@@ -50,54 +89,25 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
     }
   };
 
-  const menuItems: {
-    type: SortActionEnum;
-    field: MovieSortField;
-    label: string;
-  }[] = [
-    {
-      type: SortActionEnum.TITLE_DESC,
-      field: "title",
-      label: "Title (Z to A)",
-    },
-    {
-      type: SortActionEnum.TITLE_ASC,
-      field: "title",
-      label: "Title (A to Z)",
-    },
-    {
-      type: SortActionEnum.RATING_DESC,
-      field: "rating",
-      label: "Rating (High to Low)",
-    },
-    {
-      type: SortActionEnum.RATING_ASC,
-      field: "rating",
-      label: "Rating (Low to High)",
-    },
-    {
-      type: SortActionEnum.YEAR_DESC,
-      field: "year",
-      label: "Release Year (Newest First)",
-    },
-    {
-      type: SortActionEnum.YEAR_ASC,
-      field: "year",
-      label: "Release Year (Oldest First)",
-    },
-  ];
-
   return (
     <DropdownMenu onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="flex justify-center items-center dark bg-background text-foreground"
+          className={cn(
+            theme,
+            "flex justify-center items-center bg-background text-foreground"
+          )}
         >
           <ArrowDownWideNarrow className="h-4 w-4 shrink-0 opacity-50 " />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 dark bg-background text-popover-foreground border-border">
+      <DropdownMenuContent
+        className={cn(
+          theme,
+          "w-56 bg-background text-popover-foreground border-border"
+        )}
+      >
         <DropdownMenuLabel>Sort by</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {menuItems.map((item, i) => (

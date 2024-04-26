@@ -12,14 +12,18 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { MovieCard } from "~/components/MovieCard";
 import { isLoggedIn } from "~/api/login";
-import { getCart, addMovieToCart } from "~/api/cart";
+import { fetchCart, addMovieToCart } from "~/api/cart";
 import { Movie } from "~/interfaces/movie";
+import { useTheme } from "next-themes";
+import { cn } from "~/lib/utils";
+import { Loading } from "./loading";
 
 export function CartDrawer() {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [cartItems, setCartItems] = useState<Movie[]>([]);
   const [showDrawer, setShowDrawer] = useState<boolean>(true);
   const router = useRouter();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const checkUserAndRoute = async () => {
@@ -36,7 +40,7 @@ export function CartDrawer() {
   }, [router.pathname]);
 
   const getCartItems = async () => {
-    await getCart()
+    await fetchCart()
       .then((cart) => cart.movies)
       .then((movies) => {
         // console.log(movies);
@@ -59,13 +63,17 @@ export function CartDrawer() {
         <Button
           variant="outline"
           onClick={getCartItems}
-          className="dark bg-primary text-primary-foreground hover:bg-primary/90
-        border-none"
+          className={cn(
+            theme,
+            "bg-primary text-primary-foreground hover:bg-primary/90 border-none"
+          )}
         >
           Shopping Cart
         </Button>
       </SheetTrigger>
-      <SheetContent className="dark bg-background text-foreground border-border">
+      <SheetContent
+        className={cn(theme, "bg-background text-foreground border-border")}
+      >
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
           {cartItems.length > 0 && (
@@ -82,7 +90,7 @@ export function CartDrawer() {
           )}
         </SheetHeader>
         {isLoading ? (
-          <div>Loading...</div>
+          <Loading />
         ) : (
           <div className="flex flex-wrap justify-around items-start">
             {cartItems.length > 0 ? (

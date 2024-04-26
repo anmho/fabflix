@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import axios, { Axios, AxiosError } from "axios";
 
 export const http = axios.create({
@@ -5,15 +6,10 @@ export const http = axios.create({
   withCredentials: true,
 });
 
-http.interceptors.response.use(undefined, errorHandler);
+export const queryClient = new QueryClient();
 
-function errorHandler(error: AxiosError) {
-  const statusCode = error.response?.status;
-  if (statusCode === axios.HttpStatusCode.Unauthorized) {
-    window.location.href = "/login";
-  } else {
-    console.error("Error fetching:", error);
-  }
+// http.interceptors.response.use(undefined, errorHandler);
 
-  return Promise.reject(error);
-}
+// function errorHandler(error: AxiosError) {
+//   return Promise.reject(error);
+// }

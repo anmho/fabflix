@@ -23,7 +23,10 @@ import { addMovieToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
 import { Loading } from "~/components/navigation/loading";
 import { set } from "date-fns";
+import { PrivatePage } from "~/components/auth/private-page";
 import { useSearch } from "~/hooks/SearchContextProvider";
+import { cn } from "~/lib/utils";
+import { useTheme } from "next-themes";
 
 const moviesSearchParamsSchema = z.object({
   limit: z
@@ -84,14 +87,6 @@ const parseMovieQueryParams = (
   for (let key in searchParams) {
     const value = searchParams[key];
     console.log(key, value);
-
-    // if (key === "sort-by") {
-    //   key = "sortBy";
-    // }
-    // if (key === "starts-with") {
-    //   key = "startsWith";
-    // }
-
     dict[key] = value;
   }
 
@@ -121,6 +116,7 @@ const parseMovieQueryParams = (
 };
 
 const SearchMoviesPage: React.FC = () => {
+  const { theme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useState<
     MovieSearchParams | undefined
@@ -201,7 +197,7 @@ const SearchMoviesPage: React.FC = () => {
   };
 
   return (
-    <div className="flex align-center flex-col dark bg-background">
+    <div className={cn(theme, "flex align-center flex-col bg-background")}>
       <div className="flex justify-around align-center ">
         <PaginationDropdown
           initLimit={searchResults.limit}
@@ -223,11 +219,15 @@ const SearchMoviesPage: React.FC = () => {
             initialFilters={searchParams?.filters ?? {}}
           />
           {/* Sort Options */}
-          <SortDropdown applySort={handleApplySort} />
+          <SortDropdown
+            applySort={handleApplySort}
+            initDimensions={searchParams?.sortBy}
+          />
         </div>
       </div>
 
-      <div className="flex items-center align-center w-screen flex-wrap p-4">
+      {/* <div className="flex items-center align-center w-screen flex-wrap p-4"> */}
+      <div className="grid grid-cols-4 gap-2">
         {searchResults.results.map((movie, i) => (
           <MovieCard
             key={i}
@@ -246,9 +246,10 @@ const SearchMoviesPage: React.FC = () => {
         page={searchResults.page}
         handlePageChange={handlePageChange}
       />
-      <BentoGrid />
+      {/* <BentoGrid /> */}
     </div>
   );
 };
 
-export default SearchMoviesPage;
+export default PrivatePage(<SearchMoviesPage />);
+// export default SearchMoviesPage;

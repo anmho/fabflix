@@ -1,6 +1,7 @@
 "use client";
 
 import { CaretSortIcon } from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
 import * as React from "react";
 
 import { Button } from "~/components/ui/button";
@@ -13,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { cn } from "~/lib/utils";
 
 interface PaginationDropdownProps {
   className?: string;
@@ -26,6 +28,7 @@ export function PaginationDropdown({
   changeLimitParam,
 }: PaginationDropdownProps) {
   const [limit, setLimit] = React.useState<number>(initLimit ?? 20);
+  const { theme } = useTheme();
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
@@ -51,7 +54,12 @@ export function PaginationDropdown({
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="dark bg-background text-popover-foreground border-border">
+      <DropdownMenuContent
+        className={cn(
+          theme,
+          "bg-background text-popover-foreground border-border"
+        )}
+      >
         <DropdownMenuLabel>Per Page</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup

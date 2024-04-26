@@ -5,8 +5,13 @@ import { Cart } from "~/interfaces/cart";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // gets the cart for the current user
-export const getCart = async (): Promise<Cart> => {
-  const response = await http.get("/cart");
+export const fetchCart = async (): Promise<Cart> => {
+  const response = await http.get("/cart").catch((e) => {
+    if (e.response.status === 401) {
+      return { data: null };
+    }
+    throw e;
+  });
   const cart = response.data;
   // console.log("Cart Fetched:", cart);
   return cart;
@@ -30,9 +35,9 @@ export const addMovieToCart = async (
       }),
       credentials: "include",
     });
-    if (response.status === 401) {
-      window.location.href = "/login";
-    }
+    // if (response.status === 401) {
+    //   window.location.href = "/login";
+    // }
     const data = await response.json();
     // console.log("Add to Cart Response:", data);
     updateMovies(); // Update parent component's movie list
@@ -59,9 +64,9 @@ export const handleEditFromCart = async (
       }),
       credentials: "include",
     });
-    if (response.status === 401) {
-      window.location.href = "/login";
-    }
+    // if (response.status === 401) {
+    //   window.location.href = "/login";
+    // }
     const data = await response.json();
     // console.log("Delete Response:", data);
     updateMovies(); // Update parent component's movie list
