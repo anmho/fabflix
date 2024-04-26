@@ -13,23 +13,27 @@ import {
 } from "@tabler/icons-react";
 import { Movie } from "~/interfaces/movie";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/router";
 
 interface MovieBentoGridItemProps {
   movies: Movie[];
 }
 export function MoviesBentoGrid({ movies }: MovieBentoGridItemProps) {
+  const router = useRouter();
   const { theme } = useTheme();
   return (
     <BentoGrid className={cn(theme, "max-w-4xl mx-auto")}>
       {movies.map((movie, i) => (
         <BentoGridItem
           key={i}
+          onClick={() => router.push(`/movies/${movie.id}`)}
           title={`${movie.title} • ${movie.year}`}
           description={`${movie.director}`}
           header={<Skeleton />}
           icon={<IconMovie className="h-4 w-4 text-neutral-500" />}
           className={cn(
             theme,
+            "cursor-pointer",
             i === 3 || i === 6
               ? "md:col-span-2 border border-border"
               : "border border-border"
