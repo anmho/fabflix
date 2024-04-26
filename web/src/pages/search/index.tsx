@@ -256,5 +256,6 @@ const SearchMoviesPage: React.FC = () => {
   );
 };
 
-export default PrivatePage(<SearchMoviesPage />);
+// export default PrivatePage({ children: <SearchMoviesPage /> });
+export default SearchMoviesPage;
 // export default SearchMoviesPage;

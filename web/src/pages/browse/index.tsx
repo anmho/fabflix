@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ComboboxDemo } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
 import { Genre } from "~/interfaces/genre";
 import { getGenres } from "~/api/genres";
@@ -95,4 +94,7 @@ const BrowseMoviesPage: React.FC = () => {
   );
 };
 
-export default PrivatePage(<BrowseMoviesPage />);
+// export default PrivatePage(<BrowseMoviesPage />);
+// export default (children: ReactNode) => PrivatePage({ children: <BrowseMoviesPage /> });
+export default BrowseMoviesPage;
+// export default PrivatePage({ children: <BrowseMoviesPage /> });

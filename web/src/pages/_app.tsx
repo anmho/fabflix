@@ -14,6 +14,7 @@ import {
 } from "~/hooks/SearchContextProvider";
 import { queryClient } from "~/api/http";
 import { ThemeProvider } from "~/hooks/ThemeProvider";
+import { PrivatePage } from "~/components/auth/private-page";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -25,7 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <SearchContextProvider>
             <AuthProvider>
               {router.pathname !== "/" && <NavBar />}
-              <Component {...pageProps} />
+              <PrivatePage>
+                <Component {...pageProps} />
+              </PrivatePage>
             </AuthProvider>
             <Toaster />
           </SearchContextProvider>

@@ -92,7 +92,9 @@ const MovieCard = ({
           <>
             <p className={cn(theme, "text-foreground")}>
               {movie.genres.map((genre) => (
-                <Badge className="m-[2px]">{genre.name}</Badge>
+                <Badge key={genre.id} className="m-[2px]">
+                  {genre.name}
+                </Badge>
               ))}
             </p>
 

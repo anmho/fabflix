@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<string>("");
   const { session, login } = useAuth();
-  if (!login) return <Loading />;
+
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: LoginParams) =>
       login({ email, password }),

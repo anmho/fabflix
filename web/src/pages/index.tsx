@@ -56,7 +56,7 @@ export default function Home() {
           <div className="font-extralight  md:text-4xl text-neutral-200 py-4">
             Skip the rewinding, stream the magic.
           </div>
-          <Link href={`/movies`}>
+          <Link href={`/search?sortBy=rating:desc`}>
             <button className="bg-white rounded-full w-fit text-black px-4 py-2">
               Watch Now
             </button>
