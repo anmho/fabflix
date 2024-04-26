@@ -32,7 +32,7 @@ const SingleStarPage: React.FC = () => {
   }, [router]);
 
   useEffect(() => {
-    console.log(star);
+    // console.log(star);
   }, [star]);
 
   if (isLoading) return <div>Loading...</div>;

@@ -75,7 +75,7 @@ export function sortReducer(
   action: SortAction
 ): MovieSortState {
   const dimension = SortDimensionMapping[action.type];
-  console.log(state);
+  // console.log(state);
 
   if (isOptionChecked(state, action.type)) {
     return {

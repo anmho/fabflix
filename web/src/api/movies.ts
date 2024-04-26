@@ -72,7 +72,7 @@ export const findMovies = async ({
         new MovieSortDimension(dimension.field, dimension.order).toString()
       )
       .join(",");
-    console.log(sortByString);
+    // console.log(sortByString);
     params.append("sortBy", sortByString);
   }
 
