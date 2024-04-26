@@ -61,8 +61,10 @@ const MovieCard = ({
         />
       </div>
 
-      <CardContent className={cn(theme, "p-6 space-y-4 relative")}>
-        <h3 className="text-xl font-bold">{movie.title}</h3>
+      <CardContent className={cn(theme, "p-6 space-y-4")}>
+        <h3 className="text-xl font-bold text-foreground -z-1">
+          {movie.title}
+        </h3>
         <p className="text-gray-500 dark:text-gray-400">
           {movie.year} • {movie.director}
         </p>

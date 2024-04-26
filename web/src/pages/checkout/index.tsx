@@ -13,6 +13,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 import { Button } from "~/components/ui/button";
 import { BackButton } from "~/components/navigation/back-button";
+import { Loading } from '~/components/navigation/loading';
 
 const CheckoutPage: React.FC = () => {
   const [creditCardId, setCreditCardId] = useState("");
@@ -94,7 +95,7 @@ const CheckoutPage: React.FC = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <div className="mx-auto px-4 bg-background">
