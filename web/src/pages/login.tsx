@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
       });
   };
   if (session != null) {
-    router.push("/search");
+    router.push("/browse");
     return <Loading />;
   }
 
