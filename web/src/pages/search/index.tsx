@@ -216,7 +216,10 @@ const SearchMoviesPage: React.FC = () => {
             initialFilters={searchParams?.filters ?? {}}
           />
           {/* Sort Options */}
-          <SortDropdown applySort={handleApplySort} />
+          <SortDropdown
+            applySort={handleApplySort}
+            initDimensions={searchParams?.sortBy}
+          />
         </div>
       </div>
 
@@ -244,5 +247,5 @@ const SearchMoviesPage: React.FC = () => {
   );
 };
 
-export default () => PrivatePage(<SearchMoviesPage />);
+export default PrivatePage(<SearchMoviesPage />);
 // export default SearchMoviesPage;

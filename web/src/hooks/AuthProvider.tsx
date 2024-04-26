@@ -8,6 +8,7 @@ import {
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
+import { login, LoginParams, LoginResponse, logout } from "~/api/auth";
 import { fetchCart } from "~/api/cart";
 import { handleLogin } from "~/api/login";
 import { ErrorPage } from "~/components/error";
@@ -32,17 +33,14 @@ export interface Session {
 
 export interface AuthContextValue {
   session: Session | null;
-  // login: (() => void) | undefined;
-  login: (
-    formData: URLSearchParams
-  ) => Promise<{ success: boolean; message?: string }>;
-  // logout: (() => void) | undefined;
+  login: ((params: LoginParams) => Promise<LoginResponse>) | null;
+  logout: (() => Promise<LoginResponse>) | null;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   session: null,
-  login: handleLogin,
-  // logout: undefined,
+  login: null,
+  logout: null,
 });
 
 interface AuthProviderProps {
@@ -53,6 +51,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     isPending,
     error,
     data: cart,
+    refetch: refetchCart,
   } = useQuery({
     queryKey: ["cart"],
     queryFn: fetchCart,
@@ -64,19 +63,36 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   if (error !== null) {
-    console.log(error);
+    console.error(error);
     return <ErrorPage error={error} />;
   }
+
+  const handleLogin = async ({ email, password }: LoginParams) => {
+    const response = await login({ email, password });
+    return response;
+  };
+
+  const handleLogout = async () => {
+    const response = await logout();
+    console.log("AuthProvider", response);
+    return response;
+  };
 
   const session = cart ? { cart } : null;
   const value = {
     session,
     login: handleLogin,
+    logout: handleLogout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-const useAuth = () => useContext(AuthContext);
+const useAuth = () => {
+  if (!useContext(AuthContext)) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return useContext(AuthContext);
+};
 
 export { AuthProvider, useAuth };

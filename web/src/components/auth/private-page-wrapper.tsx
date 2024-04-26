@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useAuth } from "~/hooks/AuthProvider";
+import { useAuth } from "~/hooks/auth";
 import { Loading } from "../navigation/loading";
 
 interface PrivatePageProps {
   page: React.ReactNode;
 }
 
-export const PrivatePage = (page: React.ReactNode) => () => {
+export const PrivatePage = (page: React.ReactNode) => {
   const { session } = useAuth();
   const router = useRouter();
   console.log(session);

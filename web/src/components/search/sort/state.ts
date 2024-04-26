@@ -59,10 +59,14 @@ export function createInitSortState(
     inputState: {},
   };
   if (!initDimensions) return state;
+  console.log("initDimensions", initDimensions);
   for (const dim of initDimensions) {
+    console.log("dim", dim);
     state = {
       ...state,
-      [dim.type]: { checked: true },
+      inputState: {
+        [dim.type]: { checked: true },
+      },
     };
   }
 

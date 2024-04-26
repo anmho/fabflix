@@ -4,6 +4,7 @@ import { ComboboxDemo } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
 import { Genre } from "~/interfaces/genre";
 import { getGenres } from "~/api/genres";
+import { PrivatePage } from "~/components/auth/private-page";
 
 const startsWithOptions = [
   "A",
@@ -64,4 +65,4 @@ const BrowseMoviesPage: React.FC = () => {
   );
 };
 
-export default BrowseMoviesPage;
+export default PrivatePage(<BrowseMoviesPage /> );

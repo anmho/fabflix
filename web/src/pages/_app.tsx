@@ -5,14 +5,14 @@ import { useRouter } from "next/router";
 import { NavigationBar } from "~/components/navigation/navigation-bar";
 import { Toaster } from "~/components/ui/sonner";
 import { useEffect } from "react";
-import { AuthProvider } from "~/hooks/auth";
+import { AuthProvider } from "~/hooks/AuthProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
 import {
   SearchContextProvider,
   useSearch,
 } from "~/hooks/SearchContextProvider";
+import { queryClient } from "~/api/http";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

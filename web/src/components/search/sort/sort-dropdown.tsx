@@ -40,6 +40,10 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
     createInitSortState(initDimensions ?? [])
   );
 
+  // console.log(
+  //   "initial sort dimensions",
+  //   createInitSortState(initDimensions ?? [])
+  // );
   const handleCheckedChange = (checked: Checked, type: SortActionEnum) => {
     dispatch({ checked, type });
   };

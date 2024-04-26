@@ -1,9 +1,36 @@
+import { http } from "./http";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const handleLogin = async (
-  formData: URLSearchParams
-): Promise<{ success: boolean; message?: string }> => {
+export async function logout(): Promise<{ success: boolean; message: string }> {
+  const response = await http.post("/logout");
+
+  return response.data;
+}
+
+export interface LoginParams {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  success: boolean;
+  message?: string;
+}
+
+export interface LogoutResponse {
+  success: boolean;
+  message: string;
+}
+
+export const login = async ({
+  email,
+  password,
+}: LoginParams): Promise<LoginResponse> => {
   try {
+    const formData = new URLSearchParams();
+    formData.append("email", email);
+    formData.append("password", password);
     const response = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {

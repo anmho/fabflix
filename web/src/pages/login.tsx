@@ -4,10 +4,10 @@ import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "~/utils/cn";
 import { useRouter } from "next/router";
-import { handleLogin, isLoggedIn } from "~/api/login";
 import { Loading } from "~/components/navigation/loading";
-import { useAuth } from "~/hooks/auth";
-
+import { useAuth } from "~/hooks/AuthProvider";
+import { useMutation } from "@tanstack/react-query";
+import { LoginParams } from "~/api/auth";
 const LoginPage: React.FC = () => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -15,29 +15,29 @@ const LoginPage: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<String>("");
   const { session, login } = useAuth();
 
+  if (!login) return <Loading />;
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }: LoginParams) =>
+      login({ email, password }),
+  });
+  if (loginMutation.isPending) return <Loading />;
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const formData = new URLSearchParams();
-    formData.append("email", emailInput);
-    formData.append("password", passwordInput);
-
     if (!emailInput || !passwordInput) return;
-    // await login(formData);
-    await login(formData)
-      .then((res) => {
-        if (res.success) {
-          setErrorMsg("");
-          router.push("/browse");
-        } else {
-          setErrorMsg(res?.message || "Error login in");
-        }
-      })
-      .catch((error) => {
-        setErrorMsg(error?.message);
-        console.error("Login failed: ", error);
-        alert("Login failed: " + error.message);
-      });
+
+    const result = await loginMutation.mutateAsync({
+      email: emailInput,
+      password: passwordInput,
+    });
+    console.log(result);
+
+    if (result.success) {
+      setErrorMsg("");
+      router.push("/browse");
+    } else {
+      setErrorMsg(result?.message || "Error login in");
+    }
   };
 
   return (
