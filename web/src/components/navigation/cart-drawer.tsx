@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { MovieCard } from "~/components/MovieCard";
 import { isLoggedIn } from "~/api/login";
-import { getCart, addMovieToCart } from "~/api/cart";
+import { fetchCart, addMovieToCart } from "~/api/cart";
 import { Movie } from "~/interfaces/movie";
 
 export function CartDrawer() {
@@ -36,7 +36,7 @@ export function CartDrawer() {
   }, [router.pathname]);
 
   const getCartItems = async () => {
-    await getCart()
+    await fetchCart()
       .then((cart) => cart.movies)
       .then((movies) => {
         console.log(movies);

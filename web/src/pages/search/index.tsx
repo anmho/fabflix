@@ -23,6 +23,7 @@ import { addMovieToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
 import { Loading } from "~/components/navigation/loading";
 import { set } from "date-fns";
+import { PrivatePage } from "~/components/auth/private-page";
 
 const moviesSearchParamsSchema = z.object({
   limit: z
@@ -83,14 +84,6 @@ const parseMovieQueryParams = (
   for (let key in searchParams) {
     const value = searchParams[key];
     console.log(key, value);
-
-    // if (key === "sort-by") {
-    //   key = "sortBy";
-    // }
-    // if (key === "starts-with") {
-    //   key = "startsWith";
-    // }
-
     dict[key] = value;
   }
 
@@ -249,4 +242,5 @@ const SearchMoviesPage: React.FC = () => {
   );
 };
 
-export default SearchMoviesPage;
+export default () => PrivatePage(<SearchMoviesPage />);
+// export default SearchMoviesPage;

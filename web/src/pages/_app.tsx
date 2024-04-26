@@ -6,18 +6,30 @@ import { useRouter } from "next/router";
 import { NavigationBar } from "~/components/navigation/navigation-bar";
 import { Toaster } from "~/components/ui/sonner";
 import { useEffect } from "react";
+import { AuthProvider } from "~/hooks/auth";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+// queryClient.setDefaultOptions({
+//   queries: {
+
+//   }
+
+// });
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   return (
-    <>
-      {router.pathname !== "/" && <NavigationBar />}
-      <NextUIProvider>
-        <Component className="dark" {...pageProps} />
-      </NextUIProvider>
-
-      <Toaster />
-    </>
+    <NextUIProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          {/* {router.pathname !== "/" && <NavigationBar />} */}
+          <Component className="dark" {...pageProps} />
+        </AuthProvider>
+        <Toaster />
+      </QueryClientProvider>
+    </NextUIProvider>
   );
 }

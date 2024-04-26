@@ -5,15 +5,8 @@ export const http = axios.create({
   withCredentials: true,
 });
 
-http.interceptors.response.use(undefined, errorHandler);
+// http.interceptors.response.use(undefined, errorHandler);
 
-function errorHandler(error: AxiosError) {
-  const statusCode = error.response?.status;
-  if (statusCode === axios.HttpStatusCode.Unauthorized) {
-    window.location.href = "/login";
-  } else {
-    console.error("Error fetching:", error);
-  }
-
-  return Promise.reject(error);
-}
+// function errorHandler(error: AxiosError) {
+//   return Promise.reject(error);
+// }

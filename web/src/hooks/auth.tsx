@@ -5,8 +5,15 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { createContext, useContext, useState } from "react";
+import { AxiosError } from "axios";
+import { useRouter } from "next/router";
+import { createContext, useContext, useEffect, useState } from "react";
+import { fetchCart } from "~/api/cart";
+import { ErrorPage } from "~/components/error";
+import { Loading } from "~/components/navigation/loading";
 import { Cart } from "~/interfaces/cart";
+import AuthPage from "~/pages/auth";
+import Login from "~/pages/login";
 
 // login
 // logout
@@ -18,50 +25,52 @@ const updateCart = async () => {};
 
 export interface Session {
   cart: Cart;
-  recentMovieSearch: string;
-  updateCart: () => void;
+  // recentMovieSearch: string;
+  // updateCart: () => void;
 }
 
 export interface AuthContextValue {
   session: Session | null;
-  login: (() => void) | undefined;
-  logout: (() => void) | undefined;
+  // login: (() => void) | undefined;
+  // logout: (() => void) | undefined;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   session: null,
-  login: undefined,
-  logout: undefined,
+  // login: undefined,
+  // logout: undefined,
 });
 
-function AuthProvider({ children }: any) {
-  const [session, setSession] = useState<Session | null>(null);
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+function AuthProvider({ children }: AuthProviderProps) {
+  const {
+    isPending,
+    error,
+    data: cart,
+  } = useQuery({
+    queryKey: ["cart"],
+    queryFn: fetchCart,
+    retry: false,
+  });
 
-  // const { isPending, error, data } = useQuery({
-  //   queryKey: ["repoData"],
-  //   queryFn: () =>
-  //     fetch("https://api.github.com/repos/TanStack/query").then((res) =>
-  //       res.json()
-  //     ),
-  // });
+  if (isPending) {
+    return <Loading />;
+  }
 
-  const login = async () => {
-    console.log("logging in");
-  };
-  const logout = async () => {
-    console.log("logging out");
-  };
+  if (error !== null) {
+    console.log(error);
+    return <ErrorPage error={error} />;
+  }
 
+  const session = cart ? { cart } : null;
   const value = {
-    session: null,
-    login,
-    logout,
+    session,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-const useAuth = useContext(AuthContext);
-
-AuthContext;
+const useAuth = () => useContext(AuthContext);
 
 export { AuthProvider, useAuth };
