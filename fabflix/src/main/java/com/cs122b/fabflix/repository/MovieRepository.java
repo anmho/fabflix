@@ -50,31 +50,34 @@ public class MovieRepository {
                          "    m.id = ?\n" +
                          "LIMIT 1;\n";
         Database db = Database.getInstance();
-        Connection conn = db.getConnection();
+        try (Connection conn = db.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, movieId);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        movie = new Movie(
+                                rs.getString("id"),
+                                rs.getString("title"),
+                                rs.getInt("year"),
+                                rs.getString("director"),
+                                rs.getFloat("rating")
+                        );
 
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, movieId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    movie = new Movie(
-                            rs.getString("id"),
-                            rs.getString("title"),
-                            rs.getInt("year"),
-                            rs.getString("director"),
-                            rs.getFloat("rating")
-                    );
+                        String genresString = rs.getString("genres");
+                        List<Genre> genres = parseGenres(genresString);
 
-                    String genresString = rs.getString("genres");
-                    List<Genre> genres = parseGenres(genresString);
+                        String starsString = rs.getString("stars");
+                        List<Star> stars = parseStars(starsString);
 
-                    String starsString = rs.getString("stars");
-                    List<Star> stars = parseStars(starsString);
-
-                    movie.setGenres(genres);
-                    movie.setStars(stars);
+                        movie.setGenres(genres);
+                        movie.setStars(stars);
+                    }
                 }
             }
+
+
         }
+
 
         return movie;
     }
@@ -110,35 +113,38 @@ public class MovieRepository {
                 "    r.rating DESC;\n";
 
         Database db = Database.getInstance();
-        Connection conn = db.getConnection();
+        try (Connection conn = db.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, starId);
+                log.info("Star id " + starId);
+                ResultSet rs = stmt.executeQuery();
 
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, starId);
-            log.info("Star id " + starId);
-            ResultSet rs = stmt.executeQuery();
-
-            List<Movie> movies = new ArrayList<>();
-            while (rs.next()) {
-                Movie movie = new Movie();
-                movie.setId(rs.getString("id"));
-                movie.setTitle(rs.getString("title"));
-                movie.setYear(rs.getInt("year"));
-                movie.setDirector(rs.getString("director"));
-                movie.setRating(rs.getFloat("rating"));
+                List<Movie> movies = new ArrayList<>();
+                while (rs.next()) {
+                    Movie movie = new Movie();
+                    movie.setId(rs.getString("id"));
+                    movie.setTitle(rs.getString("title"));
+                    movie.setYear(rs.getInt("year"));
+                    movie.setDirector(rs.getString("director"));
+                    movie.setRating(rs.getFloat("rating"));
 
 
-                String starsString = rs.getString("stars");
-                List<Star> stars = parseStars(starsString);
-                movie.setStars(stars);
+                    String starsString = rs.getString("stars");
+                    List<Star> stars = parseStars(starsString);
+                    movie.setStars(stars);
 
-                String genreString = rs.getString("genres");
-                List<Genre> genres = parseGenres(genreString);
-                movie.setGenres(genres);
+                    String genreString = rs.getString("genres");
+                    List<Genre> genres = parseGenres(genreString);
+                    movie.setGenres(genres);
 
-                movies.add(movie);
+                    movies.add(movie);
+                }
+                return movies;
             }
-            return movies;
+
+
         }
+
     }
 
 
