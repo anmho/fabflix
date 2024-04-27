@@ -14,7 +14,6 @@ import { handleLogin } from "~/api/login";
 import { ErrorPage } from "~/components/error";
 import { Loading } from "~/components/navigation/loading";
 import { Cart } from "~/interfaces/cart";
-import AuthPage from "~/pages/auth";
 import Login from "~/pages/login";
 
 // login
@@ -33,14 +32,14 @@ export interface Session {
 
 export interface AuthContextValue {
   session: Session | null;
-  login: ((params: LoginParams) => Promise<LoginResponse>) | null;
-  logout: (() => Promise<LoginResponse>) | null;
+  login: (params: LoginParams) => Promise<LoginResponse>;
+  logout: () => Promise<LoginResponse>;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   session: null,
-  login: null,
-  logout: null,
+  login: (params: LoginParams) => Promise.reject(new Error("Not implemented")),
+  logout: () => Promise.reject(new Error("Not implemented")),
 });
 
 interface AuthProviderProps {

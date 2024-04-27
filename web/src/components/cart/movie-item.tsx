@@ -7,16 +7,15 @@ import { FaMinus } from "react-icons/fa6";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdAddShoppingCart } from "react-icons/md";
 
-import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
-import { handleEditFromCart } from "../api/cart";
-import { Card, CardContent } from "./ui/card";
-import { Button } from "./ui/button";
 import Image from "next/image";
 import { Skeleton } from "~/components/ui/skeleton";
 import { useTheme } from "next-themes";
-import { Badge } from "./ui/badge";
 import { cn } from "~/lib/utils";
-const MovieCard = ({
+import { handleEditFromCart } from "~/api/cart";
+import { Badge } from "../ui/badge";
+import { Card, CardContent } from "../ui/card";
+import { Button } from "../ui/button";
+const MovieCartItem = ({
   movie,
   isCartPage,
   handleAddToCart,
@@ -172,4 +171,4 @@ export function MovieCardLoading() {
   );
 }
 
-export { MovieCard };
+export { MovieCartItem };

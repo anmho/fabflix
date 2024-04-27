@@ -6,6 +6,9 @@ import { isLoggedIn } from "~/api/login";
 import { useRouter } from "next/router";
 import { fetchStarById } from "~/api/stars";
 import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
+import { Loading } from "~/components/navigation/loading";
+
+import { MoviesBentoGrid } from "~/components/bento-grid";
 
 const SingleStarPage: React.FC = () => {
   const [star, setStar] = useState<StarDetail | null>(null);
@@ -35,7 +38,7 @@ const SingleStarPage: React.FC = () => {
     // console.log(star);
   }, [star]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (!star) return <div>No star found...</div>;
 
   return (
@@ -52,9 +55,8 @@ const SingleStarPage: React.FC = () => {
           </p>
         </div>
       </div>
-      <h1 className="text-xl font-bold text-center mb-4">
-        All Movies of {star?.name}
-      </h1>
+      <h1 className="text-xl font-bold text-center mb-4">Movies</h1>
+      <MoviesBentoGrid movies={star.movies} />
       <div className="max-w-4xl mx-auto flex flex-wrap justify-start items-start">
         {star?.movies.map((movie) => (
           <CardContainer key={movie.id} className="w-full">

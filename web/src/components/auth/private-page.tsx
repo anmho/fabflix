@@ -4,17 +4,19 @@ import { useAuth } from "~/hooks/AuthProvider";
 import { Loading } from "../navigation/loading";
 
 interface PrivatePageProps {
-  page: React.ReactNode;
+  children: React.ReactNode;
 }
 
-export const PrivatePage = (page: React.ReactNode) => () => {
+export const PrivatePage: React.FC<PrivatePageProps> = ({
+  children,
+}: PrivatePageProps) => {
   const { session } = useAuth();
   const router = useRouter();
   console.log(session);
-  if (session === null) {
+  if (session === null && router.pathname !== "/login") {
     router.push("/login");
     return <Loading />;
   }
   console.log("this page is private", session);
-  return page;
+  return <>{children}</>;
 };

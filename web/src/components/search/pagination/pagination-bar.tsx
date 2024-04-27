@@ -26,7 +26,7 @@ export function PaginationBar({
 }: PaginationBarProps) {
   const { theme } = useTheme();
   return (
-    <Pagination className={cn(theme, "bg-background text-foreground")}>
+    <Pagination className={cn(theme, "bg-background text-foreground my-2")}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

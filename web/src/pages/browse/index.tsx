@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ComboboxDemo } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
 import { Genre } from "~/interfaces/genre";
 import { getGenres } from "~/api/genres";
@@ -51,7 +50,8 @@ const BrowseMoviesPage: React.FC = () => {
   return (
     <div className="xl:max-w-[1440px] w-full flex flex-col text-center sm:px-20 px-5 justify-center">
       <div>
-        <h1 className="text-4xl mb-4">Browse by genre</h1>
+        <h1 className="text-6xl mb-4 items-left flex">Browse</h1>
+        <h3 className="text-3xl my-3">Genres</h3>
         <div className=" flex justify-center items-center flex-wrap">
           <Link href={"/search"}>
             <Badge
@@ -94,4 +94,7 @@ const BrowseMoviesPage: React.FC = () => {
   );
 };
 
-export default PrivatePage(<BrowseMoviesPage />);
+// export default PrivatePage(<BrowseMoviesPage />);
+// export default (children: ReactNode) => PrivatePage({ children: <BrowseMoviesPage /> });
+export default BrowseMoviesPage;
+// export default PrivatePage({ children: <BrowseMoviesPage /> });
