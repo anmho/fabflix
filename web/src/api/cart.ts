@@ -1,4 +1,5 @@
 // services/api.ts
+import { AxiosError } from "axios";
 import { http } from "./http";
 import { Cart } from "~/interfaces/cart";
 
@@ -7,9 +8,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 // gets the cart for the current user
 export const fetchCart = async (): Promise<Cart> => {
   const response = await http.get("/cart").catch((e) => {
-    if (e.response.status === 401) {
-      return { data: null };
+    if (e instanceof AxiosError) {
+      if (e.response?.status === 401) {
+        return { data: null };
+      }
     }
+
     throw e;
   });
   const cart = response.data;
