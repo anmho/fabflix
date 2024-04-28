@@ -58,7 +58,7 @@ export const findMovies = async ({
   page,
 }: MovieSearchParams): Promise<PaginatedResult<Movie>> => {
   const params = new URLSearchParams();
-  limit = limit ?? 20;
+  limit = limit ?? 25;
   page = page ?? 1;
 
   if (filters) {

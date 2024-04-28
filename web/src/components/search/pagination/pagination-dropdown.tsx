@@ -27,7 +27,7 @@ export function PaginationDropdown({
   initLimit,
   changeLimitParam,
 }: PaginationDropdownProps) {
-  const [limit, setLimit] = React.useState<number>(initLimit ?? 20);
+  const [limit, setLimit] = React.useState<number>(initLimit ?? 25);
   const { theme } = useTheme();
 
   const handleOpenChange = (open: boolean) => {
@@ -69,7 +69,11 @@ export function PaginationDropdown({
           <DropdownMenuRadioItem value={"10"} onSelect={handleOnSelect}>
             10
           </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value={"25"} onSelect={handleOnSelect}>
+          <DropdownMenuRadioItem
+            value={"25"}
+            onSelect={handleOnSelect}
+            defaultChecked={true}
+          >
             25
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value={"50"} onSelect={handleOnSelect}>
