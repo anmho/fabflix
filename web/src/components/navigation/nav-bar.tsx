@@ -15,7 +15,7 @@ export function NavBar() {
     <div
       className={cn(
         theme,
-        " flex justify-center items-center p-4 border-border text-foreground backdrop-blur-sm bg-background"
+        " flex flex-wrap justify-center items-center p-4 border-border text-foreground backdrop-blur-sm bg-background"
       )}
     >
       <NavMenu />
