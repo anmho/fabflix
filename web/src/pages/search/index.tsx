@@ -232,7 +232,7 @@ const SearchMoviesPage: React.FC = () => {
       </div>
 
       {/* <div className="flex items-center align-center w-screen flex-wrap p-4"> */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="flex flex-wrap justify-evenly	">
         {searchResults.results.map((movie, i) => (
           <MovieCard
             key={i}
