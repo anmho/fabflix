@@ -16,6 +16,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { useTheme } from "next-themes";
 import { Badge } from "./ui/badge";
 import { cn } from "~/lib/utils";
+import { useRouter } from "next/router";
 const MovieCard = ({
   movie,
   isCartPage,
@@ -29,6 +30,7 @@ const MovieCard = ({
 }) => {
   const [quantity, setQuantity] = useState(movie.quantity);
   const { theme } = useTheme();
+  const router = useRouter();
 
   const handleIncrease = () => {
     const newQuantity = quantity + 1;
@@ -52,7 +54,7 @@ const MovieCard = ({
   console.log("movie", movie);
 
   return (
-    <Card className="w-full max-w-xs m-2 border-border bg-card text-card-foreground shadow-sm h-[48rem]">
+    <Card className="w-full min-w-[300px] max-w-xs m-2 border-border bg-card text-card-foreground shadow-sm">
       <div>
         <img
           alt="Movie Poster"
@@ -92,7 +94,13 @@ const MovieCard = ({
           <>
             <p className={cn(theme, "text-foreground")}>
               {movie.genres.map((genre) => (
-                <Badge key={genre.id} className="m-[2px]">
+                <Badge
+                  key={genre.id}
+                  className="m-[2px] hover:cursor-pointer"
+                  onClick={() => {
+                    window.location.href = `/search?genre=${genre.name.toLowerCase()}`;
+                  }}
+                >
                   {genre.name}
                 </Badge>
               ))}

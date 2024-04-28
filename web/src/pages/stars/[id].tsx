@@ -57,7 +57,7 @@ const SingleStarPage: React.FC = () => {
       </div>
       <h1 className="text-xl font-bold text-center mb-4">Movies</h1>
       <MoviesBentoGrid movies={star.movies} />
-      <div className="max-w-4xl mx-auto flex flex-wrap justify-start items-start">
+      {/* <div className="max-w-4xl mx-auto flex flex-wrap justify-start items-start">
         {star?.movies.map((movie) => (
           <CardContainer key={movie.id} className="w-full">
             <CardBody className="bg-gray-50 relative group dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] mx-2 rounded-xl p-6 border">
@@ -121,7 +121,7 @@ const SingleStarPage: React.FC = () => {
             </CardBody>
           </CardContainer>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
