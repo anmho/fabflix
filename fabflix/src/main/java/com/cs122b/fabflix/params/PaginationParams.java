@@ -24,7 +24,7 @@ public class PaginationParams {
         String pageString = req.getParameter("page");
         String limitString = req.getParameter("limit");
         int page = 1;
-        int limit = 20;
+        int limit = 25;
         try {
             if (pageString != null) {
                 page = Integer.parseInt(pageString);
