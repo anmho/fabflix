@@ -51,7 +51,7 @@ const MovieCartItem = ({
   console.log("movie", movie);
 
   return (
-    <Card className="w-full max-w-xs m-2 border-border bg-card text-card-foreground shadow-sm h-[48rem]">
+    <Card className="w-full max-w-xs m-2 border-border bg-card text-card-foreground shadow-sm">
       <div>
         <img
           alt="Movie Poster"
