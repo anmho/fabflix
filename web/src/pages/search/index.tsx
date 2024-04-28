@@ -156,9 +156,9 @@ const SearchMoviesPage: React.FC = () => {
     );
   }, [searchParams]);
 
-  if (isLoading || !searchResults) {
-    return <Loading />;
-  }
+  // if (!searchParams) {
+  //   return <Loading />;
+  // }
   // console.log("searchParams", searchParams);
   const handlePageChange = (page: number) => {
     setSearchParams((prev) => {
@@ -195,17 +195,17 @@ const SearchMoviesPage: React.FC = () => {
         "flex align-center flex-col bg-background xl:max-w-[1440px] w-full text-center sm:px-20 px-5 justify-center"
       )}
     >
-      <div className="flex justify-around align-center ">
+      <div className="flex justify-around align-center">
         <PaginationDropdown
-          initLimit={searchResults.limit}
+          initLimit={searchParams?.limit ?? 25}
           changeLimitParam={handleChangeLimit}
           className="mr-1"
         />
         <PaginationBar
-          hasPrev={searchResults._links.prev !== null}
-          hasNext={searchResults._links.next !== null}
+          hasPrev={!!searchResults?._links.prev}
+          hasNext={!!searchResults?._links.next}
           handlePageChange={handlePageChange}
-          page={searchResults.page}
+          page={searchParams?.page ?? 1}
         />
 
         <div className="flex items-center justify-center">
@@ -223,24 +223,28 @@ const SearchMoviesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* <div className="flex items-center align-center w-screen flex-wrap p-4"> */}
-      <div className="flex flex-wrap justify-evenly	">
-        {searchResults.results.map((movie, i) => (
-          <MovieCard
-            key={i}
-            isCartPage={false}
-            movie={movie}
-            handleAddToCart={() =>
-              addMovieToCart(movie.id, () => updateMovies(movie.title))
-            }
-            updateMovies={() => {}}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="flex flex-wrap justify-evenly	">
+          {searchResults?.results.map((movie, i) => (
+            <MovieCard
+              key={i}
+              isCartPage={false}
+              movie={movie}
+              handleAddToCart={() =>
+                addMovieToCart(movie.id, () => updateMovies(movie.title))
+              }
+              updateMovies={() => {}}
+            />
+          ))}
+        </div>
+      )}
+
       <PaginationBar
-        hasPrev={searchResults._links.prev !== null}
-        hasNext={searchResults._links.next !== null}
-        page={searchResults.page}
+        hasPrev={searchResults?._links.prev !== null}
+        hasNext={searchResults?._links.next !== null}
+        page={searchResults?.page ?? 1}
         handlePageChange={handlePageChange}
       />
       {/* <BentoGrid /> */}
