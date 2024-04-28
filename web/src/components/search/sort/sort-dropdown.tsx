@@ -113,7 +113,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
         {menuItems.map((item, i) => (
           <SortMenuItem
             key={i}
-            checked={sortState.inputState[item.type]?.checked}
+            checked={isOptionChecked(sortState, item.type)}
             label={item.label}
             disabled={
               !isOptionChecked(sortState, item.type) &&

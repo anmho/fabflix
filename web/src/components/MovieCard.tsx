@@ -51,7 +51,6 @@ const MovieCard = ({
   };
 
   useEffect(() => {}, [movie]);
-  console.log("movie", movie);
 
   return (
     <Card className="w-full min-w-[300px] max-w-xs m-2 border-border bg-card text-card-foreground shadow-sm">

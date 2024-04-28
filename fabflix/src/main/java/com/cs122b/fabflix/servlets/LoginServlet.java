@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
@@ -18,6 +20,8 @@ import java.sql.ResultSet;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login", "/isLoggedIn"})
 public class LoginServlet extends HttpServlet {
+
+    private final Logger log = LogManager.getLogger(LoginServlet.class.getName());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String providedEmail = request.getParameter("email");
@@ -64,6 +68,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }
         } catch (Exception e) {
+            log.error(e.getStackTrace());
             ResponseBuilder.error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request.");
         }
     }
