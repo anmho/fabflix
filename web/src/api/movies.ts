@@ -66,7 +66,6 @@ export const findMovies = async ({
       const value = filters[key as keyof typeof filters];
 
       if (value) {
-        if (key === "startsWith") key = "starts-with";
         params.append(key, value.toString());
       }
     }
