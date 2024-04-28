@@ -25,17 +25,22 @@ export function movieSearchParamsToURLParams(
   const { filters, sortBy, limit, page } = movieSearchParams;
   const params = new URLSearchParams();
 
-  for (let key in filters) {
-    const value = filters[key as keyof typeof filters];
-    if (value) {
-      params.set(key, value.toString());
+  if (filters) {
+    for (let key in filters) {
+      const value = filters[key as keyof typeof filters];
+      if (value) {
+        params.set(key, value.toString());
+      }
     }
   }
+
   if (sortBy) {
     const sortStrings = sortBy.map((dimension) =>
       new MovieSortDimension(dimension.field, dimension.order).toString()
     );
-    params.append("sortBy", sortStrings.join(","));
+    if (sortStrings.length > 0) {
+      params.append("sortBy", sortStrings.join(","));
+    }
   }
   if (limit) {
     params.append("limit", limit.toString());
