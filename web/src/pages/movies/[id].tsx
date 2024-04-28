@@ -6,7 +6,7 @@ import { Movie } from "~/interfaces/movie";
 import { getMovieById as fetchMovieById } from "~/api/movies";
 import { isLoggedIn } from "~/api/login";
 import { Loading } from "~/components/navigation/loading";
-
+import { Badge } from "~/components/ui/badge";
 const SingleMoviePage: React.FC = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const router = useRouter();
@@ -56,24 +56,31 @@ const SingleMoviePage: React.FC = () => {
           </p>
           <p className="text-gray-400">
             Genres:{" "}
-            <span className="font-semibold">
-              {movie?.genres.map((genre) => genre.name).join(", ")}
-            </span>
+            {movie.genres.map((genre) => (
+              <Badge
+                key={genre.id}
+                className="m-[2px] hover:cursor-pointer"
+                onClick={() => {
+                  window.location.href = `/search?genre=${genre.name.toLowerCase()}`;
+                }}
+              >
+                {genre.name}
+              </Badge>
+            ))}
           </p>
           <p className="text-gray-400">
-            Stars:{" "}
-            {movie?.stars.map((star, index) => (
-              <React.Fragment key={star?.id}>
-                {index > 0 && ", "}
-                <Link
-                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200 ease-in-out"
-                  href={`/stars/${star?.id}`}
-                >
+            Stars:
+            {movie.stars.map((star, index) => (
+              <Badge
+                key={star.id}
+                className="bg-background border-border text-foreground mr-1"
+              >
+                <Link href={`/stars/${star.id}`}>
                   {star.name}{" "}
                   {`(${star?.birthYear > 0 ? star?.birthYear : "N/A"})`}{" "}
-                  {star.numMovies}
+                  {star.numMovies}{" "}
                 </Link>
-              </React.Fragment>
+              </Badge>
             ))}
           </p>
           <p className="text-gray-400">
