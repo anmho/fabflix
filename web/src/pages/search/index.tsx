@@ -22,8 +22,6 @@ import { ParsedUrlQuery } from "querystring";
 import { addMovieToCart } from "~/api/cart";
 import { updateMovies } from "../movies";
 import { Loading } from "~/components/navigation/loading";
-import { set } from "date-fns";
-import { PrivatePage } from "~/components/auth/private-page";
 import { useSearch } from "~/hooks/SearchContextProvider";
 import { cn } from "~/lib/utils";
 import { useTheme } from "next-themes";
@@ -86,7 +84,6 @@ const parseMovieQueryParams = (
   const dict: Record<string, unknown> = {};
   for (let key in searchParams) {
     const value = searchParams[key];
-    console.log(key, value);
     dict[key] = value;
   }
 
@@ -96,7 +93,6 @@ const parseMovieQueryParams = (
   }
 
   const params = result.data;
-  console.log("params", params);
 
   const findMovieParams = {
     filters: {
@@ -127,9 +123,7 @@ const SearchMoviesPage: React.FC = () => {
   const router = useRouter();
   const { recentMovieQuery, updateSearchQuery } = useSearch();
   useEffect(() => {
-    // console.log("router.query", router);
     if (router.isReady && searchParams === undefined) {
-      // IMPORTANT will cause infinite loop if not checked since router state is updated on filter change
       const initialSearchParams = parseMovieQueryParams(router.query);
       if (initialSearchParams === null) {
         router.push("/404");
@@ -173,7 +167,6 @@ const SearchMoviesPage: React.FC = () => {
   };
 
   const handleApplyFilters = (filters: MovieFilters) => {
-    console.log(filters);
     handlePageChange(1);
     setSearchParams((prev) => {
       return { ...prev, filters };
@@ -181,7 +174,6 @@ const SearchMoviesPage: React.FC = () => {
   };
 
   const handleApplySort = (dimensions: MovieSortDimension[]) => {
-    console.log(dimensions);
     handlePageChange(1);
     setSearchParams((prev) => {
       return { ...prev, sortBy: dimensions };
