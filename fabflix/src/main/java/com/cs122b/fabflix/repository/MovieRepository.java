@@ -62,18 +62,6 @@ public class MovieRepository {
                                 rs.getString("director"),
                                 rs.getFloat("rating")
                         );
-        try (Connection conn = db.getConnection()) {
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, movieId);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    if (rs.next()) {
-                        movie = new Movie(
-                                rs.getString("id"),
-                                rs.getString("title"),
-                                rs.getInt("year"),
-                                rs.getString("director"),
-                                rs.getFloat("rating")
-                        );
 
                         String genresString = rs.getString("genres");
                         List<Genre> genres = parseGenres(genresString);
@@ -86,10 +74,6 @@ public class MovieRepository {
                     }
                 }
             }
-
-        }
-
-
 
         }
 
