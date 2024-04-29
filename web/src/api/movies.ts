@@ -1,5 +1,4 @@
-import { MovieSortDimension } from "~/components/search/sort/dimensions";
-import { Movie } from "~/interfaces/movie";
+import { Movie, MovieSortDimension } from "~/interfaces/movie";
 import { PaginatedResult } from "~/interfaces/paginated-result";
 import { http } from "./http";
 

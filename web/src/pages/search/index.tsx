@@ -8,10 +8,9 @@ import { BentoGrid } from "~/components/ui/bento-grid";
 import { z } from "zod";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { MovieSortDimension } from "~/components/search/sort/dimensions";
 import { MovieCard } from "~/components/MovieCard";
 import { PaginatedResult } from "~/interfaces/paginated-result";
-import { Movie } from "~/interfaces/movie";
+import { Movie, MovieSortDimension } from "~/interfaces/movie";
 import {
   findMovies,
   MovieSearchParams,
@@ -156,10 +155,9 @@ const SearchMoviesPage: React.FC = () => {
     );
   }, [searchParams]);
 
-  // if (!searchParams) {
-  //   return <Loading />;
-  // }
-  // console.log("searchParams", searchParams);
+  if (!searchParams) {
+    return <Loading />;
+  }
   const handlePageChange = (page: number) => {
     setSearchParams((prev) => {
       return { ...prev, page };
@@ -197,7 +195,7 @@ const SearchMoviesPage: React.FC = () => {
     >
       <div className="flex justify-around align-center">
         <PaginationDropdown
-          initLimit={searchParams?.limit ?? 25}
+          initLimit={searchParams.limit ?? 25}
           changeLimitParam={handleChangeLimit}
           className="mr-1"
         />
@@ -205,7 +203,7 @@ const SearchMoviesPage: React.FC = () => {
           hasPrev={!!searchResults?._links.prev}
           hasNext={!!searchResults?._links.next}
           handlePageChange={handlePageChange}
-          page={searchParams?.page ?? 1}
+          page={searchParams.page ?? 1}
         />
 
         <div className="flex items-center justify-center">
@@ -213,12 +211,12 @@ const SearchMoviesPage: React.FC = () => {
           <FiltersDropdown
             handleApplyFilters={handleApplyFilters}
             className="mr-1"
-            initialFilters={searchParams?.filters ?? {}}
+            initialFilters={searchParams.filters ?? {}}
           />
           {/* Sort Options */}
           <SortDropdown
             applySort={handleApplySort}
-            initDimensions={searchParams?.sortBy}
+            initDimensions={searchParams.sortBy ?? []}
           />
         </div>
       </div>

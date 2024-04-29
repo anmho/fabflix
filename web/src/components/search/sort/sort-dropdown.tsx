@@ -12,85 +12,69 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { ArrowDownWideNarrow } from "lucide-react";
-import { useReducer } from "react";
-import { Checked } from "./sort-dropdown.types";
-import {
-  createInitSortState,
-  isFieldSelected,
-  isOptionChecked,
-  sortReducer,
-} from "./state";
-import {
-  MovieSortDimension,
-  MovieSortField,
-  SortActionEnum,
-} from "./dimensions";
+import { useEffect, useReducer, useState } from "react";
+
 import { cn } from "~/lib/utils";
 import { useTheme } from "next-themes";
+import { MovieSortDimension, SortActionEnum } from "~/interfaces/movie";
+import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 
 interface SortDropdownProps {
-  initDimensions?: MovieSortDimension[];
+  initDimensions: MovieSortDimension[];
   applySort: (dimensions: MovieSortDimension[]) => void;
 }
 
-const menuItems: {
-  type: SortActionEnum;
-  field: MovieSortField;
-  label: string;
-}[] = [
-  {
-    type: SortActionEnum.TITLE_DESC,
-    field: "title",
-    label: "Title (Z to A)",
-  },
-  {
-    type: SortActionEnum.TITLE_ASC,
-    field: "title",
-    label: "Title (A to Z)",
-  },
-  {
-    type: SortActionEnum.RATING_DESC,
-    field: "rating",
-    label: "Rating (High to Low)",
-  },
-  {
-    type: SortActionEnum.RATING_ASC,
-    field: "rating",
-    label: "Rating (Low to High)",
-  },
-  {
-    type: SortActionEnum.YEAR_DESC,
-    field: "year",
-    label: "Release Year (Newest First)",
-  },
-  {
-    type: SortActionEnum.YEAR_ASC,
-    field: "year",
-    label: "Release Year (Oldest First)",
-  },
-];
+export type Checked = DropdownMenuCheckboxItemProps["checked"];
+
+export type SortDropdownState = {
+  [key in SortActionEnum]: Checked;
+};
+
 export const SortDropdown: React.FC<SortDropdownProps> = ({
   initDimensions,
   applySort,
 }: SortDropdownProps) => {
-  const [sortState, dispatch] = useReducer(
-    sortReducer,
-    createInitSortState(initDimensions ?? [])
-  );
+  const [dimensions, setDimensions] =
+    useState<MovieSortDimension[]>(initDimensions);
 
   const { theme } = useTheme();
-  const handleCheckedChange = (checked: Checked, type: SortActionEnum) => {
-    dispatch({ checked, type });
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      applySort(sortState.dimensions);
+  const handleCheckedChange = (
+    checked: Checked,
+    dimension: MovieSortDimension
+  ) => {
+    if (checked) {
+      setDimensions([...dimensions, dimension]);
+    } else if (!checked) {
+      setDimensions([
+        ...dimensions.filter(
+          (d) => !(d.field === dimension.field && d.order === dimension.order)
+        ),
+      ]);
     }
   };
 
+  useEffect(() => {
+    applySort(dimensions);
+  }, [dimensions]);
+
+  const isSelected = (dimension: MovieSortDimension) => {
+    // it is in the list
+    const found =
+      dimensions.find(
+        (d) => d.field === dimension.field && d.order === dimension.order
+      ) !== undefined;
+    return found;
+  };
+  const isDisabled = (dimension: MovieSortDimension) => {
+    const field =
+      dimensions.find((d) => d.field === dimension.field) !== undefined;
+    const option = isSelected(dimension);
+    console.log(field, option);
+    return field && !option;
+  };
+
   return (
-    <DropdownMenu onOpenChange={handleOpenChange}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
@@ -113,19 +97,16 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
         {menuItems.map((item, i) => (
           <SortMenuItem
             key={i}
-            checked={isOptionChecked(sortState, item.type)}
+            checked={isSelected(item.dimension)}
             label={item.label}
-            disabled={
-              !isOptionChecked(sortState, item.type) &&
-              isFieldSelected(sortState, item.field)
-            }
+            disabled={isDisabled(item.dimension)}
             handleOnCheckedChange={(check) => {
-              handleCheckedChange(check, item.type);
+              handleCheckedChange(check, item.dimension);
             }}
           />
         ))}
         <div className="px-2 pt-1 w-full h-10">
-          {sortState.dimensions.map((dim, i) => (
+          {dimensions.map((dim, i) => (
             <Badge className="m-1" key={i}>
               {dim.field.slice(0, 1).toUpperCase() + dim.field.slice(1)}
             </Badge>
@@ -162,3 +143,33 @@ const SortMenuItem: React.FC<SortMenuItemProps> = ({
 };
 
 // field is selected but its not this one
+
+const menuItems: {
+  dimension: MovieSortDimension;
+  label: string;
+}[] = [
+  {
+    dimension: new MovieSortDimension("title", "desc"),
+    label: "Title (Z to A)",
+  },
+  {
+    dimension: new MovieSortDimension("title", "asc"),
+    label: "Title (A to Z)",
+  },
+  {
+    dimension: new MovieSortDimension("rating", "desc"),
+    label: "Rating (High to Low)",
+  },
+  {
+    dimension: new MovieSortDimension("rating", "asc"),
+    label: "Rating (Low to High)",
+  },
+  {
+    dimension: new MovieSortDimension("year", "desc"),
+    label: "Release Year (Newest First)",
+  },
+  {
+    dimension: new MovieSortDimension("year", "asc"),
+    label: "Release Year (Oldest First)",
+  },
+];
