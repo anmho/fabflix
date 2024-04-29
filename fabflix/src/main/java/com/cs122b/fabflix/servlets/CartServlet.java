@@ -62,7 +62,10 @@ public class CartServlet extends HttpServlet {
                 .orElse(null);
 
         if (existingMovie != null) {
-            // If movie is already in the cart, don't add it again, just return the current cart
+//             If movie is already in the cart, increase the quantity
+            existingMovie.setQuantity(existingMovie.getQuantity() + 1);
+
+
             ResponseBuilder.json(response, cart.getMovies(), HttpServletResponse.SC_OK);
             return;
         }

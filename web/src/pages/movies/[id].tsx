@@ -7,10 +7,16 @@ import { getMovieById as fetchMovieById } from "~/api/movies";
 import { isLoggedIn } from "~/api/login";
 import { Loading } from "~/components/navigation/loading";
 import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
+import { useTheme } from "next-themes";
+import { addMovieToCart } from "~/api/cart";
+import { updateMovies } from ".";
+import { cn } from "~/utils/cn";
 const SingleMoviePage: React.FC = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const { theme } = useTheme();
 
   useEffect(() => {
     isLoggedIn().then(({ success }) => {
@@ -86,6 +92,14 @@ const SingleMoviePage: React.FC = () => {
           <p className="text-gray-400">
             Rating: <span className="font-semibold">{movie?.rating}</span>
           </p>
+          <Button
+            className={cn(theme, "bottom-0 border border-border w-full")}
+            onClick={() =>
+              addMovieToCart(movie.id, () => updateMovies(movie.title))
+            }
+          >
+            Add to cart
+          </Button>
         </div>
       </div>
     </div>
