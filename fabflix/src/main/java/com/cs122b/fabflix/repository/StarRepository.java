@@ -14,8 +14,7 @@ public class StarRepository {
                 ;
 
         Database db = Database.getInstance();
-
-        try (Connection conn = db.getConnection()) {
+        try (Connection conn = db.getConnection()) {{
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);
                 stmt.setString(1, id);
@@ -38,9 +37,7 @@ public class StarRepository {
                 e.printStackTrace();
                 return null;
             }
-
-        }
-
+        }}
 
    }
 

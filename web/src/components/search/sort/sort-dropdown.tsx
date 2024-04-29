@@ -53,9 +53,15 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
     }
   };
 
-  useEffect(() => {
-    applySort(dimensions);
-  }, [dimensions]);
+  // useEffect(() => {
+  //   applySort(dimensions);
+  // }, [dimensions]);
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      applySort(dimensions);
+    }
+  };
 
   const isSelected = (dimension: MovieSortDimension) => {
     // it is in the list
@@ -69,12 +75,11 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
     const field =
       dimensions.find((d) => d.field === dimension.field) !== undefined;
     const option = isSelected(dimension);
-    console.log(field, option);
     return field && !option;
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={(open) => handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
