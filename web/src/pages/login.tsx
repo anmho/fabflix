@@ -106,10 +106,13 @@ function AuthCard({
           Welcome Back!
         </h2>
 
-        <h1>
-          jbrown@ics185.edu <br />
-          keyboard
-        </h1>
+        {process.env.NODE_ENV === "development" && (
+          <h1>
+            jbrown@ics185.edu <br />
+            keyboard
+          </h1>
+        )}
+
         <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
           Login for seamless rentals, endless entertainment.
         </p>
