@@ -13,7 +13,12 @@ export const PrivatePage: React.FC<PrivatePageProps> = ({
   const { session } = useAuth();
   const router = useRouter();
   console.log(session);
-  if (session === null && router.pathname !== "/login") {
+
+  if (
+    session === null &&
+    router.pathname !== "/login" &&
+    router.pathname !== "/"
+  ) {
     router.push("/login");
     return <Loading />;
   }
