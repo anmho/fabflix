@@ -14,31 +14,31 @@ public class StarRepository {
                 ;
 
         Database db = Database.getInstance();
-
-        Connection conn = db.getConnection();
-
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, id);
+        try (Connection conn = db.getConnection()) {{
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setString(1, id);
 
 
-            ResultSet rs = stmt.executeQuery();
-            if (!rs.next()) {
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    return null;
+                }
+
+                String name = rs.getString("name");
+                int birthYear = rs.getInt("birthYear");
+                int numMovies = rs.getInt("numMovies");
+
+                return new Star(id, name, birthYear, numMovies);
+            } catch (SQLException e) {
+                int code = e.getErrorCode();
+                // do stuff based on the code,
+                // 404 return null etc
+                e.printStackTrace();
                 return null;
             }
+        }}
 
-            String name = rs.getString("name");
-            int birthYear = rs.getInt("birthYear");
-            int numMovies = rs.getInt("numMovies");
-
-            return new Star(id, name, birthYear, numMovies);
-        } catch (SQLException e) {
-            int code = e.getErrorCode();
-            // do stuff based on the code,
-            // 404 return null etc
-            e.printStackTrace();
-            return null;
-        }
    }
 
 
