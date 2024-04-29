@@ -23,7 +23,6 @@
 |Report/README|Demo video URL.|Andrew Ho|
 |Report/README|Each member's contribution to the project.|Mehmet A. Nadi|
 |Extra Credit	|Show efforts to beautify the page and table using CSS	|Mehmet A. Nadi, Andrew Ho|
-
 | Login Page         | Redirect any other pages to the Login Page if the user is not logged in                  | 3      |
 | Login Page         | Show an error message for an incorrect username or password                             | 2      |
 | Login Page         | Use HTTP POST                                                                          | 2      |
