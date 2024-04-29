@@ -225,19 +225,23 @@ const SearchMoviesPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-evenly	">
-        {searchResults?.results.map((movie, i) => (
-          <MovieCard
-            key={i}
-            isCartPage={false}
-            movie={movie}
-            handleAddToCart={() =>
-              addMovieToCart(movie.id, () => updateMovies(movie.title))
-            }
-            updateMovies={() => {}}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="flex flex-wrap justify-evenly	">
+          {searchResults?.results.map((movie, i) => (
+            <MovieCard
+              key={i}
+              isCartPage={false}
+              movie={movie}
+              handleAddToCart={() =>
+                addMovieToCart(movie.id, () => updateMovies(movie.title))
+              }
+              updateMovies={() => {}}
+            />
+          ))}
+        </div>
+      )}
 
       <PaginationBar
         hasPrev={searchResults._links.prev !== null}
