@@ -1,6 +1,7 @@
 # Fabflix Monorepo
 
-[Demo](https://www.youtube.com/watch?v=IbJSeyeTfig&ab_channel=MehmetNadi)
+[Demo Project 1](https://www.youtube.com/watch?v=IbJSeyeTfig&ab_channel=MehmetNadi)
+[Demo Project 2](https://www.loom.com/share/8825fc9f871f4e20834d4b7e92305752)
 ## Contributions
 ### Project 1
 | Task | Entry | Assignee |
