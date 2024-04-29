@@ -124,6 +124,7 @@ const SearchMoviesPage: React.FC = () => {
   useEffect(() => {
     if (router.isReady && searchParams === undefined) {
       const initialSearchParams = parseMovieQueryParams(router.query);
+      console.log("initialSearchParams", initialSearchParams, router.query);
       if (initialSearchParams === null) {
         router.push("/404");
         return;
@@ -131,6 +132,8 @@ const SearchMoviesPage: React.FC = () => {
       setSearchParams(() => initialSearchParams);
     }
   }, [router.query, router.isReady, router.asPath]);
+
+  console.log("search", searchParams);
 
   useEffect(() => {
     if (!searchParams) {
@@ -145,6 +148,7 @@ const SearchMoviesPage: React.FC = () => {
 
     const params = movieSearchParamsToURLParams(searchParams);
     updateSearchQuery(`/search?${params.toString()}`);
+
     router.replace(
       "/search",
       {
@@ -155,7 +159,7 @@ const SearchMoviesPage: React.FC = () => {
     );
   }, [searchParams]);
 
-  if (!searchParams) {
+  if (!searchParams || !searchResults) {
     return <Loading />;
   }
   const handlePageChange = (page: number) => {
@@ -221,28 +225,24 @@ const SearchMoviesPage: React.FC = () => {
         </div>
       </div>
 
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div className="flex flex-wrap justify-evenly	">
-          {searchResults?.results.map((movie, i) => (
-            <MovieCard
-              key={i}
-              isCartPage={false}
-              movie={movie}
-              handleAddToCart={() =>
-                addMovieToCart(movie.id, () => updateMovies(movie.title))
-              }
-              updateMovies={() => {}}
-            />
-          ))}
-        </div>
-      )}
+      <div className="flex flex-wrap justify-evenly	">
+        {searchResults?.results.map((movie, i) => (
+          <MovieCard
+            key={i}
+            isCartPage={false}
+            movie={movie}
+            handleAddToCart={() =>
+              addMovieToCart(movie.id, () => updateMovies(movie.title))
+            }
+            updateMovies={() => {}}
+          />
+        ))}
+      </div>
 
       <PaginationBar
-        hasPrev={searchResults?._links.prev !== null}
-        hasNext={searchResults?._links.next !== null}
-        page={searchResults?.page ?? 1}
+        hasPrev={searchResults._links.prev !== null}
+        hasNext={searchResults._links.next !== null}
+        page={searchResults.page}
         handlePageChange={handlePageChange}
       />
       {/* <BentoGrid /> */}
