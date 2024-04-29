@@ -79,7 +79,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
   };
 
   return (
-    <DropdownMenu onOpenChange={(open) => handleOpenChange}>
+    <DropdownMenu onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
