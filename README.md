@@ -3,7 +3,7 @@
 [Demo Project 1](https://www.youtube.com/watch?v=IbJSeyeTfig&ab_channel=MehmetNadi)
 [Demo Project 2](https://www.loom.com/share/8825fc9f871f4e20834d4b7e92305752)
 ## Contributions
-### Project 1
+### Project 2
 | Task | Entry | Assignee |
 |----------|-----------|--------------|
 |Login Page|Redirect any other pages to the Login Page if the user is not logged in	|Mehmet Nadi, Andrew Ho|
@@ -37,4 +37,11 @@
 |Additional Performance Functionality|Have a Checkout button for every page after login; if the user clicks it, it will jump to the shopping cart page	| Mehmet Nadi|
 |Additional Performance Functionality|Have an "Add to Cart button" for each movie in the Movie List Page and each Single Movie Page; Indicate success/failure for a user click.| Mehmet Nadi|
 |Extra Credit	|Show efforts to beautify the page and table using CSS and JavaScript	| Mehmet Nadi, Andrew Ho|
+
+### Substring matching design
+Add a where clause to the sql query if `title` query param is not null.
+Like this
+`...WHERE title LIKE '%?'%'...`
+The `title` query param is then parameterized into the query to prevent sql injection using a `PreparedStatement`. Then the query is executed.
+
 
