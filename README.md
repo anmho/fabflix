@@ -39,7 +39,8 @@
 |Extra Credit	|Show efforts to beautify the page and table using CSS and JavaScript	| Mehmet Nadi, Andrew Ho|
 
 ### Substring matching design
-Add a where clause to the sql query if `title` query param is not null.
+For filter parameters that require substring matching (`director`, `title`, `star`),
+We add a where clause to the sql query if the query param e.g. `title` query param is not null.
 Like this
 `...WHERE title LIKE '%?'%'...`
 The `title` query param is then parameterized into the query to prevent sql injection using a `PreparedStatement`. Then the query is executed.
