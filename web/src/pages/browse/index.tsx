@@ -80,7 +80,7 @@ const BrowseMoviesPage: React.FC = () => {
           {JSON.stringify(console.log(startsWithOptions))}
         </p>
         {startsWithOptions.map((letter, i) => (
-          <Link key={i} href={`/search?startsWith=${letter}`}>
+          <Link key={i} href={`/search?startsWith=${letter.toLowerCase()}`}>
             <Button
               className={cn(
                 theme,
