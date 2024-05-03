@@ -12,11 +12,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
-    private final ArrayList<String> allowedURIs = new ArrayList<>();
+    private final Set<String> allowedURIs = new HashSet<>();
     private final Logger log = LogManager.getLogger(LoginFilter.class.getName());
 
     @Override
@@ -64,15 +66,8 @@ public class LoginFilter implements Filter {
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
         String normalizedUri = requestURI.toLowerCase();
-
-        for (String uri : allowedURIs) {
-            if (normalizedUri.contains(uri.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
+        return allowedURIs.stream().anyMatch(uri -> normalizedUri.contains(uri.toLowerCase()));
     }
-
     @Override
     public void destroy() {
     }
