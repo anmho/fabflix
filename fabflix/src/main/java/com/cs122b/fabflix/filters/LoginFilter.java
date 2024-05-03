@@ -37,7 +37,7 @@ public class LoginFilter implements Filter {
 
         String requestURI = httpRequest.getRequestURI();
 
-            log.debug("LoginFilter: " + requestURI);
+        log.debug("LoginFilter: " + requestURI);
         log.debug("LoginFilter: " + requestURI);
         HttpSession session = httpRequest.getSession();
         log.debug("session.getId==> " + session.getId() );
