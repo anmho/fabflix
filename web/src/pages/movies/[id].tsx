@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Movie } from "~/interfaces/movie";
 import { getMovieById as fetchMovieById } from "~/api/movies";
-import { isLoggedIn } from "~/api/login";
+import { isUserLoggedIn } from "~/api/login";
 import { Loading } from "~/components/navigation/loading";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -19,8 +19,8 @@ const SingleMoviePage: React.FC = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
-    isLoggedIn().then(({ success }) => {
-      if (!success) {
+    isUserLoggedIn().then(({ isLoggedIn }) => {
+      if (!isLoggedIn) {
         router.push("/login");
       } else if (router.query.id) {
         fetchMovieById(router.query.id as string).then((movie) => {

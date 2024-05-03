@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { handleCheckout } from "~/api/checkout";
-import { isLoggedIn } from "~/api/login";
+import { isUserLoggedIn } from "~/api/login";
 import { fetchCart, handleEditFromCart } from "~/api/cart";
 import { Movie } from "~/interfaces/movie";
 import { MovieCard } from "~/components/MovieCard";
@@ -13,7 +13,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 import { Button } from "~/components/ui/button";
 import { BackButton } from "~/components/navigation/back-button";
-import { Loading } from '~/components/navigation/loading';
+import { Loading } from "~/components/navigation/loading";
 
 const CheckoutPage: React.FC = () => {
   const [creditCardId, setCreditCardId] = useState("");
@@ -29,8 +29,8 @@ const CheckoutPage: React.FC = () => {
   const [totalBill, setTotalBill] = useState<number>(0);
 
   useEffect(() => {
-    isLoggedIn().then(({ success }) => {
-      if (!success) {
+    isUserLoggedIn().then(({ isLoggedIn }) => {
+      if (!isLoggedIn) {
         router.push("/login");
       } else {
         getCartItems();

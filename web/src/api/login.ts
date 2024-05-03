@@ -26,8 +26,9 @@ export const handleLogin = async (
   }
 };
 
-export const isLoggedIn = async (): Promise<{
-  success: boolean;
+export const isUserLoggedIn = async (): Promise<{
+  isLoggedIn: boolean;
+  userType: string | null;
   message?: string;
 }> => {
   try {
@@ -37,12 +38,20 @@ export const isLoggedIn = async (): Promise<{
     });
     if (response.ok) {
       const data = await response.json();
-      return { success: data };
+      return { isLoggedIn: data.isLoggedIn, userType: data.userType };
     } else {
-      return { success: false, message: "Failed to check login status" };
+      return {
+        isLoggedIn: false,
+        userType: null,
+        message: "Failed to check login status",
+      };
     }
   } catch (error) {
     console.error("Error checking login status", error);
-    return { success: false, message: "Failed to connect to the server." };
+    return {
+      isLoggedIn: false,
+      userType: null,
+      message: "Failed to check login status",
+    };
   }
 };
