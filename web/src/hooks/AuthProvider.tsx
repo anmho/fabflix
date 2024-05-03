@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { login, LoginParams, LoginResponse, logout } from "~/api/auth";
 import { fetchCart } from "~/api/cart";
-import { handleLogin } from "~/api/login";
+import { handleLogin, isUserLoggedIn } from "~/api/login";
 import { ErrorPage } from "~/components/error";
 import { Loading } from "~/components/navigation/loading";
 import { Cart } from "~/interfaces/cart";
@@ -25,9 +25,8 @@ import Login from "~/pages/login";
 const updateCart = async () => {};
 
 export interface Session {
-  cart: Cart;
-  // recentMovieSearch: string;
-  // updateCart: () => void;
+  cart?: Cart;
+  userType?: string | null; // Now can be 'string', 'undefined', or 'null'
 }
 
 export interface AuthContextValue {
@@ -57,6 +56,45 @@ function AuthProvider({ children }: AuthProviderProps) {
     retry: false,
   });
 
+  const [userType, setUserType] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkUserType = async () => {
+      const response = await isUserLoggedIn();
+      if (response.isLoggedIn) {
+        setUserType(response.userType);
+      }
+    };
+
+    checkUserType();
+  }, []);
+
+  const handleLogin = async ({ email, password }: LoginParams) => {
+    const response = await login({ email, password });
+    if (response.success) {
+      refetchCart();
+      const userTypeResponse = await isUserLoggedIn();
+      if (userTypeResponse.isLoggedIn) {
+        setUserType(userTypeResponse.userType);
+      }
+    }
+    return response;
+  };
+
+  const handleLogout = async () => {
+    const response = await logout();
+    refetchCart();
+    setUserType(null);
+    return response;
+  };
+
+  const session = cart ? { cart, userType } : null;
+  const value = {
+    session,
+    login: handleLogin,
+    logout: handleLogout,
+  };
+
   if (isPending) {
     return <Loading />;
   }
@@ -66,27 +104,13 @@ function AuthProvider({ children }: AuthProviderProps) {
     return <ErrorPage error={error} />;
   }
 
-  const handleLogin = async ({ email, password }: LoginParams) => {
-    const response = await login({ email, password });
-    refetchCart();
-    return response;
-  };
-
-  const handleLogout = async () => {
-    const response = await logout();
-    refetchCart();
-    console.log("AuthProvider", response);
-    return response;
-  };
-
-  const session = cart ? { cart } : null;
-  const value = {
-    session,
-    login: handleLogin,
-    logout: handleLogout,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{ session, login: handleLogin, logout: handleLogout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 const useAuth = () => {

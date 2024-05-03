@@ -17,6 +17,7 @@ export const PrivatePage: React.FC<PrivatePageProps> = ({
   if (
     session === null &&
     router.pathname !== "/login" &&
+    router.pathname !== "/employeeLogin" &&
     router.pathname !== "/"
   ) {
     router.push("/login");
