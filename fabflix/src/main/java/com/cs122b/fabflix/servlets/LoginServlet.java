@@ -104,7 +104,9 @@ public class LoginServlet extends HttpServlet {
                 ResultSet rs = statement.executeQuery();
                 if (rs.next()) {
                     String storedPassword = rs.getString("password");
-                    if (providedPassword.equals(storedPassword)) {
+                    PasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+
+                    if (passwordEncryptor.checkPassword(providedPassword, storedPassword)) {
                         Employee employee = new Employee(
                                 rs.getString("email"),
                                 rs.getString("fullname")
