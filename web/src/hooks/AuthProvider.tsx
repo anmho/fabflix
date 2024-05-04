@@ -10,41 +10,40 @@ import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { login, LoginParams, LoginResponse, logout } from "~/api/auth";
 import { fetchCart } from "~/api/cart";
-import { handleLogin, isUserLoggedIn } from "~/api/login";
+import { employeeLogin, handleLogin, isUserLoggedIn } from "~/api/login";
 import { ErrorPage } from "~/components/error";
 import { Loading } from "~/components/navigation/loading";
 import { Cart } from "~/interfaces/cart";
 import Login from "~/pages/login";
 
-// login
-// logout
-// session
-// cart
-// updateCart
-
-const updateCart = async () => {};
-
 export interface Session {
   cart?: Cart;
-  userType?: string | null; // Now can be 'string', 'undefined', or 'null'
+  userType?: string | null;
 }
 
 export interface AuthContextValue {
   session: Session | null;
   login: (params: LoginParams) => Promise<LoginResponse>;
   logout: () => Promise<LoginResponse>;
+  handleEmployeeLogin: (
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; message?: string; employeeData?: any }>;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   session: null,
   login: (params: LoginParams) => Promise.reject(new Error("Not implemented")),
   logout: () => Promise.reject(new Error("Not implemented")),
+  handleEmployeeLogin: (email: string, password: string) =>
+    Promise.reject(new Error("Not implemented")),
 });
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
-function AuthProvider({ children }: AuthProviderProps) {
+
+export function AuthProvider({ children }: AuthProviderProps) {
   const {
     isPending,
     error,
@@ -81,6 +80,30 @@ function AuthProvider({ children }: AuthProviderProps) {
     return response;
   };
 
+  const handleEmployeeLogin = async (email: string, password: string) => {
+    const formData = new URLSearchParams();
+    formData.append("email", email);
+    formData.append("password", password);
+
+    try {
+      const response = await employeeLogin(formData);
+      if (response.success) {
+        refetchCart();
+        const userTypeResponse = await isUserLoggedIn();
+        if (
+          userTypeResponse.isLoggedIn &&
+          userTypeResponse.userType === "employee"
+        ) {
+          setUserType(userTypeResponse.userType);
+        }
+      }
+      return response;
+    } catch (error) {
+      console.error("Error in employee login:", error);
+      throw error;
+    }
+  };
+
   const handleLogout = async () => {
     const response = await logout();
     refetchCart();
@@ -93,6 +116,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     session,
     login: handleLogin,
     logout: handleLogout,
+    handleEmployeeLogin,
   };
 
   if (isPending) {
@@ -104,20 +128,13 @@ function AuthProvider({ children }: AuthProviderProps) {
     return <ErrorPage error={error} />;
   }
 
-  return (
-    <AuthContext.Provider
-      value={{ session, login: handleLogin, logout: handleLogout }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-const useAuth = () => {
-  if (!useContext(AuthContext)) {
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
-  return useContext(AuthContext);
+  return context;
 };
-
-export { AuthProvider, useAuth };

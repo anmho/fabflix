@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "~/hooks/AuthProvider";
 import { Loading } from "../navigation/loading";
 
@@ -12,17 +12,49 @@ export const PrivatePage: React.FC<PrivatePageProps> = ({
 }: PrivatePageProps) => {
   const { session } = useAuth();
   const router = useRouter();
-  console.log(session);
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (
-    session === null &&
-    router.pathname !== "/login" &&
-    router.pathname !== "/employeeLogin" &&
-    router.pathname !== "/"
-  ) {
-    router.push("/login");
+  useEffect(() => {
+    console.log("Session and Path:", session, router.pathname);
+    if (!isLoading) return;
+    // immediate access for public paths
+    if (
+      router.pathname === "/login" ||
+      router.pathname === "/employeeLogin" ||
+      router.pathname === "/"
+    ) {
+      setIsLoading(false);
+      return;
+    }
+
+    // handle no session state
+    if (!session) {
+      setIsLoading(true);
+
+      router.push("/login");
+      return;
+    }
+
+    // redirect logic for specific user types and routes
+    if (session.userType === "customer") {
+      if (router.pathname === "/_dashboard") {
+        console.log("Redirecting customer away from _dashboard");
+        router.push("/employeeLogin");
+        // window.location.href = "/employeeLogin";
+        setIsLoading(true);
+      } else {
+        setIsLoading(false);
+      }
+    } else if (session.userType === "employee") {
+      setIsLoading(false); // employees can navigate freely
+    }
+  }, [session, router.pathname, isLoading]);
+
+  if (isLoading) {
     return <Loading />;
   }
-  console.log("this page is private", session);
+
   return <>{children}</>;
 };
+
+export default PrivatePage;

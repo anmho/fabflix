@@ -7,16 +7,18 @@ const EmployeeOnly = ({ children }: { children: ReactNode }) => {
   const { session } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log("yo", session);
-    if (!session || session.userType !== "employee") {
-      router.push("/employeeLogin");
-    }
-  }, [session, router]);
+  //   useEffect(() => {
+  //     console.log("Session:", session);
+  //     console.log("router.pathname", router.pathname);
 
-  if (!session || session.userType !== "employee") {
-    return <Loading />;
-  }
+  //     if (
+  //       (!session || session.userType !== "employee") &&
+  //       router.pathname !== "/_dashboard"
+  //     ) {
+  //       console.log("Redirecting to /employeeLogin");
+  //       router.push("/employeeLogin");
+  //     }
+  //   }, [session]); // Dependency on 'router' itself might be unnecessary
 
   return <>{children}</>;
 };
