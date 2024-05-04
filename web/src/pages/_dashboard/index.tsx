@@ -1,7 +1,10 @@
 // At the top of your file
 import React, { useState } from "react";
 import { Loading } from "~/components/navigation/loading";
-import SegmentedControl from "~/components/SegmentControl";
+import SegmentedControl from "~/components/segment/SegmentControl";
+import AddMovieSegment from "~/components/segment/addMovieSegment";
+import AddStarSegment from "~/components/segment/addStarSegment";
+import MetaDataSegment from "~/components/segment/metadataSegment";
 interface Content {
   key: string;
   value: React.ReactNode;
@@ -16,9 +19,9 @@ const Dashboard: React.FC = () => {
   ];
 
   const contents = [
-    { key: "metaData", value: <div className="mx-0">metadata</div> },
-    { key: "addStar", value: <div className="mx-0">add star</div> },
-    { key: "addMovie", value: <div className="mx-0">add movie</div> },
+    { key: "metaData", value: <MetaDataSegment /> },
+    { key: "addStar", value: <AddStarSegment /> },
+    { key: "addMovie", value: <AddMovieSegment /> },
   ];
 
   return (
