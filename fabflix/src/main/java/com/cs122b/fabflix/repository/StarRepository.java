@@ -41,6 +41,36 @@ public class StarRepository {
 
    }
 
+    public Star getStarByName(String name) throws SQLException {
+        String query = "SELECT id, name, birthYear FROM stars WHERE name = ?;";
+        Database db = Database.getInstance();
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Star(rs.getString("id"), rs.getString("name"), rs.getInt("birthYear"), 0);
+            }
+            return null;
+        }
+    }
+
+    public void addStar(Star star) throws SQLException {
+        String query = "INSERT INTO stars (id, name, birthYear) VALUES (?, ?, ?);";
+        Database db = Database.getInstance();
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, star.getId());
+            stmt.setString(2, star.getName());
+            if (star.getBirthYear() == null) {
+                stmt.setNull(3, Types.INTEGER); // Handle null birthYear
+            } else {
+                stmt.setInt(3, star.getBirthYear());
+            }
+            stmt.executeUpdate();
+        }
+    }
+
 
 }
 
