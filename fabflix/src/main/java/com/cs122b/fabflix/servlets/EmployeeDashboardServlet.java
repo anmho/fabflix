@@ -55,7 +55,7 @@ public class EmployeeDashboardServlet extends HttpServlet {
         }
 
         try {
-            Star existingStar = starRepository.getStarByName(starName);
+            Star existingStar = starRepository.getStarByNameAndYear(starName, birthYear);
             if (existingStar != null) {
                 ResponseBuilder.error(response, HttpServletResponse.SC_CONFLICT, "Star already exists");
                 return;
