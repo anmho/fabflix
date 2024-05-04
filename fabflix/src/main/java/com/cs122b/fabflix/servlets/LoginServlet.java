@@ -119,10 +119,10 @@ public class LoginServlet extends HttpServlet {
 
                         ResponseBuilder.json(response, employee, HttpServletResponse.SC_OK);
                     } else {
-                        ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Incorrect password.");
+                        ResponseBuilder.error(response, HttpServletResponse.SC_BAD_REQUEST, "Incorrect password.");
                     }
                 } else {
-                    ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Employee account does not exist.");
+                    ResponseBuilder.error(response, HttpServletResponse.SC_BAD_REQUEST, "Employee account does not exist.");
                 }
             }
         } catch (Exception e) {
