@@ -76,7 +76,7 @@ const AuthCard: React.FC<AuthCardProps> = ({
       )}
     >
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-        Welcome Back!
+        Welcome Back, Coworker!
       </h2>
       <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-2">
         Login for seamless access to employee tools.
