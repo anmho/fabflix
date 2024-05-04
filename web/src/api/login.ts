@@ -55,3 +55,40 @@ export const isUserLoggedIn = async (): Promise<{
     };
   }
 };
+
+export const employeeLogin = async (
+  formData: URLSearchParams
+): Promise<{ success: boolean; message?: string; employeeData?: any }> => {
+  try {
+    const response = await fetch(`${API_URL}/employeeLogin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      credentials: "include",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return {
+        success: true,
+        message: "Employee logged in successfully",
+        employeeData: data,
+      };
+    } else {
+      console.error("Login error", data);
+      return {
+        success: false,
+        message: data.message || "An error occurred during login.",
+      };
+    }
+  } catch (error) {
+    console.error("Failed to connect to the server.", error);
+    return {
+      success: false,
+      message: "Failed to connect to the server.",
+    };
+  }
+};
