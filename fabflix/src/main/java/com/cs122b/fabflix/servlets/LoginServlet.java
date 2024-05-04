@@ -20,7 +20,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
-
+import org.jasypt.util.password.PasswordEncryptor;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login", "/employeeLogin", "/isLoggedIn"})
 public class LoginServlet extends HttpServlet {
 
@@ -52,7 +53,9 @@ public class LoginServlet extends HttpServlet {
                 ResultSet rs = statement.executeQuery();
                 if (rs.next()) {
                     String storedPassword = rs.getString("password");
-                    if (providedPassword.equals(storedPassword)) {
+
+                    PasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+                    if (passwordEncryptor.checkPassword(providedPassword, storedPassword)) {
                         Customer customer = new Customer(
                                 rs.getInt("id"),
                                 rs.getString("firstName"),
