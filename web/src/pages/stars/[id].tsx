@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { StarDetail } from "../../interfaces/star";
-import { isLoggedIn } from "~/api/login";
+import { isUserLoggedIn } from "~/api/login";
 import { useRouter } from "next/router";
 import { fetchStarById } from "~/api/stars";
 import { CardBody, CardContainer, CardItem } from "../../components/ui/3d-card";
@@ -16,8 +16,8 @@ const SingleStarPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    isLoggedIn().then(({ success }) => {
-      if (!success) {
+    isUserLoggedIn().then(({ isLoggedIn }) => {
+      if (!isLoggedIn) {
         router.push("/login");
       } else if (router.query.id) {
         fetchStarById(router.query.id as string).then((fetchedStar) => {

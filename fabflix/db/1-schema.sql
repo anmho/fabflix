@@ -46,6 +46,7 @@ CREATE TABLE customers (
     password VARCHAR(20) NOT NULL
 );
 
+
 CREATE TABLE sales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     customerId INT NOT NULL,
