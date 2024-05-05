@@ -4,7 +4,7 @@ import { Movie } from "~/interfaces/movie";
 import { fetchTopMovies } from "../../api/movies";
 import { MovieCard } from "~/components/MovieCard";
 import { addMovieToCart, handleEditFromCart } from "../../api/cart";
-import { isLoggedIn } from "~/api/login";
+import { isUserLoggedIn } from "~/api/login";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 
@@ -18,8 +18,8 @@ const MovieListPage: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    isLoggedIn().then(({ success }) => {
-      if (!success) {
+    isUserLoggedIn().then(({ isLoggedIn }) => {
+      if (!isLoggedIn) {
         router.push("/login");
       } else {
         fetchTopMovies().then((movies) => {

@@ -15,7 +15,15 @@ public class Customer implements Serializable {
     private String creditCardID;
 
     public Customer() {}
-
+    public Customer(int id, String firstName, String lastName, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = null;
+        this.email = email;
+        this.creditCardID = null;
+        this.password = null;
+    }
     public Customer(int id, String firstName, String lastName, String address, String email, String creditCardID, String password) {
         this.id = id;
         this.firstName = firstName;

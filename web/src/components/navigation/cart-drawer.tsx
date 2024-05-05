@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { MovieCartItem } from "~/components/cart/movie-item";
-import { isLoggedIn } from "~/api/login";
+import { isUserLoggedIn } from "~/api/login";
 import { fetchCart, addMovieToCart } from "~/api/cart";
 import { Movie } from "~/interfaces/movie";
 import { useTheme } from "next-themes";
@@ -27,8 +27,8 @@ export function CartDrawer() {
 
   useEffect(() => {
     const checkUserAndRoute = async () => {
-      const { success } = await isLoggedIn();
-      if (success && router.pathname !== "/checkout") {
+      const { isLoggedIn } = await isUserLoggedIn();
+      if (isLoggedIn && router.pathname !== "/checkout") {
         setShowDrawer(true);
         getCartItems();
       } else {
