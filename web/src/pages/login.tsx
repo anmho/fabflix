@@ -175,7 +175,6 @@ function AuthCard({
             sitekey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
             onChange={(token) => onChangeRecaptchaToken(token)}
           />
-          ,
         </form>
       </div>
     </div>
