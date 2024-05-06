@@ -141,6 +141,10 @@ hs_err_pid*
 ## ignoring target file
 target/
 
+
+## .csv output files
+*.csv
+
 ### Maven ###
 pom.xml.tag
 pom.xml.releaseBackup
