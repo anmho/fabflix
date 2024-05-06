@@ -144,6 +144,8 @@ target/
 
 ## .csv output files
 *.csv
+/src/main/resources/*.xml
+/src/main/resources/*.dtd
 
 ### Maven ###
 pom.xml.tag
