@@ -32,9 +32,13 @@ public class ResponseBuilder {
     }
 
     public static void error(HttpServletResponse response, int status, String message) {
+        if (response == null) {
+            throw new IllegalArgumentException("response must not be null");
+        }
         if (message == null) {
             message = "an unknown error occurred";
         }
+
         response.setContentType("application/json");
         Map<String, Object> data = new HashMap<>();
         data.put("status", status);
