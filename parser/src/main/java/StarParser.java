@@ -48,7 +48,7 @@ public class StarParser {
                     stagename = stagenameNode.getTextContent();
                 }
 
-                var dobNode = actorElement.getElementsByTagName("dateOfBirth").item(0);
+                var dobNode = actorElement.getElementsByTagName("dob").item(0);
                 if (dobNode != null) {
                     dateOfBirth = dobNode.getTextContent();
                 }
