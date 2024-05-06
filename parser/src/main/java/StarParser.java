@@ -22,7 +22,7 @@ public class StarParser {
         builder = factory.newDocumentBuilder();
     }
 
-    public void printSummary(List<StarredInRow> sir) {
+    public void printSummary(List<Star> sir) {
         System.out.println("Cast Parser summary:");
         System.out.println("movies starred in :" + sir.size());
 //        for (var row : sir) {
@@ -34,12 +34,12 @@ public class StarParser {
     }
 
 
-    public List<StarredInRow> parse(String filename) throws IOException, SAXException {
+    public List<Star> parse(String filename) throws IOException, SAXException {
         Document doc = builder.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         var root = doc.getDocumentElement();
 
-        List<StarredInRow> stars_in_movies = new ArrayList<>();
+        List<Star> stars_in_movies = new ArrayList<>();
 
         NodeList movieCastNodes = root.getElementsByTagName("m");
         for (int i = 0; i < movieCastNodes.getLength(); i++) {
@@ -52,9 +52,9 @@ public class StarParser {
 
                 System.out.println("movieId: " + movieId + " title: " + title + " starName: " + stagename);
 
-                var star = new StarredInRow();
+                var star = new Star();
                 star.setStagename(stagename);
-                star.setMovieId(movieId);
+                star.setDateOfBirth();
                 stars_in_movies.add(star);
             }
         }
@@ -63,10 +63,10 @@ public class StarParser {
     }
 
 
-    public void writeFile(List<StarredInRow> starsInMovies ) throws IOException {
+    public void writeFile(List<Star> stars ) throws IOException {
         String starsInMoviesFilename = "stars.csv";
 
-        String[] HEADERS = { "stagename", "starName" };
+        String[] HEADERS = { "stagename", "dateOfBirth" };
 
         try (Writer writer = new FileWriter(starsInMoviesFilename)) {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
@@ -74,7 +74,7 @@ public class StarParser {
                     .setHeader(HEADERS)
                     .build();
             try (final CSVPrinter printer = new CSVPrinter(writer, csvFormat)) {
-                starsInMovies.forEach((row) -> {
+                stars.forEach((row) -> {
                     try {
                         printer.printRecord(row.getMovieId(), row.getStagename());
                     } catch (IOException e) {
