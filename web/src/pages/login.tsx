@@ -23,8 +23,8 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
 
   const loginMutation = useMutation({
-    mutationFn: ({ email, password }: LoginParams) =>
-      login({ email, password }),
+    mutationFn: ({ email, password, recaptchaToken }: LoginParams) =>
+      login({ email, password, recaptchaToken }),
   });
 
   if (session !== null) {
@@ -46,6 +46,7 @@ const LoginPage: React.FC = () => {
     const result = await loginMutation.mutateAsync({
       email: emailInput,
       password: passwordInput,
+      recaptchaToken,
     });
     console.log(result);
 

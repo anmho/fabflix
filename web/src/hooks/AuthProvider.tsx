@@ -67,8 +67,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     checkUserType();
   }, []);
 
-  const handleLogin = async ({ email, password }: LoginParams) => {
-    const response = await login({ email, password });
+  const handleLogin = async ({ email, password, recaptchaToken }: LoginParams) => {
+    const response = await login({ email, password, recaptchaToken });
     if (response.success) {
       refetchCart();
       const userTypeResponse = await isUserLoggedIn();
