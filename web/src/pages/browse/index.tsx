@@ -7,6 +7,7 @@ import { PrivatePage } from "~/components/auth/private-page";
 import { Badge } from "~/components/ui/badge";
 import { useTheme } from "next-themes";
 import { cn } from "~/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 
 const startsWithOptions = [
   "A",
@@ -40,6 +41,16 @@ const startsWithOptions = [
 
 const BrowseMoviesPage: React.FC = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
+
+  // const {
+  //   isPending,
+  //   error,
+  //   data: genres,
+  // } = useQuery({
+  //   queryKey: ["genres"],
+  //   queryFn: getGenres,
+  //   retry: true,
+  // });
 
   useEffect(() => {
     getGenres().then((genres) => setGenres(() => genres));

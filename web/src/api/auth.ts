@@ -11,6 +11,7 @@ export async function logout(): Promise<{ success: boolean; message: string }> {
 export interface LoginParams {
   email: string;
   password: string;
+  recaptchaToken: string;
 }
 
 export interface LoginResponse {
@@ -26,11 +27,13 @@ export interface LogoutResponse {
 export const login = async ({
   email,
   password,
+  recaptchaToken,
 }: LoginParams): Promise<LoginResponse> => {
   try {
     const formData = new URLSearchParams();
     formData.append("email", email);
     formData.append("password", password);
+    formData.append("g-recaptcha-response", recaptchaToken);
     const response = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {

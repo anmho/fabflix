@@ -6,6 +6,8 @@ import com.cs122b.fabflix.models.Customer;
 import com.cs122b.fabflix.models.User;
 import com.cs122b.fabflix.models.Employee;
 import com.cs122b.fabflix.repository.Database;
+import com.cs122b.fabflix.services.RecaptchaService;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,9 +28,31 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 public class LoginServlet extends HttpServlet {
 
     private final Logger log = LogManager.getLogger(LoginServlet.class.getName());
+    private RecaptchaService recaptchaService;
+
+    @Override
+    public void init() throws ServletException {
+        recaptchaService = new RecaptchaService();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getServletPath();
+
+        String recaptchaToken = request.getParameter("g-recaptcha-response");
+        if (recaptchaToken == null) {
+            ResponseBuilder.error(response, HttpServletResponse.SC_FORBIDDEN, "recaptcha token required");
+            return;
+        }
+        log.debug("recaptchaToken: {}", recaptchaToken);
+
+        boolean success = recaptchaService.verifyRecaptcha(recaptchaToken);
+
+        if (!success) {
+            ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "invalid recaptcha token");
+            return;
+        }
+
+
         switch (path) {
             case "/login":
                 handleCustomerLogin(request, response);
