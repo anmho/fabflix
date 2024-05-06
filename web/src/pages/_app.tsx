@@ -1,4 +1,5 @@
 import "~/styles/globals.css";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { NextUIProvider } from "@nextui-org/react";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
@@ -15,6 +16,7 @@ import {
 import { queryClient } from "~/api/http";
 import { ThemeProvider } from "~/hooks/ThemeProvider";
 import { PrivatePage } from "~/components/auth/private-page";
+import { env } from "~/utils/env";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -23,15 +25,19 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider>
       <NextUIProvider>
         <QueryClientProvider client={queryClient}>
-          <SearchContextProvider>
-            <AuthProvider>
-              {router.pathname !== "/" && <NavBar />}
-              <PrivatePage>
-                <Component {...pageProps} />
-              </PrivatePage>
-            </AuthProvider>
-            <Toaster />
-          </SearchContextProvider>
+          <GoogleReCaptchaProvider
+            reCaptchaKey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+          >
+            <SearchContextProvider>
+              <AuthProvider>
+                {router.pathname !== "/" && <NavBar />}
+                <PrivatePage>
+                  <Component {...pageProps} />
+                </PrivatePage>
+              </AuthProvider>
+              <Toaster />
+            </SearchContextProvider>
+          </GoogleReCaptchaProvider>
         </QueryClientProvider>
       </NextUIProvider>
     </ThemeProvider>

@@ -8,8 +8,16 @@ export const http = axios.create({
 
 export const queryClient = new QueryClient();
 
-// http.interceptors.response.use(undefined, errorHandler);
+http.interceptors.response.use(undefined, errorHandler);
 
-// function errorHandler(error: AxiosError) {
-//   return Promise.reject(error);
-// }
+function errorHandler(error: AxiosError) {
+  const url = new URL(window.location.href);
+
+  if (error.response?.status === 401) {
+    if (url.pathname !== "/login") {
+      window.location.href = "/login";
+    }
+  }
+
+  return Promise.reject(error);
+}

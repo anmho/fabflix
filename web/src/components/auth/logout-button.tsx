@@ -25,11 +25,12 @@ export function LogoutButton() {
   const router = useRouter();
   const { logout, session } = useAuth();
   const handleLogout = async () => {
-    if (!logout) return;
+    if (!logout) {
+      console.error("Logout function not found");
+    }
     const result = await logout();
     if (!result.success) {
       console.error(result.message);
-      return;
     }
     router.push("/login");
   };

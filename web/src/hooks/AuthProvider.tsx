@@ -54,7 +54,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     queryFn: fetchCart,
     retry: false,
   });
-
   const [userType, setUserType] = useState<string | null>(null);
 
   useEffect(() => {

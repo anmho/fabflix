@@ -1,4 +1,3 @@
-// At the top of your file
 import React, { useState } from "react";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
@@ -10,12 +9,18 @@ import { useMutation } from "@tanstack/react-query";
 import { LoginParams } from "~/api/auth";
 import { useTheme } from "next-themes";
 import { Button } from "~/components/ui/button";
+import ReCAPTCHA from "react-google-recaptcha";
+import { env } from "~/utils/env";
+import { GoogleReCaptcha } from "react-google-recaptcha-v3";
+import { on } from "events";
+
 const LoginPage: React.FC = () => {
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
-  const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<string>("");
   const { session, login } = useAuth();
+  const router = useRouter();
 
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: LoginParams) =>
@@ -32,6 +37,11 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!emailInput || !passwordInput) return;
+
+    if (!recaptchaToken) {
+      setErrorMsg("Please complete the reCAPTCHA");
+      return;
+    }
 
     const result = await loginMutation.mutateAsync({
       email: emailInput,
@@ -51,6 +61,7 @@ const LoginPage: React.FC = () => {
       <div className="py-[50px] md:py-[80px] lg:py-[100px] xl:py-[120px] lg:px-[15%] md:px-[5%] flex flex-wrap justify-center items-start gap-4 p-4">
         <AuthCard
           onChangeEmail={setEmailInput}
+          onChangeRecaptchaToken={setRecaptchaToken}
           onChangePassword={setPasswordInput}
           errorMsg={errorMsg}
           emailInput={emailInput}
@@ -79,6 +90,7 @@ const LabelInputContainer = ({
 interface AuthCardProps {
   onChangeEmail: (email: string) => void;
   onChangePassword: (password: string) => void;
+  onChangeRecaptchaToken: (recaptchaToken: string | null) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   errorMsg: string;
   emailInput: string;
@@ -88,6 +100,7 @@ interface AuthCardProps {
 function AuthCard({
   onChangeEmail,
   onChangePassword,
+  onChangeRecaptchaToken,
   handleSubmit,
   errorMsg,
   emailInput,
@@ -156,6 +169,12 @@ function AuthCard({
             Log in &rarr;
           </Button>
           <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+          {/* <GoogleReCaptcha onVerify={console.log} /> */}
+          <ReCAPTCHA
+            sitekey={env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+            onChange={(token) => onChangeRecaptchaToken(token)}
+          />
+          ,
         </form>
       </div>
     </div>
