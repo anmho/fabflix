@@ -1,5 +1,11 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+export interface LoginParams {
+  email: string;
+  password: string;
+  recaptchaToken: string;
+}
+
 export const handleLogin = async (
   formData: URLSearchParams
 ): Promise<{ success: boolean; message?: string }> => {
@@ -56,9 +62,21 @@ export const isUserLoggedIn = async (): Promise<{
   }
 };
 
-export const employeeLogin = async (
-  formData: URLSearchParams
-): Promise<{ success: boolean; message?: string; employeeData?: any }> => {
+export const employeeLogin = async ({
+  email,
+  password,
+  recaptchaToken,
+}: LoginParams): Promise<{
+  success: boolean;
+  message?: string;
+  employeeData?: any;
+}> => {
+  const formData = new URLSearchParams();
+  formData.append("email", email);
+  formData.append("password", password);
+  formData.append("g-recaptcha-response", recaptchaToken);
+
+  // console.log(email, password, recaptchaToken);
   try {
     const response = await fetch(`${API_URL}/employeeLogin`, {
       method: "POST",
