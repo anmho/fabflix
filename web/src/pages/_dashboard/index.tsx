@@ -1,4 +1,3 @@
-// At the top of your file
 import React, { useState } from "react";
 import { Loading } from "~/components/navigation/loading";
 import SegmentedControl from "~/components/segment/SegmentControl";
