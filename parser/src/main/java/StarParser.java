@@ -22,15 +22,9 @@ public class StarParser {
         builder = factory.newDocumentBuilder();
     }
 
-    public void printSummary(List<Star> sir) {
+    public void printSummary(List<Star> stars) {
         System.out.println("Cast Parser summary:");
-        System.out.println("movies starred in :" + sir.size());
-//        for (var row : sir) {
-//            row.get
-//
-//        }
-
-
+        System.out.println("Stars parsed: " + stars.size());
     }
 
 
@@ -39,27 +33,36 @@ public class StarParser {
 
         var root = doc.getDocumentElement();
 
-        List<Star> stars_in_movies = new ArrayList<>();
+        List<Star> stars = new ArrayList<>();
 
-        NodeList movieCastNodes = root.getElementsByTagName("m");
-        for (int i = 0; i < movieCastNodes.getLength(); i++) {
-            var movieCastNode = movieCastNodes.item(i);
-            if (movieCastNode.getNodeType() == Node.ELEMENT_NODE) {
-                var movieCastElement = (Element)movieCastNode;
-                String movieId = movieCastElement.getElementsByTagName("f").item(0).getTextContent();
-                String title = movieCastElement.getElementsByTagName("t").item(0).getTextContent();
-                String stagename = movieCastElement.getElementsByTagName("a").item(0).getTextContent();
+        NodeList actorNodes = root.getElementsByTagName("actor");
+        for (int i = 0; i < actorNodes.getLength(); i++) {
+            var actorNode = actorNodes.item(i);
+            if (actorNode.getNodeType() == Node.ELEMENT_NODE) {
+                var actorElement = (Element) actorNode;
+                String stagename = null;
+                String dateOfBirth = null;
 
-                System.out.println("movieId: " + movieId + " title: " + title + " starName: " + stagename);
+                var stagenameNode = actorElement.getElementsByTagName("stagename").item(0);
+                if (stagenameNode != null) {
+                    stagename = stagenameNode.getTextContent();
+                }
 
+                var dobNode = actorElement.getElementsByTagName("dateOfBirth").item(0);
+                if (dobNode != null) {
+                    dateOfBirth = dobNode.getTextContent();
+                }
+
+                System.out.println("Stagename: " + stagename);
+                System.out.println("Date of birth: " + dateOfBirth);
                 var star = new Star();
                 star.setStagename(stagename);
-                star.setDateOfBirth();
-                stars_in_movies.add(star);
+                star.setDateOfBirth(dateOfBirth);
+                stars.add(star);
             }
         }
 
-        return stars_in_movies;
+        return stars;
     }
 
 
@@ -74,9 +77,9 @@ public class StarParser {
                     .setHeader(HEADERS)
                     .build();
             try (final CSVPrinter printer = new CSVPrinter(writer, csvFormat)) {
-                stars.forEach((row) -> {
+                stars.forEach((star) -> {
                     try {
-                        printer.printRecord(row.getMovieId(), row.getStagename());
+                        printer.printRecord(star.getStagename(), star.getDateOfBirth());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -14,9 +14,14 @@ public class Main {
         mp.writeMovies(movies);
         mp.printSummary(movies);
 
-        var cp = new StarParser();
+        var cp = new CastParser();
         var starsInMovies = cp.parse("casts124.xml");
         cp.writeFile(starsInMovies);
         cp.printSummary(starsInMovies);
+
+        var sp = new StarParser();
+        var stars = sp.parse("actors63.xml");
+        sp.writeFile(stars);
+        sp.printSummary(stars);
     }
 }

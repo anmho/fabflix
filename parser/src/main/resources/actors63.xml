@@ -6,7 +6,21 @@
 <!-- Version 63 Updated 20 April 2004 -->
 <actors>
 <!-- A AAAAA  -->
-    <actor><stagename>Willie Aames</stagename> <dowstart></dowstart> <dowend></dowend> <familyname>Aames</familyname> <firstname>William</firstname> <gender>M</gender> <dob>1960</dob> <dod>1984+</dod> <roletype>unknown</roletype> <origin>\Am</origin> <picref/> <relationships/> <notes/></actor>
+    <actor>
+        <stagename>Willie Aames</stagename>
+        <dowstart></dowstart> 
+        <dowend></dowend> 
+        <familyname>Aames</familyname> 
+        <firstname>William</firstname> 
+        <gender>M</gender> 
+        <dob>1960</dob> 
+        <dod>1984+</dod> 
+        <roletype>unknown</roletype> 
+        <origin>\Am</origin> 
+        <picref/> 
+        <relationships/> 
+        <notes/>
+    </actor>
     <actor><stagename>Bud Abbott</stagename> <dowstart>1939</dowstart> <dowend>1956</dowend> <familyname> Abbott</familyname> <firstname>William</firstname> <gender>M</gender> <dob>1895</dob> <dod>1974</dod> <roletype>straight comedian</roletype> <origin>\Am</origin>  <studio>Universal</studio> <relationships><relship><reltype>Ww</reltype><towhom><relname>Lou Costello</relname></towhom></relship></relationships> <notes/></actor>
     <actor><stagename>Diahnne Abbott</stagename> <dowstart>1976</dowstart> <dowend>1982  </dowend><familyname> </familyname> <firstname></firstname> <gender>F</gender>  <dob></dob> <dod>1992+</dod> <roletype>sexy</roletype> <origin>\Am</origin> <picref/> <relationships><relship><reltype>Mt</reltype><towhom><relname>Robert deNiro</relname><relattr>divorced</relattr></towhom></relship></relationships> <notes><refs>![1] ![23]</refs></notes> </actor>
     <actor><stagename>George Abbott</stagename> <dowstart>1928</dowstart> <dowend>1958</dowend> <familyname>Abbott</familyname> <firstname>George</firstname> <gender>M</gender> <dob>1887</dob> <dod>1984+</dod> <roletype>playwright, producer</roletype> <origin>\Am</origin> <picref/> <relationships/> <notes/></actor>
@@ -924,7 +938,18 @@
     <actor><stagename>J.D. Cannon</stagename> <dowstart>1966</dowstart> <dowend>1976</dowend> <familyname>Cannon</familyname> <firstname>J.D.</firstname> <gender>M</gender> <dob>1922</dob> <dod>1984+</dod> <roletype>cold-eyed</roletype> <origin>\Am</origin> <picref/> <relationships/> <notes/></actor>
     <actor><stagename>Kathy Cannon</stagename> <dowstart></dowstart> <dowend></dowend> <familyname></familyname> <firstname></firstname> <gender>F</gender> <dob></dob> <dod>1992+</dod> <roletype>unknown</roletype> <origin>\Ct</origin> <picref/> <relationships/> <notes><refs>![1]</refs></notes> </actor>
     <actor><stagename>Judy Canova</stagename> <dowstart>1935</dowstart> <dowend>1960</dowend> <familyname>Canova</familyname> <firstname>Juliet</firstname> <gender>F</gender> <dob>1916</dob> <dod>1983</dod> <roletype>hillbilly</roletype> <origin>\Am</origin> <picref/> <relationships/> <notes/></actor>
-    <actor><stagename>Cantilene</stagename>  <dowstart>1919</dowstart> <dowend></dowend> <familyname>Cantil\`ene</familyname> <firstname></firstname> <gender>M</gender> <roletype>romantic, phlegmatic</roletype> <origin>\Fr</origin> <picref/> <relationships/> <notes/></actor>
+    <actor>
+        <stagename>Cantilene</stagename> 
+        <dowstart>1919</dowstart>
+        <dowend></dowend>
+        <familyname>Cantil\`ene</familyname>
+        <firstname></firstname>
+        <gender>M</gender>
+        <roletype>romantic,
+            phlegmatic</roletype>
+        <origin>\Fr</origin>
+        <picref/>
+        <relationships/> <notes/></actor>
     <actor><stagename>Cantinflas</stagename> <dowstart>1941</dowstart> <dowend>1959</dowend> <familyname>Moreno</familyname> <firstname>Mario</firstname> <gender>M</gender> <dob>1911</dob> <dod>1984+</dod> <roletype>clown</roletype> <origin>\Me</origin> <picref/> <relationships/> <notes/></actor>
     <actor><stagename>Eddie Cantor</stagename> <dowstart>1926</dowstart> <dowend>1952</dowend> <familyname>Itskowitz</familyname> <firstname>Edward Israel</firstname> <gender>M</gender> <dob>1892</dob> <dod>1964</dod> <roletype>rolling-eyed, hight-toned voice, sprightly movement</roletype> <origin></origin> <awards><award><awtype>AA</awtype><awattr>special</awattr><awyear>1930</awyear></award></awards> <notes/></actor>
     <actor><stagename>Truman Capote</stagename> <dowstart>1976</dowstart> <dowend>1976</dowend> <familyname>Capote</familyname> <firstname>Truman</firstname> <gender>M</gender> <dob>1925</dob> <dod>1984+</dod> <roletype>small</roletype> <origin>\Am</origin> <picref/> <notes><mainly>B,W</mainly></notes> </actor>
