@@ -3,7 +3,7 @@ USE moviedb;
 
 
 CREATE TABLE movies (
-    id VARCHAR(10) PRIMARY KEY,
+    id VARCHAR(32) PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     year INT NOT NULL,
     director VARCHAR(100) NOT NULL
