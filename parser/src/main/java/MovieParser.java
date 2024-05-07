@@ -1,4 +1,5 @@
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,19 +10,22 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.*;
 
-public class MovieParser {
+public class MovieParser implements Runnable {
     private final DocumentBuilder builder;
-    public MovieParser() throws ParserConfigurationException, IOException, SAXException {
+    private final List<Movie> movies;
+
+    public MovieParser() throws ParserConfigurationException  {
         var factory = DocumentBuilderFactory.newInstance();
         builder = factory.newDocumentBuilder();
+        movies = new ArrayList<>();
     }
+
 
     public void printSummary(List<Movie> movies) {
 
@@ -36,13 +40,56 @@ public class MovieParser {
         System.out.println("All genres: " + genres);
     }
 
+    public void run() throws RuntimeException {
+        Map<String, Movie> movieLookupTable = new HashMap<>();
+        try {
+            Reader reader = new FileReader("current_movies.csv");
+            CSVParser csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
 
-    public List<Movie> parse(String filename) throws IOException, SAXException {
+            for (var row : csvParser) {
+                var movie = new Movie();
+
+                String title = row.get("title");
+                String director = row.get("director");
+                String year = row.get("year");
+
+
+                String key = String.format("%s,%s", title.trim(), director.trim());
+                movie.setTitle(title.trim());
+                movie.setDirector(director);
+                movie.setYear(Integer.parseInt(year));
+
+                movieLookupTable.put(key, movie);
+            }
+
+
+            movies.addAll(parse("mains243.xml", movieLookupTable));
+            writeFile("new_movies.csv", movies);
+            printSummary(movies);
+
+
+            var db = Database.getInstance();
+            var conn = db.getConnection();
+            insertDB(conn, movies);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public List<Movie> parse(String filename, Map<String, Movie> moviesLookupTable) throws IOException, SAXException {
         Document doc = builder.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         var root = doc.getDocumentElement();
 
         List<Movie> movies = new ArrayList<>();
+        Set<String> dupSet = new HashSet<>();
 
         var directorFilms = root.getElementsByTagName("directorfilms");
         for (int i = 0; i < directorFilms.getLength(); i++) {
@@ -52,13 +99,8 @@ public class MovieParser {
                 Element directorFilmElement = (Element) directorFilmNode;
                 Element directorElement = (Element)directorFilmElement.getElementsByTagName("director").item(0);
                 Node dirnameNode = directorElement.getElementsByTagName("dirname").item(0);
-//                if (dirnameNode != null) {
-//                    System.out.println(dirnameNode.getTextContent());
-//                }
+
                 Node dirnNode = directorElement.getElementsByTagName("dirn").item(0);
-//                if (dirnNode != null) {
-//                    System.out.println(dirnNode.getTextContent());
-//                }
 
                 if (dirnameNode != null) {
                     director = dirnameNode.getTextContent();
@@ -66,7 +108,6 @@ public class MovieParser {
                     director = dirnNode.getTextContent();
                 }
 
-//                System.out.println("director: " + director);
                 Element filmsElement = ((Element)((Element)directorFilmNode).getElementsByTagName("films").item(0));
                 NodeList filmsList = filmsElement.getElementsByTagName("film");
                 for (int j = 0; j < filmsList.getLength(); j++) {
@@ -81,23 +122,18 @@ public class MovieParser {
 
                         String movieId = filmId.getTextContent();
 
-//                        System.out.println("filmId: " + movieId);
-
                         var titleNode = film.getElementsByTagName("t").item(0);
-                        String title = titleNode.getTextContent();
+                        String title = titleNode.getTextContent().trim();
 
-                        System.out.println("title: " + title);
-                        int year = 0;
+
+                        Integer year = null;
 
                         var yearNode = film.getElementsByTagName("year").item(0);
                         try {
-                            year = Integer.parseInt(yearNode.getTextContent());
+                            year = Integer.parseInt(yearNode.getChildNodes().item(0).getTextContent().trim());
                         } catch (NumberFormatException e) {
-                            year = 0;
+                            System.out.println(title + " -- invalid year " + yearNode.getChildNodes().item(0).getTextContent());
                         }
-
-
-
                         var catsNode = film.getElementsByTagName("cats").item(0);
                         List<String> categories = new ArrayList<>();
                         if (catsNode != null) {
@@ -117,13 +153,35 @@ public class MovieParser {
                         categories = genres;
 
 
+                        String key = String.format("%s,%s", title, director);
+                        if (moviesLookupTable.containsKey(key)) {
+                            System.out.println(key);
+                            System.out.println("found duplicate movie" + title + " " + director + " " + year);
+                            System.out.println(key);
+                            System.out.println(moviesLookupTable.get(key));
+
+                            continue; // already in the tables, lets skip
+                        }
+
                         Movie movie = new Movie();
+                        if (dupSet.contains(movieId)) {
+                            movieId = UUID.randomUUID().toString();
+                        }
                         movie.setId(movieId);
                         movie.setTitle(title);
                         movie.setDirector(director);
                         movie.setYear(year);
                         movie.setGenres(categories);
-                        movies.add(movie);
+                        String dupkey = String.format("%s,%s", title, director);
+
+                        // can't have screwed up movie, maybe we can add later by cleaning
+                        if (!dupSet.contains(dupkey) && movie.getTitle() != null && movie.getYear() != null) {
+                            dupSet.add(dupkey);
+                            dupSet.add(movieId);
+                            movies.add(movie);
+                        } else {
+                            System.out.println("found duplicate cast " + dupkey);
+                        }
                     }
                 }
             }
@@ -132,12 +190,10 @@ public class MovieParser {
     }
 
 
-    public void writeMovies(List<Movie> movies ) throws IOException {
-        String moviesFilePath = "movies.csv";
-
+    public void writeFile(String outFilename, List<Movie> movies ) throws IOException {
         String[] MOVIE_HEADERS = { "id", "title", "director", "year" };
 
-        try (Writer writer = new FileWriter(moviesFilePath)) {
+        try (Writer writer = new FileWriter(outFilename)) {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
                     .setDelimiter(',')
                     .setHeader(MOVIE_HEADERS)
@@ -153,7 +209,7 @@ public class MovieParser {
             }
         }
 
-        String genresInMoviesFilePath = "genres_in_movies.csv";
+        String genresInMoviesFilePath = "new_genres_in_movies.csv";
 
         String[] GENRE_HEADERS = { "movieId", "genre" };
 
@@ -176,16 +232,124 @@ public class MovieParser {
             }
 
         }
+    }
+
+    public void insertDB(Connection conn, List<Movie> movies) throws SQLException {
+        conn.setAutoCommit(false);
+
+        try {
+            // insert into the db
+            System.out.printf("Batch inserting %d new movies: \n", movies.size());
+            insertMovies(conn, movies);
+
+            var q = conn.createStatement();
+            var rs = q.executeQuery("SELECT COUNT(id) as count FROM movies");
+            while (rs.next()) {
+                System.out.println("new count: " + rs.getInt("count"));
+            }
 
 
+            // insert new genres
+            Set<String> genres = new HashSet<>();
+            for (var movie : movies) {
+                genres.addAll(movie.getGenres());
+            }
+            insertGenres(conn, genres);
+
+
+            insertGenresInMovies(conn, movies);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            conn.rollback();
+            throw e;
+        }
+        conn.commit();
+        conn.close();
+    }
+
+
+    private void insertMovies(Connection conn, List<Movie> movies) throws SQLException {
+        Movie recentMovie = null;
+
+        var stmt = conn.prepareStatement(
+                "INSERT INTO movies " +
+                        "(id, title, year, director, price)" +
+                        "VALUES (?, ?, ?, ?, ?);"
+        );
+
+        for (var movie : movies) {
+            recentMovie = movie;
+
+            stmt.setString(1, movie.getId());
+            stmt.setString(2, movie.getTitle());
+            if (movie.getYear() != null) {
+                stmt.setInt(3, movie.getYear());
+            } else {
+                stmt.setNull(3, Types.INTEGER);
+            }
+            stmt.setString(4, movie.getDirector());
+            stmt.setFloat(5, 5.0f);
+            stmt.addBatch();
+        }
+        stmt.executeLargeBatch();
+
+    }
+
+    private void insertGenres(Connection conn, Set<String> genres) throws SQLException {
+
+        var stmt = conn.prepareStatement("INSERT IGNORE INTO genres (name) VALUES (?)");
+
+        for (var genre : genres) {
+            stmt.setString(1, genre);
+            stmt.addBatch();
+        }
+        System.out.println("inserting new genres");
+        stmt.executeBatch();
+    }
+
+    private void insertGenresInMovies(Connection conn, List<Movie> movies) throws SQLException {
+        var q = conn.createStatement();
+        System.out.println("getting all genres");
+        var rs = q.executeQuery("SELECT id, name FROM genres");
+
+        // lookup genre by name to id
+        Map<String, String> genreLookupTable = new HashMap<>();
+        while (rs.next()) {
+            var id = rs.getString("id");
+            var name = rs.getString("name");
+            genreLookupTable.put(name, id);
+        }
+
+
+        var stmt = conn.prepareStatement(
+                "INSERT INTO genres_in_movies (genreId, movieId)" +
+                        "VALUES (?, ?)"
+        );
+
+        for (var movie : movies) {
+            Set<String> genreSet = new HashSet<>(movie.getGenres());
+            for (var genre : genreSet) {
+
+                var genreId = genreLookupTable.get(genre);
+                System.out.printf("genre %s %s %s\n", genreId, genre, movie.getId());
+                stmt.setString(1, genreId);
+                stmt.setString(2, movie.getId());
+                stmt.addBatch();
+            }
+        }
+
+
+        System.out.println("inserting new genres_in_movies");
+        stmt.executeBatch();
     }
 
     private List<String> translateGenre(String cat) {
 
         cat = cat.toLowerCase().trim();
         List<String> genres = new ArrayList<>();
-        if (cat.equals("avga") || cat.equals("avante garde")) {
-            genres.add("Avante Garde");
+        if (cat.equals("avga") || cat.equals("avante garde") || cat.equals("avant garde")) {
+            genres.add("Avant Garde");
         }
         if (cat.contains("fant")) {
             genres.add("Fantasy");
@@ -199,7 +363,7 @@ public class MovieParser {
         if (cat.contains("dram") || cat.contains("draam")) {
             genres.add("Drama");
         }
-        if (cat.contains("romt")) {
+        if (cat.contains("romt") || cat.contains("ront")) {
             genres.add("Romance");
         }
         if (cat.contains("myst")) {
@@ -218,8 +382,11 @@ public class MovieParser {
         if (cat.contains("west")) {
             genres.add("Western");
         }
-        if (cat.contains("docu")) {
+        if (cat.contains("docu") || cat.contains("dicu") || cat.contains("duco") || cat.contains("ducu"))  {
             genres.add("Documentary");
+        }
+        if (cat.contains("expm")) {
+            genres.add("Experimental");
         }
 
         if (cat.contains("hist")) {
@@ -236,17 +403,17 @@ public class MovieParser {
         if (cat.contains("noir")) {
             genres.add("Noir");
         }
-        if (cat.contains("comd")) {
+        if (cat.contains("comd") || cat.contains("cond")) {
             genres.add("Comedy");
         }
         if (cat.contains("por") || cat.contains("porn")) {
             genres.add("Adult");
         }
-        if (cat.contains("scfi") || cat.contains("scif") || cat.contains("sxfi")) {
+        if (cat.contains("scfi") || cat.contains("scif") || cat.contains("sxfi") || cat.contains("s.f.") || cat.contains("ca")) {
             genres.add("Sci-Fi");
         }
 
-        if (cat.contains("horr")) {
+        if (cat.contains("horr") || cat.contains("hor")) {
             genres.add("Horror");
         }
         if (cat.contains("surr") || cat.contains("surl")) {
@@ -257,6 +424,13 @@ public class MovieParser {
             genres.add("Romance");
         }
 
+        if (cat.contains("disa")) {
+            genres.add("Disaster");
+        }
+        if (cat.contains("faml")) {
+            genres.add("Family");
+        }
+
         if (cat.contains("musc") || cat.contains("muscl") || cat.contains("muusc")) {
             genres.add("Musical");
         }
@@ -264,17 +438,24 @@ public class MovieParser {
         if (cat.contains("homo")) {
             genres.add("Homoerotic");
         }
+        if (cat.contains("cnrb") || cat.contains("crim")) { // for some reason most are crime?
+            genres.add("Crime");
+        }
+        if (cat.contains("natu")) {
+            genres.add("Nature");
+        }
+        if (cat.contains("psyc")) {
+            genres.add("Psychological");
+        }
 
         if (genres.isEmpty() && !cat.isEmpty()) {
-            genres.add(cat.substring(0, 1).toUpperCase() + cat.substring(1));
+//            genres.add(cat.substring(0, 1).toUpperCase() + cat.substring(1));
+            genres.add("Unknown");
         }
+
+
 
         // direct mappings
         return genres;
-    }
-
-
-    public void insertMovies(String moviesCsvFile) {
-
     }
 }

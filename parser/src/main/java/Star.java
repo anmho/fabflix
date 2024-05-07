@@ -1,6 +1,15 @@
 public class Star {
+    private String id;
     private String stagename;
-    private String dateOfBirth;
+    private Integer dateOfBirth;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getStagename() {
         return stagename;
@@ -10,11 +19,20 @@ public class Star {
         this.stagename = stagename;
     }
 
-    public String getDateOfBirth() {
+    public Integer getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Integer dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    @Override
+    public String toString() {
+        return "Star{" +
+                "id='" + id + '\'' +
+                ", stagename='" + stagename + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                '}';
     }
 }

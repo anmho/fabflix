@@ -144,6 +144,7 @@ target/
 
 ## .csv output files
 *.csv
+!/src/main/resources/
 /src/main/resources/*.xml
 /src/main/resources/*.dtd
 

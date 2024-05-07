@@ -1,4 +1,6 @@
+import com.sun.source.tree.ArrayAccessTree;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,18 +11,27 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.*;
 
 public class StarParser {
     private final DocumentBuilder builder;
+    List<Star> stars;
     public StarParser() throws ParserConfigurationException {
         var factory = DocumentBuilderFactory.newInstance();
         builder = factory.newDocumentBuilder();
+        stars = new ArrayList<>();
+    }
+
+    public List<Star> getStars() {
+        return stars;
     }
 
     public void printSummary(List<Star> stars) {
@@ -28,13 +39,69 @@ public class StarParser {
         System.out.println("Stars parsed: " + stars.size());
     }
 
+    public void run() throws IOException, SAXException, SQLException {
+        // create a stars_in_movies lookup table
+        Map<String, Star> starLookupTable = new HashMap<>();
+        var reader = new FileReader("current_stars.csv");
+        var csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
 
-    public List<Star> parse(String filename) throws IOException, SAXException {
+
+        // this should be a select statement for all the inserted stars by name
+        // will assume their name is unique like the dataset does
+//        Map<String, String>
+        for (var row : csvParser) {
+            var star = new Star();
+
+            String id = row.get("id");
+            String name = row.get("name");
+            String birthYear = row.get("birthYear");
+
+            System.out.println("csv: " + name);
+            star.setStagename(name);
+            star.setId(id);
+            try {
+                star.setDateOfBirth(Integer.parseInt(birthYear));
+            } catch (NumberFormatException e) {
+                System.out.printf("Invalid birthyear: " + birthYear);
+            }
+            String key = String.format("%s,%s", name, birthYear);
+
+            starLookupTable.put(key, star);
+        }
+
+
+
+
+
+
+
+
+
+        // Cast lookup table
+        // at this point we have found out there are no duplicate movies compared to our current_movies
+
+        // we need a lookup table for newMovieId -> Movie
+        // using this we can check
+
+        // need a name -> id lookup table
+        // we will just assume that acturso have unique names (which is also what the dataset assumes)
+
+//        var sp = new StarParser();
+        var stars = parse("actors63.xml", starLookupTable);
+        writeFile("new_stars.csv", stars);
+        printSummary(stars);
+
+        var conn = Database.getInstance().getConnection();
+        insertDB(conn, stars);
+
+
+    }
+
+
+    public List<Star> parse(String filename, Map<String, Star> starLookupTable) throws IOException, SAXException {
         Document doc = builder.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         var root = doc.getDocumentElement();
-
-        List<Star> stars = new ArrayList<>();
 
         NodeList actorNodes = root.getElementsByTagName("actor");
         for (int i = 0; i < actorNodes.getLength(); i++) {
@@ -42,11 +109,11 @@ public class StarParser {
             if (actorNode.getNodeType() == Node.ELEMENT_NODE) {
                 var actorElement = (Element) actorNode;
                 String stagename = null;
-                String dateOfBirth = null;
+                Integer dateOfBirth = null;
 
                 var stagenameNode = actorElement.getElementsByTagName("stagename").item(0);
                 if (stagenameNode != null) {
-                    stagename = stagenameNode.getTextContent();
+                    stagename = stagenameNode.getTextContent().trim();
                     String[] parts = stagename.split("~");
                     if (parts.length > 1) {
                         String postfix = parts[parts.length-1];
@@ -63,14 +130,37 @@ public class StarParser {
 
                 var dobNode = actorElement.getElementsByTagName("dob").item(0);
                 if (dobNode != null) {
-                    dateOfBirth = dobNode.getTextContent();
+                    if (dobNode.getTextContent() != null && !dobNode.getTextContent().isEmpty()) {
+                        try {
+                            dateOfBirth = Integer.parseInt(dobNode.getTextContent().trim());
+                        } catch (NumberFormatException e) {
+                            System.out.println(stagename + " -- invalid year: " + dobNode.getTextContent());
+                        }
+
+                    }
                 }
 
-//                System.out.println("Stagename: " + stagename);
-//                System.out.println("Date of birth: " + dateOfBirth);
                 var star = new Star();
                 star.setStagename(stagename);
-                star.setDateOfBirth(dateOfBirth);
+                System.out.println(stagename);
+
+
+
+                if (dateOfBirth != null) {
+                    star.setDateOfBirth(dateOfBirth);
+                }
+
+                star.setId(UUID.randomUUID().toString());
+
+                // lookup in the table to attempt to assign an id
+                String key = String.format("%s,%s", stagename, dateOfBirth);
+                if (starLookupTable.containsKey(key)) {
+                    System.out.println("found duplicate star: " + starLookupTable.get(key).toString() + " " + star.toString());
+                    // lets skip the movie if we already have it
+                    // non duplicates we can
+                    // we should create a map of the newId -> original id  or we could just lookup by name
+                    continue;
+                }
                 stars.add(star);
             }
         }
@@ -79,12 +169,16 @@ public class StarParser {
     }
 
 
-    public void writeFile(List<Star> stars ) throws IOException {
-        String starsInMoviesFilename = "stars.csv";
+    public List<Star> transform(List<Star> stars) {
+        return null;
+    }
 
-        String[] HEADERS = { "name", "birthYear" };
+    public void writeFile(String outFilename, List<Star> stars ) throws IOException {
+//        String starsInMoviesFilename = "stars.csv";
 
-        try (Writer writer = new FileWriter(starsInMoviesFilename)) {
+        String[] HEADERS = { "id", "name", "birthYear" };
+
+        try (Writer writer = new FileWriter(outFilename)) {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
                     .setDelimiter(',')
                     .setHeader(HEADERS)
@@ -92,7 +186,7 @@ public class StarParser {
             try (final CSVPrinter printer = new CSVPrinter(writer, csvFormat)) {
                 stars.forEach((star) -> {
                     try {
-                        printer.printRecord(star.getStagename(), star.getDateOfBirth());
+                        printer.printRecord(star.getId(), star.getStagename(), star.getDateOfBirth());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -103,7 +197,50 @@ public class StarParser {
     }
 
 
-    public void insertDB(String csvFile) {
+    public void insertDB(Connection conn, List<Star> stars) throws SQLException {
+        conn.setAutoCommit(false);
+
+        Star recentStar = null;
+
+        try {
+            var stmt = conn.prepareStatement(
+                    "INSERT INTO stars " +
+                            "(id, name, birthYear)" +
+                            "VALUES "+
+                            "(?, ?, ?)"
+            );
+
+            for (var star : stars) {
+                recentStar = star;
+                stmt.setString(1, star.getId());
+                stmt.setString(2, star.getStagename());
+                if (star.getDateOfBirth() != null) {
+                    stmt.setInt(3, star.getDateOfBirth());
+                } else {
+                    stmt.setNull(3, Types.INTEGER);
+                }
+
+                stmt.addBatch();
+            }
+
+            stmt.executeBatch();
+
+            var q = conn.createStatement();
+            var rs = q.executeQuery("SELECT COUNT(*) as count FROM stars");
+            while (rs.next()) {
+                var count = rs.getInt("count");
+                System.out.println("new star count: " + count);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(recentStar);
+            conn.rollback();
+            throw new RuntimeException(e);
+        }
+        conn.commit();
+        conn.close();
+
 
     }
 }
