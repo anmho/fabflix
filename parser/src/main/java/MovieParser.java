@@ -12,7 +12,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.*;
@@ -66,7 +65,7 @@ public class MovieParser {
 
         var db = Database.getInstance();
         var conn = db.getConnection();
-        insertMovies(conn, movies);
+        insertDB(conn, movies);
     }
 
     public List<Movie> parse(String filename, Map<String, Movie> moviesLookupTable) throws IOException, SAXException {
@@ -336,102 +335,111 @@ public class MovieParser {
     }
 
 
-    public void insertMovies(Connection conn, List<Movie> movies) throws SQLException {
-
-        // insert into the db
-
-        System.out.printf("Batch inserting %d new movies: \n", movies.size());
 
 
 
-
+    private void insertMovies(Connection conn, List<Movie> movies) throws SQLException {
         Movie recentMovie = null;
-        try {
-        conn.setAutoCommit(false);
-            var stmt = conn.prepareStatement(
+
+        var stmt = conn.prepareStatement(
                 "INSERT INTO movies " +
-                "(id, title, year, director, price)" +
-                "VALUES (?, ?, ?, ?, ?);"
-            );
+                        "(id, title, year, director, price)" +
+                        "VALUES (?, ?, ?, ?, ?);"
+        );
 
-            for (var movie : movies) {
-                recentMovie = movie;
+        for (var movie : movies) {
+            recentMovie = movie;
 
-                stmt.setString(1, movie.getId());
-                stmt.setString(2, movie.getTitle());
-                if (movie.getYear() != null) {
-                    stmt.setInt(3, movie.getYear());
-                } else {
-                    stmt.setNull(3, Types.INTEGER);
-                }
-                stmt.setString(4, movie.getDirector());
-                stmt.setFloat(5, 5.0f);
+            stmt.setString(1, movie.getId());
+            stmt.setString(2, movie.getTitle());
+            if (movie.getYear() != null) {
+                stmt.setInt(3, movie.getYear());
+            } else {
+                stmt.setNull(3, Types.INTEGER);
+            }
+            stmt.setString(4, movie.getDirector());
+            stmt.setFloat(5, 5.0f);
+            stmt.addBatch();
+        }
+        stmt.executeLargeBatch();
+
+    }
+
+    private void insertGenres(Connection conn, Set<String> genres) throws SQLException {
+
+        var stmt = conn.prepareStatement("INSERT IGNORE INTO genres (name) VALUES (?)");
+
+        for (var genre : genres) {
+            stmt.setString(1, genre);
+            stmt.addBatch();
+        }
+        System.out.println("inserting new genres");
+        stmt.executeBatch();
+    }
+
+    private void insertGenresInMovies(Connection conn, List<Movie> movies) throws SQLException {
+        var q = conn.createStatement();
+        System.out.println("getting all genres");
+        var rs = q.executeQuery("SELECT id, name FROM genres");
+
+        // lookup genre by name to id
+        Map<String, String> genreLookupTable = new HashMap<>();
+        while (rs.next()) {
+            var id = rs.getString("id");
+            var name = rs.getString("name");
+            genreLookupTable.put(name, id);
+        }
+
+
+        var stmt = conn.prepareStatement(
+                "INSERT INTO genres_in_movies (genreId, movieId)" +
+                        "VALUES (?, ?)"
+        );
+
+        for (var movie : movies) {
+            for (var genre : movie.getGenres()) {
+                var genreId = genreLookupTable.get(genre);
+                stmt.setString(1, genreId);
+                stmt.setString(2, movie.getId());
                 stmt.addBatch();
             }
-            stmt.executeLargeBatch();
+        }
+
+
+        System.out.println("inserting new genres_in_movies");
+        stmt.executeBatch();
+    }
+    public void insertDB(Connection conn, List<Movie> movies) throws SQLException {
+        conn.setAutoCommit(false);
+
+        try {
+            // insert into the db
+            System.out.printf("Batch inserting %d new movies: \n", movies.size());
+            insertMovies(conn, movies);
+
             var q = conn.createStatement();
             var rs2 = q.executeQuery("SELECT COUNT(id) as count FROM movies");
             while (rs2.next()) {
                 System.out.println("new count: " + rs2.getInt("count"));
             }
 
-            // insert new genres
 
+            // insert new genres
             Set<String> genres = new HashSet<>();
             for (var movie : movies) {
                 genres.addAll(movie.getGenres());
             }
-
-            stmt = conn.prepareStatement("INSERT IGNORE INTO genres (name) VALUES (?)");
-
-            for (var genre : genres) {
-                stmt.setString(1, genre);
-                stmt.addBatch();
-            }
-            System.out.println("inserting new genres");
-            stmt.executeBatch();
-
-            // create the lookup table
-
-            q = conn.createStatement();
-            System.out.println("getting all genres");
-            var rs = q.executeQuery("SELECT id, name FROM genres");
-
-            // lookup genre by name to id
-            Map<String, String> genreLookupTable = new HashMap<>();
-            while (rs.next()) {
-                var id = rs.getString("id");
-                var name = rs.getString("name");
-                genreLookupTable.put(name, id);
-            }
-
-            // insert into genres in movies
-
-            stmt = conn.prepareStatement(
-                    "INSERT INTO genres_in_movies (genreId, movieId)" +
-                        "VALUES (?, ?)"
-            );
-
-            for (var movie : movies) {
-                for (var genre : genres) {
-                    var genreId = genreLookupTable.get(genre);
-                    stmt.setString(1, genreId);
-                    stmt.setString(2, movie.getId());
-                    stmt.addBatch();
-                }
-            }
+            insertGenres(conn, genres);
 
 
-            System.out.println("inserting new genres_in_movies");
-            stmt.executeBatch();
+            insertGenresInMovies(conn, movies);
+
         } catch (SQLException e) {
-//            System.out.println(e.getStackTrace());
             e.printStackTrace();
-            System.out.println(recentMovie);
             conn.rollback();
             throw e;
         }
-        conn.close();
 //        conn.commit();
+        conn.close();
     }
 }
