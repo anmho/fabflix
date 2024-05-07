@@ -66,15 +66,10 @@ public class Main {
         }
 
         List<Movie> movies = mp.parse("mains243.xml", movieLookupTable);
-        mp.writeMovies(movies);
+        mp.writeFile("new_movies.csv", movies);
         mp.printSummary(movies);
 
         var cp = new CastParser();
-
-        Map<String, Movie> newMoviesLookupTable = new HashMap<>();
-        for (var movie : movies) {
-            newMoviesLookupTable.put(movie.getId(), movie);
-        }
 
         Set<String> castLookupTable = new HashSet<>();
         reader = new FileReader("current_stars_in_movies.csv");
@@ -86,7 +81,6 @@ public class Main {
             String title = row.get("title");
 
             System.out.println("csv: " + name);
-//            starLookupTable.put(key, star);
             String key = String.format("%s,%s", title.trim(), name.trim());
             castLookupTable.add(key);
         }
@@ -95,7 +89,7 @@ public class Main {
 
         // Actor lookup table
         var starsInMovies = cp.parse("casts124.xml", castLookupTable);
-        cp.writeFile(starsInMovies);
+        cp.writeFile("new_stars_in_movies.csv", starsInMovies);
         cp.printSummary(starsInMovies);
 
         // Cast lookup table
@@ -104,12 +98,24 @@ public class Main {
         // we need a lookup table for newMovieId -> Movie
         // using this we can check
 
+        // need a name -> id lookup table
+        // we will just assume that acturso have unique names (which is also what the dataset assumes)
+
+
 
 
 
         var sp = new StarParser();
         var stars = sp.parse("actors63.xml", starLookupTable);
-        sp.writeFile(stars);
+        sp.writeFile("new_stars", stars);
         sp.printSummary(stars);
+
+        Map<String, String> starNameIdLookupTable = new HashMap<>();
+        for (var star : stars) {
+            starNameIdLookupTable.put(star.getStagename(), star.getId());
+        }
+        // will use later
+
+
     }
 }

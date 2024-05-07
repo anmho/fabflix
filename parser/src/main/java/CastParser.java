@@ -73,12 +73,12 @@ public class CastParser {
     }
 
 
-    public void writeFile(List<StarredInRow> starsInMovies) throws IOException {
-        String starsInMoviesFilename = "stars_in_movies.csv";
+    public void writeFile(String outFilename, List<StarredInRow> starsInMovies) throws IOException {
+//        String starsInMoviesFilename = "stars_in_movies.csv";
 
         String[] HEADERS = { "movieId", "starName" };
 
-        try (Writer writer = new FileWriter(starsInMoviesFilename)) {
+        try (Writer writer = new FileWriter(outFilename)) {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
                     .setDelimiter(',')
                     .setHeader(HEADERS)

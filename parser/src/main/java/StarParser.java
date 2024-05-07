@@ -104,16 +104,15 @@ public class StarParser {
 
 
     public List<Star> transform(List<Star> stars) {
-        // maybe refactor later
         return null;
     }
 
-    public void writeFile(List<Star> stars ) throws IOException {
-        String starsInMoviesFilename = "stars.csv";
+    public void writeFile(String outFilename, List<Star> stars ) throws IOException {
+//        String starsInMoviesFilename = "stars.csv";
 
         String[] HEADERS = { "id", "name", "birthYear" };
 
-        try (Writer writer = new FileWriter(starsInMoviesFilename)) {
+        try (Writer writer = new FileWriter(outFilename)) {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
                     .setDelimiter(',')
                     .setHeader(HEADERS)
@@ -133,6 +132,12 @@ public class StarParser {
 
 
     public void insertDB(String csvFile) {
+
+
+
+
+
+
 
     }
 }

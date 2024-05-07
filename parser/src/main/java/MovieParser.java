@@ -132,12 +132,11 @@ public class MovieParser {
     }
 
 
-    public void writeMovies(List<Movie> movies ) throws IOException {
-        String moviesFilePath = "movies.csv";
+    public void writeFile(String outFilename, List<Movie> movies ) throws IOException {
 
         String[] MOVIE_HEADERS = { "id", "title", "director", "year" };
 
-        try (Writer writer = new FileWriter(moviesFilePath)) {
+        try (Writer writer = new FileWriter(outFilename)) {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
                     .setDelimiter(',')
                     .setHeader(MOVIE_HEADERS)
@@ -296,7 +295,11 @@ public class MovieParser {
     }
 
 
-    public void insertMovies(String moviesCsvFile) {
+    public void insertMovies(List<String> movies) {
+
+        // insert into the db
+
+
 
     }
 }
