@@ -33,9 +33,9 @@ public class CastParser {
 
 
         starNameIdLookupTable = new HashMap<>();
-//        for (var star : stars) {
-//            starNameIdLookupTable.put(star.getStagename(), star.getId());
-//        }
+        for (var star : stars) {
+            starNameIdLookupTable.put(star.getStagename(), star.getId());
+        }
 //        // will use later
 
         movieIds = new HashSet<>();
@@ -71,7 +71,7 @@ public class CastParser {
 
         var conn = db.getConnection();
 
-        insertCast(conn, starsInMovies);
+        insertCast(conn, movieIds, starNameIdLookupTable, starsInMovies);
     }
 
 
@@ -91,7 +91,7 @@ public class CastParser {
                 String title = movieCastElement.getElementsByTagName("t").item(0).getTextContent().trim();
                 String stagename = movieCastElement.getElementsByTagName("a").item(0).getTextContent().trim();
 
-                System.out.println("movieId: " + movieId + " title: " + title + " starName: " + stagename);
+//                System.out.println("movieId: " + movieId + " title: " + title + " starName: " + stagename);
 
 
 
@@ -151,14 +151,43 @@ public class CastParser {
     }
 
 
-    public void insertCast(Connection conn, List<StarredInRow> starredIn) {
-//        var stmt = conn.prepareStatement("INSERT INTO ")
-//        for (var row : starredIn) {
-//
-//
-//
-//        }
+    public void insertCast(Connection conn, Set<String> validMovieIds, Map<String, String> starNameIdLookupTable, List<StarredInRow> starredIn) throws SQLException {
 
+        conn.setAutoCommit(false);
+
+        try {
+            System.out.printf("Inserting %d new stars_in_movies rows into database\n", starredIn.size());
+
+            var stmt = conn.prepareStatement(
+                    "INSERT INTO stars_in_movies " +
+                            "(starId, movieId)" +
+                            "VALUES (?, ?)"
+            );
+
+            for (var star : starredIn) {
+                var movieId = star.getMovieId();
+                if (!validMovieIds.contains(movieId)) {
+                    continue;
+                }
+                var name = star.getStagename();
+                var starId = starNameIdLookupTable.get(name);
+                if (starId == null) {
+                    continue;
+                }
+
+                stmt.setString(1, starId);
+                stmt.setString(2, movieId);
+
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            conn.rollback();
+        }
+
+//        conn.commit();
 
     }
 }

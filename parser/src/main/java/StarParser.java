@@ -45,6 +45,10 @@ public class StarParser {
         var reader = new FileReader("current_stars.csv");
         var csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
 
+
+        // this should be a select statement for all the inserted stars by name
+        // will assume their name is unique like the dataset does
+//        Map<String, String>
         for (var row : csvParser) {
             var star = new Star();
 
@@ -234,7 +238,8 @@ public class StarParser {
             conn.rollback();
             throw new RuntimeException(e);
         }
-//        conn.commit();
+        conn.commit();
+        conn.close();
 
 
     }

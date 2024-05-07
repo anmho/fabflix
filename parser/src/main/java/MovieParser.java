@@ -243,9 +243,9 @@ public class MovieParser implements Runnable {
             insertMovies(conn, movies);
 
             var q = conn.createStatement();
-            var rs2 = q.executeQuery("SELECT COUNT(id) as count FROM movies");
-            while (rs2.next()) {
-                System.out.println("new count: " + rs2.getInt("count"));
+            var rs = q.executeQuery("SELECT COUNT(id) as count FROM movies");
+            while (rs.next()) {
+                System.out.println("new count: " + rs.getInt("count"));
             }
 
 
@@ -264,7 +264,7 @@ public class MovieParser implements Runnable {
             conn.rollback();
             throw e;
         }
-//        conn.commit();
+        conn.commit();
         conn.close();
     }
 
