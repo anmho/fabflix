@@ -27,11 +27,13 @@ export const PrivatePage: React.FC<PrivatePageProps> = ({
       return;
     }
 
-    // handle no session state
     if (!session) {
       setIsLoading(true);
-
-      router.push("/login");
+      if (router.pathname === "/_dashboard") {
+        router.push("/employeeLogin");
+      } else {
+        router.push("/login");
+      }
       return;
     }
 
