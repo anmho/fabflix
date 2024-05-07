@@ -20,10 +20,10 @@ public class Main {
 
 
         var movieParser = new MovieParser();
-//        var starParser = new StarParser();
+        var starParser = new StarParser();
 
         movieParser.run();
-//        starParser.run();
+        starParser.run();
 
 //        var stars = starParser.getStars();
 //        var castParser = new CastParser(stars);

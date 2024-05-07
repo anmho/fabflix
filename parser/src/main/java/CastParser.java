@@ -152,12 +152,12 @@ public class CastParser {
 
 
     public void insertCast(Connection conn, List<StarredInRow> starredIn) {
-        var stmt = conn
-        for (var row : starredIn) {
-
-
-
-        }
+//        var stmt = conn.prepareStatement("INSERT INTO ")
+//        for (var row : starredIn) {
+//
+//
+//
+//        }
 
 
     }

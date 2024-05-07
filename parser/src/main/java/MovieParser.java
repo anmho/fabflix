@@ -177,7 +177,6 @@ public class MovieParser {
 
 
     public void writeFile(String outFilename, List<Movie> movies ) throws IOException {
-
         String[] MOVIE_HEADERS = { "id", "title", "director", "year" };
 
         try (Writer writer = new FileWriter(outFilename)) {
@@ -196,7 +195,7 @@ public class MovieParser {
             }
         }
 
-        String genresInMoviesFilePath = "genres_in_movies.csv";
+        String genresInMoviesFilePath = "new_genres_in_movies.csv";
 
         String[] GENRE_HEADERS = { "movieId", "genre" };
 
@@ -219,8 +218,6 @@ public class MovieParser {
             }
 
         }
-
-
     }
 
     private List<String> translateGenre(String cat) {
@@ -346,6 +343,8 @@ public class MovieParser {
         System.out.printf("Batch inserting %d new movies: \n", movies.size());
 
 
+
+
         Movie recentMovie = null;
         try {
         conn.setAutoCommit(false);
@@ -376,6 +375,55 @@ public class MovieParser {
                 System.out.println("new count: " + rs2.getInt("count"));
             }
 
+            // insert new genres
+
+            Set<String> genres = new HashSet<>();
+            for (var movie : movies) {
+                genres.addAll(movie.getGenres());
+            }
+
+            stmt = conn.prepareStatement("INSERT IGNORE INTO genres (name) VALUES (?)");
+
+            for (var genre : genres) {
+                stmt.setString(1, genre);
+                stmt.addBatch();
+            }
+            System.out.println("inserting new genres");
+            stmt.executeBatch();
+
+            // create the lookup table
+
+            q = conn.createStatement();
+            System.out.println("getting all genres");
+            var rs = q.executeQuery("SELECT id, name FROM genres");
+
+            // lookup genre by name to id
+            Map<String, String> genreLookupTable = new HashMap<>();
+            while (rs.next()) {
+                var id = rs.getString("id");
+                var name = rs.getString("name");
+                genreLookupTable.put(name, id);
+            }
+
+            // insert into genres in movies
+
+            stmt = conn.prepareStatement(
+                    "INSERT INTO genres_in_movies (genreId, movieId)" +
+                        "VALUES (?, ?)"
+            );
+
+            for (var movie : movies) {
+                for (var genre : genres) {
+                    var genreId = genreLookupTable.get(genre);
+                    stmt.setString(1, genreId);
+                    stmt.setString(2, movie.getId());
+                    stmt.addBatch();
+                }
+            }
+
+
+            System.out.println("inserting new genres_in_movies");
+            stmt.executeBatch();
         } catch (SQLException e) {
 //            System.out.println(e.getStackTrace());
             e.printStackTrace();
@@ -383,6 +431,7 @@ public class MovieParser {
             conn.rollback();
             throw e;
         }
+        conn.close();
 //        conn.commit();
     }
 }

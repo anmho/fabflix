@@ -1,0 +1,25 @@
+ALTER TABLE movies
+MODIFY COLUMN id VARCHAR(50)
+;
+
+ALTER TABLE stars
+MODIFY COLUMN id VARCHAR(50)
+;
+
+ALTER TABLE stars_in_movies
+MODIFY COLUMN starId VARCHAR(50)
+;
+ALTER TABLE stars_in_movies
+MODIFY COLUMN movieId VARCHAR(50)
+;
+
+# CREATE TABLE genres (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     name VARCHAR(32) NOT NULL
+# );
+
+ALTER TABLE genres_in_movies
+MODIFY COLUMN movieId VARCHAR(50)
+;
+
+

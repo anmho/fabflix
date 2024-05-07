@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.*;
 
 public class StarParser {
@@ -37,7 +39,7 @@ public class StarParser {
         System.out.println("Stars parsed: " + stars.size());
     }
 
-    public void run() throws IOException, SAXException {
+    public void run() throws IOException, SAXException, SQLException {
         // create a stars_in_movies lookup table
         Map<String, Star> starLookupTable = new HashMap<>();
         var reader = new FileReader("current_stars.csv");
@@ -84,6 +86,9 @@ public class StarParser {
         var stars = parse("actors63.xml", starLookupTable);
         writeFile("new_stars.csv", stars);
         printSummary(stars);
+
+        var conn = Database.getInstance().getConnection();
+        insertDB(conn, stars);
 
 
     }
@@ -188,12 +193,48 @@ public class StarParser {
     }
 
 
-    public void insertDB(String csvFile) {
+    public void insertDB(Connection conn, List<Star> stars) throws SQLException {
+        conn.setAutoCommit(false);
+
+        Star recentStar = null;
+
+        try {
+            var stmt = conn.prepareStatement(
+                    "INSERT INTO stars " +
+                            "(id, name, birthYear)" +
+                            "VALUES "+
+                            "(?, ?, ?)"
+            );
+
+            for (var star : stars) {
+                recentStar = star;
+                stmt.setString(1, star.getId());
+                stmt.setString(2, star.getStagename());
+                if (star.getDateOfBirth() != null) {
+                    stmt.setInt(3, star.getDateOfBirth());
+                } else {
+                    stmt.setNull(3, Types.INTEGER);
+                }
+
+                stmt.addBatch();
+            }
+
+            stmt.executeBatch();
+
+            var q = conn.createStatement();
+            var rs = q.executeQuery("SELECT COUNT(*) as count FROM stars");
+            while (rs.next()) {
+                var count = rs.getInt("count");
+                System.out.println("new star count: " + count);
+            }
 
 
-
-
-
+        } catch (SQLException e) {
+            System.out.println(recentStar);
+            conn.rollback();
+            throw new RuntimeException(e);
+        }
+//        conn.commit();
 
 
     }
