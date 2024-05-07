@@ -76,6 +76,7 @@ public class MovieParser implements Runnable {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
     }
 
     public List<Movie> getMovies() {
@@ -327,8 +328,11 @@ public class MovieParser implements Runnable {
         );
 
         for (var movie : movies) {
-            for (var genre : movie.getGenres()) {
+            Set<String> genreSet = new HashSet<>(movie.getGenres());
+            for (var genre : genreSet) {
+
                 var genreId = genreLookupTable.get(genre);
+                System.out.printf("genre %s %s %s\n", genreId, genre, movie.getId());
                 stmt.setString(1, genreId);
                 stmt.setString(2, movie.getId());
                 stmt.addBatch();
