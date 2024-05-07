@@ -3,7 +3,7 @@ import java.util.List;
 public class Movie {
     private String id;
     private String title;
-    private int year;
+    private Integer year;
     private String director;
     private List<String> genres;
 
@@ -31,11 +31,11 @@ public class Movie {
         this.title = title;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

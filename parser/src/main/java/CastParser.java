@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class CastParser {
     private final DocumentBuilder builder;
@@ -34,7 +36,7 @@ public class CastParser {
     }
 
 
-    public List<StarredInRow> parse(String filename) throws IOException, SAXException {
+    public List<StarredInRow> parse(String filename, Set<String> castLookupTable) throws IOException, SAXException {
         Document doc = builder.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         var root = doc.getDocumentElement();
@@ -52,9 +54,17 @@ public class CastParser {
 
                 System.out.println("movieId: " + movieId + " title: " + title + " starName: " + stagename);
 
+
+
                 var star = new StarredInRow();
                 star.setStagename(stagename);
                 star.setMovieId(movieId);
+
+                String key = String.format("%s,%s", title.trim(), stagename.trim());
+                if (castLookupTable.contains(key)) {
+                    System.out.println("duplicate cast member found: " + key);
+                    continue;
+                }
                 stars_in_movies.add(star);
             }
         }
@@ -63,7 +73,7 @@ public class CastParser {
     }
 
 
-    public void writeFile(List<StarredInRow> starsInMovies ) throws IOException {
+    public void writeFile(List<StarredInRow> starsInMovies) throws IOException {
         String starsInMoviesFilename = "stars_in_movies.csv";
 
         String[] HEADERS = { "movieId", "starName" };

@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class MovieParser {
     private final DocumentBuilder builder;
@@ -37,7 +38,7 @@ public class MovieParser {
     }
 
 
-    public List<Movie> parse(String filename) throws IOException, SAXException {
+    public List<Movie> parse(String filename, Map<String, Movie> moviesLookupTable) throws IOException, SAXException {
         Document doc = builder.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         var root = doc.getDocumentElement();
@@ -52,13 +53,8 @@ public class MovieParser {
                 Element directorFilmElement = (Element) directorFilmNode;
                 Element directorElement = (Element)directorFilmElement.getElementsByTagName("director").item(0);
                 Node dirnameNode = directorElement.getElementsByTagName("dirname").item(0);
-//                if (dirnameNode != null) {
-//                    System.out.println(dirnameNode.getTextContent());
-//                }
+
                 Node dirnNode = directorElement.getElementsByTagName("dirn").item(0);
-//                if (dirnNode != null) {
-//                    System.out.println(dirnNode.getTextContent());
-//                }
 
                 if (dirnameNode != null) {
                     director = dirnameNode.getTextContent();
@@ -66,7 +62,6 @@ public class MovieParser {
                     director = dirnNode.getTextContent();
                 }
 
-//                System.out.println("director: " + director);
                 Element filmsElement = ((Element)((Element)directorFilmNode).getElementsByTagName("films").item(0));
                 NodeList filmsList = filmsElement.getElementsByTagName("film");
                 for (int j = 0; j < filmsList.getLength(); j++) {
@@ -81,23 +76,18 @@ public class MovieParser {
 
                         String movieId = filmId.getTextContent();
 
-//                        System.out.println("filmId: " + movieId);
-
                         var titleNode = film.getElementsByTagName("t").item(0);
                         String title = titleNode.getTextContent();
 
-                        System.out.println("title: " + title);
-                        int year = 0;
+
+                        Integer year = null;
 
                         var yearNode = film.getElementsByTagName("year").item(0);
                         try {
-                            year = Integer.parseInt(yearNode.getTextContent());
+                            year = Integer.parseInt(yearNode.getChildNodes().item(0).getTextContent().trim());
                         } catch (NumberFormatException e) {
-                            year = 0;
+                            System.out.println(title + " -- invalid year " + yearNode.getChildNodes().item(0).getTextContent());
                         }
-
-
-
                         var catsNode = film.getElementsByTagName("cats").item(0);
                         List<String> categories = new ArrayList<>();
                         if (catsNode != null) {
@@ -116,6 +106,16 @@ public class MovieParser {
                         }
                         categories = genres;
 
+
+                        String key = String.format("%s,%s", title.trim(), director);
+                        if (moviesLookupTable.containsKey(key)) {
+                            System.out.println(key);
+                            System.out.println("found duplicate movie" + title + " " + director + " " + year);
+                            System.out.println(key);
+                            System.out.println(moviesLookupTable.get(key));
+
+                            continue; // already in the tables, lets skip
+                        }
 
                         Movie movie = new Movie();
                         movie.setId(movieId);
@@ -184,8 +184,8 @@ public class MovieParser {
 
         cat = cat.toLowerCase().trim();
         List<String> genres = new ArrayList<>();
-        if (cat.equals("avga") || cat.equals("avante garde")) {
-            genres.add("Avante Garde");
+        if (cat.equals("avga") || cat.equals("avante garde") || cat.equals("avant garde")) {
+            genres.add("Avant Garde");
         }
         if (cat.contains("fant")) {
             genres.add("Fantasy");
@@ -199,7 +199,7 @@ public class MovieParser {
         if (cat.contains("dram") || cat.contains("draam")) {
             genres.add("Drama");
         }
-        if (cat.contains("romt")) {
+        if (cat.contains("romt") || cat.contains("ront")) {
             genres.add("Romance");
         }
         if (cat.contains("myst")) {
@@ -218,8 +218,11 @@ public class MovieParser {
         if (cat.contains("west")) {
             genres.add("Western");
         }
-        if (cat.contains("docu")) {
+        if (cat.contains("docu") || cat.contains("dicu") || cat.contains("duco") || cat.contains("ducu"))  {
             genres.add("Documentary");
+        }
+        if (cat.contains("expm")) {
+            genres.add("Experimental");
         }
 
         if (cat.contains("hist")) {
@@ -236,17 +239,17 @@ public class MovieParser {
         if (cat.contains("noir")) {
             genres.add("Noir");
         }
-        if (cat.contains("comd")) {
+        if (cat.contains("comd") || cat.contains("cond")) {
             genres.add("Comedy");
         }
         if (cat.contains("por") || cat.contains("porn")) {
             genres.add("Adult");
         }
-        if (cat.contains("scfi") || cat.contains("scif") || cat.contains("sxfi")) {
+        if (cat.contains("scfi") || cat.contains("scif") || cat.contains("sxfi") || cat.contains("s.f.") || cat.contains("ca")) {
             genres.add("Sci-Fi");
         }
 
-        if (cat.contains("horr")) {
+        if (cat.contains("horr") || cat.contains("hor")) {
             genres.add("Horror");
         }
         if (cat.contains("surr") || cat.contains("surl")) {
@@ -257,6 +260,13 @@ public class MovieParser {
             genres.add("Romance");
         }
 
+        if (cat.contains("disa")) {
+            genres.add("Disaster");
+        }
+        if (cat.contains("faml")) {
+            genres.add("Family");
+        }
+
         if (cat.contains("musc") || cat.contains("muscl") || cat.contains("muusc")) {
             genres.add("Musical");
         }
@@ -264,10 +274,22 @@ public class MovieParser {
         if (cat.contains("homo")) {
             genres.add("Homoerotic");
         }
+        if (cat.contains("cnrb") || cat.contains("crim")) { // for some reason most are crime?
+            genres.add("Crime");
+        }
+        if (cat.contains("natu")) {
+            genres.add("Nature");
+        }
+        if (cat.contains("psyc")) {
+            genres.add("Psychological");
+        }
 
         if (genres.isEmpty() && !cat.isEmpty()) {
-            genres.add(cat.substring(0, 1).toUpperCase() + cat.substring(1));
+//            genres.add(cat.substring(0, 1).toUpperCase() + cat.substring(1));
+            genres.add("Unknown");
         }
+
+
 
         // direct mappings
         return genres;
