@@ -25,11 +25,10 @@ public class Main {
         movieParser.run();
         starParser.run();
 
-//        var stars = starParser.getStars();
-//        var castParser = new CastParser(stars);
-//        castParser.run();
 
-
-
+        var movies = movieParser.getMovies();
+        var stars = starParser.getStars();
+        var castParser = new CastParser(stars, movies);
+        castParser.run();
     }
 }

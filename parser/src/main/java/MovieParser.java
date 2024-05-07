@@ -18,10 +18,14 @@ import java.util.*;
 
 public class MovieParser implements Runnable {
     private final DocumentBuilder builder;
+    private final List<Movie> movies;
+
     public MovieParser() throws ParserConfigurationException  {
         var factory = DocumentBuilderFactory.newInstance();
         builder = factory.newDocumentBuilder();
+        movies = new ArrayList<>();
     }
+
 
     public void printSummary(List<Movie> movies) {
 
@@ -59,7 +63,7 @@ public class MovieParser implements Runnable {
             }
 
 
-            List<Movie> movies = parse("mains243.xml", movieLookupTable);
+            movies.addAll(parse("mains243.xml", movieLookupTable));
             writeFile("new_movies.csv", movies);
             printSummary(movies);
 
@@ -72,6 +76,10 @@ public class MovieParser implements Runnable {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
     }
 
     public List<Movie> parse(String filename, Map<String, Movie> moviesLookupTable) throws IOException, SAXException {
