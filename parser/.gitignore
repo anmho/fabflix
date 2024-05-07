@@ -141,6 +141,12 @@ hs_err_pid*
 ## ignoring target file
 target/
 
+
+## .csv output files
+*.csv
+/src/main/resources/*.xml
+/src/main/resources/*.dtd
+
 ### Maven ###
 pom.xml.tag
 pom.xml.releaseBackup
