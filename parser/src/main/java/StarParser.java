@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class StarParser {
@@ -46,6 +47,18 @@ public class StarParser {
                 var stagenameNode = actorElement.getElementsByTagName("stagename").item(0);
                 if (stagenameNode != null) {
                     stagename = stagenameNode.getTextContent();
+                    String[] parts = stagename.split("~");
+                    if (parts.length > 1) {
+                        String postfix = parts[parts.length-1];
+
+                        if (postfix.equalsIgnoreCase("jr.") || postfix.equalsIgnoreCase("sr.") || postfix.equalsIgnoreCase("sr") || postfix.equalsIgnoreCase("jr"  )) {
+                            parts[parts.length-1] = postfix.substring(0, 1).toUpperCase() + postfix.substring(1);
+                        }
+                        String prefix = parts[0];
+                        parts[0] = prefix.substring(0, 1).toUpperCase() + prefix.substring(1);
+                        stagename = String.join(" ", parts);
+                        System.out.println(stagename);
+                    }
                 }
 
                 var dobNode = actorElement.getElementsByTagName("dob").item(0);
@@ -53,8 +66,8 @@ public class StarParser {
                     dateOfBirth = dobNode.getTextContent();
                 }
 
-                System.out.println("Stagename: " + stagename);
-                System.out.println("Date of birth: " + dateOfBirth);
+//                System.out.println("Stagename: " + stagename);
+//                System.out.println("Date of birth: " + dateOfBirth);
                 var star = new Star();
                 star.setStagename(stagename);
                 star.setDateOfBirth(dateOfBirth);
@@ -69,7 +82,7 @@ public class StarParser {
     public void writeFile(List<Star> stars ) throws IOException {
         String starsInMoviesFilename = "stars.csv";
 
-        String[] HEADERS = { "stagename", "dateOfBirth" };
+        String[] HEADERS = { "name", "birthYear" };
 
         try (Writer writer = new FileWriter(starsInMoviesFilename)) {
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()

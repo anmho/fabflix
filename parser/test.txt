@@ -1,0 +1,287 @@
+All genres: [, Comd, Epic, S.F., stage musical, anti-clerical, pro-faith, Dram.Actn, impressionistic, Myst, susp, CmR, Axtn, SxFi, UnDr, AvGa, Scfi, dram, DRam, DRAM, RFP; H* , DraM, Surl, BiopP, ram, Actn, CnR, Muscl, Hor, Homo, Draam, anti-Dram, comd, actn, Expm, underground, verite, pastiche, CnRb, BioPP, Musc, Advt , Psych Dram, Cart , BioG, religious, FantH* , CnRbb, Sati, BioB, Muscl , H, SciF, Psyc,
+id,name
+1,Action
+    Dram.Actn
+    Axtn
+    Act
+    Actn
+    CA
+2,Adult
+3,Adventure
+    Adct
+    Advt
+    Adctx
+4,Animation
+5,Biography
+    Bio
+    BioB
+    BioG
+    BioP
+    BioP
+    BioPP
+    BioPx
+    Biop
+    BiopP
+6,Comedy
+    Comd
+    Comd
+    Comd
+    Comd Noir
+    Comd West
+    Comdx
+    Noir Comd
+    Noir Comd Romt
+    Romt Comd
+    Romt. Comd
+    comd
+7,Crime
+8,Documentary
+    Docu
+    Docu
+    Docu Dram
+    Dram Docu
+    Pseudo Docu
+    Dicu
+9,Drama
+    Dram.Actn
+    Avga
+    dram
+    Draam
+    DRAM
+    DRam
+    Docu Dram
+    DraM
+    Dram
+    Dram
+    Dram Docu
+    Dram.Actn
+    Dram>
+    Drama
+    Dramd
+    Dramn
+    Psych Dram
+    Romt Dram
+    anti-Dram
+    dram
+10,Family
+    Faml
+11,Fantasy
+    Fant
+    Fant
+    FantH*
+    Romt Fant
+    fant
+12,History
+    Hist
+13,Horror
+14,Music
+15,Musical
+    stage musical
+    Musc
+    Muscl
+    Muscl
+    musc
+    stage musical
+16,Mystery
+    Myst
+17,Reality-TV
+18,Romance
+    Romt
+19,Sci-Fi
+    SxFi
+    Scfi
+20,Sport
+21,Thriller
+22,War
+23,Western
+
+
+Other
+anti-clerical -> Anti-clerical
+Epic -> Epic
+impressionistic -> Impressionistic
+susp -> Suspense
+CmR-> thriller/mystery
+UnDr->Adventure/Comedy/Drama
+Cart ->Cartoon
+RFP; H* -> Drama/Black-and-White
+
+Satire
+    Sati
+    bleak satire
+    Sati
+
+ALlegory
+
+Avante-Garde
+AvGa Avante-Garde
+
+
+
+
+
+
+
+
+
+
+(null
+(	Susp
+(
+
+(
+
+(Act
+(Actn
+(Adct
+(Adctx
+(Advt
+(Advt
+(Allegory
+(Art Video
+(AvGa
+(Avant Garde
+(Axtn
+(Bio
+(BioB
+(BioG
+(BioP
+(BioP
+(BioPP
+(BioPx
+(Biop
+(BiopP
+(CA
+(Camp
+(Cart
+(Cart
+(CmR
+(CnR
+(CnRb
+(CnRbb
+(Comd
+(Comd
+(Comd Noir
+(Comd West
+(Comdx
+(Cond
+(Crim
+(Ctcxx
+(Ctxx
+(Ctxxx
+(Cult
+(DRAM
+(DRam
+(Dicu
+(Disa
+(Dist
+(Docu
+(Docu
+(Docu Dram
+(DraM
+(Draam
+(Dram
+(Dram
+(Dram Docu
+(Dram.Actn
+(Dram>
+(Drama
+(Dramd
+(Dramn
+(Duco
+(Ducu
+(Epic
+(Expm
+(Faml
+(Fant
+(Fant
+(FantH*
+(H
+(H**
+(H0
+(Hist
+(Homo
+(Hor
+(Horr
+(Horr
+(Kinky
+(Musc
+(Muscl
+(Muscl
+(Muusc
+(Myst
+(Myst
+(Mystp
+(Natu
+(Noir
+(Noir Comd
+(Noir Comd Romt
+(Nouvelle vague
+(Porb
+(Porn
+(Porn
+(Pseudo Docu
+(Psyc
+(Psych Dram
+(RFP; H*
+(Road
+(Romt
+(Romt
+(Romt Actn
+(Romt Comd
+(Romt Dram
+(Romt Fant
+(Romt. Comd
+(RomtAdvt
+(Romtx
+(Ront
+(S.F.
+(Sati
+(Satire
+(ScFi
+(Scat
+(Scfi
+(SciF
+(Sctn
+(Surl
+(Surr
+(Susp
+(Susp
+(SxFi
+(TV
+(TVmini
+(UnDr
+(Viol
+(Weird
+(West
+(West1
+(actn
+(anti-Dram
+(anti-clerical
+(bleak satire
+(cartoon and live
+(comd
+(cubist
+(cult
+(dada
+(dram
+(fant
+(homoerotic
+(impressionistic
+(musc
+(noir
+(pastiche
+(porn
+(propaganda
+(prophetic
+(ram
+(religious
+(romt
+(silly
+(sports
+(stage musical
+(surreal
+(susp
+(txx
+(underground
+(verite

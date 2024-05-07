@@ -110,6 +110,13 @@ public class MovieParser {
                             }
                         }
 
+                        List<String> genres = new ArrayList<>();
+                        for (var cat : categories) {
+                            genres.addAll(translateGenre(cat));
+                        }
+                        categories = genres;
+
+
                         Movie movie = new Movie();
                         movie.setId(movieId);
                         movie.setTitle(title);
@@ -171,6 +178,99 @@ public class MovieParser {
         }
 
 
+    }
+
+    private List<String> translateGenre(String cat) {
+
+        cat = cat.toLowerCase().trim();
+        List<String> genres = new ArrayList<>();
+        if (cat.equals("avga") || cat.equals("avante garde")) {
+            genres.add("Avante Garde");
+        }
+        if (cat.contains("fant")) {
+            genres.add("Fantasy");
+        }
+        if (cat.contains("myst")) {
+            genres.add("Mystery");
+        }
+        if (cat.startsWith("bio")) {
+            genres.add("Biography");
+        }
+        if (cat.contains("dram") || cat.contains("draam")) {
+            genres.add("Drama");
+        }
+        if (cat.contains("romt")) {
+            genres.add("Romance");
+        }
+        if (cat.contains("myst")) {
+            genres.add("Mystery");
+        }
+        if (cat.contains("sati")) {
+            genres.add("Satire");
+        }
+
+        if (cat.contains("susp")) {
+            genres.add("Suspense");
+        }
+        if (cat.contains("cart")) {
+            genres.add("Cartoon");
+        }
+        if (cat.contains("west")) {
+            genres.add("Western");
+        }
+        if (cat.contains("docu")) {
+            genres.add("Documentary");
+        }
+
+        if (cat.contains("hist")) {
+            genres.add("History");
+        }
+        if (cat.contains("epic")) {
+            genres.add("Epic");
+        }
+
+        if (cat.equals("act") || cat.contains("actn") || cat.contains("adct") || cat.contains("advt") || cat.contains("axtn") || cat.contains("ctn")) {
+            genres.add("Action");
+        }
+
+        if (cat.contains("noir")) {
+            genres.add("Noir");
+        }
+        if (cat.contains("comd")) {
+            genres.add("Comedy");
+        }
+        if (cat.contains("por") || cat.contains("porn")) {
+            genres.add("Adult");
+        }
+        if (cat.contains("scfi") || cat.contains("scif") || cat.contains("sxfi")) {
+            genres.add("Sci-Fi");
+        }
+
+        if (cat.contains("horr")) {
+            genres.add("Horror");
+        }
+        if (cat.contains("surr") || cat.contains("surl")) {
+            genres.add("Surreal");
+        }
+        if (cat.equals("cnr") || cat.equals("cmr")) {
+            genres.add("Comedy");
+            genres.add("Romance");
+        }
+
+        if (cat.contains("musc") || cat.contains("muscl") || cat.contains("muusc")) {
+            genres.add("Musical");
+        }
+
+        if (cat.contains("homo")) {
+            genres.add("Homoerotic");
+        }
+
+        if (genres.isEmpty() && !cat.isEmpty()) {
+            genres.add(cat.substring(0, 1).toUpperCase() + cat.substring(1));
+        }
+
+        // direct mappings
+        return genres;
     }
 
 
