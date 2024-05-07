@@ -2,6 +2,9 @@
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,7 +15,7 @@ import org.xml.sax.SAXException;
 
 
 public class Main {
-    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException, SQLException {
         var mp = new MovieParser();
 
         // only title-year-director key is unique
@@ -110,11 +113,19 @@ public class Main {
         sp.writeFile("new_stars", stars);
         sp.printSummary(stars);
 
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3307/moviedb",
+                "admin", "admin");
+
         Map<String, String> starNameIdLookupTable = new HashMap<>();
         for (var star : stars) {
             starNameIdLookupTable.put(star.getStagename(), star.getId());
         }
         // will use later
+
+        mp.insertMovies(conn, movies);
 
 
     }

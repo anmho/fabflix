@@ -12,6 +12,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -295,11 +298,16 @@ public class MovieParser {
     }
 
 
-    public void insertMovies(List<String> movies) {
+    public void insertMovies(Connection conn, List<Movie> movies) throws SQLException {
 
         // insert into the db
 
+        var stmt = conn.createStatement();
 
+        var rs = stmt.executeQuery("SELECT * FROM movies;");
+        while (rs.next()) {
+            System.out.println(rs.getString("title"));
+        }
 
     }
 }
