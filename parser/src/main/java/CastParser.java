@@ -67,25 +67,8 @@ public class CastParser {
         writeFile("new_stars_in_movies.csv", starsInMovies);
         printSummary(starsInMovies);
 
-
-
         Database db = Database.getInstance();
-
         var conn = db.getConnection();
-//
-//        var stmt = conn.createStatement();
-//        var rs = stmt.executeQuery("select *\n" +
-//                "from stars_in_movies sim join stars s on sim.starId = s.id\n" +
-//                ";");
-
-
-//        Map<String, String> starNameToStringLookup = new HashMap<>();
-//        while (rs.next()) {
-//            String starId = rs.getString("starId");
-//            String name = rs.getString("name");
-//            starNameToStringLookup.put(name, starId);
-//        }
-
 
         insertCast(conn, movieIds, starNameIdLookupTable, starsInMovies);
     }
