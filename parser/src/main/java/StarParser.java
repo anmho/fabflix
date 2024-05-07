@@ -1,4 +1,6 @@
+import com.sun.source.tree.ArrayAccessTree;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,19 +11,25 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.*;
 
 public class StarParser {
     private final DocumentBuilder builder;
+    List<Star> stars;
     public StarParser() throws ParserConfigurationException {
         var factory = DocumentBuilderFactory.newInstance();
         builder = factory.newDocumentBuilder();
+        stars = new ArrayList<>();
+    }
+
+    public List<Star> getStars() {
+        return stars;
     }
 
     public void printSummary(List<Star> stars) {
@@ -29,13 +37,62 @@ public class StarParser {
         System.out.println("Stars parsed: " + stars.size());
     }
 
+    public void run() throws IOException, SAXException {
+        // create a stars_in_movies lookup table
+        Map<String, Star> starLookupTable = new HashMap<>();
+        var reader = new FileReader("current_stars.csv");
+        var csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
+
+        for (var row : csvParser) {
+            var star = new Star();
+
+            String id = row.get("id");
+            String name = row.get("name");
+            String birthYear = row.get("birthYear");
+
+            System.out.println("csv: " + name);
+            star.setStagename(name);
+            star.setId(id);
+            try {
+                star.setDateOfBirth(Integer.parseInt(birthYear));
+            } catch (NumberFormatException e) {
+                System.out.printf("Invalid birthyear: " + birthYear);
+            }
+            String key = String.format("%s,%s", name, birthYear);
+
+            starLookupTable.put(key, star);
+        }
+
+
+
+
+
+
+
+
+
+        // Cast lookup table
+        // at this point we have found out there are no duplicate movies compared to our current_movies
+
+        // we need a lookup table for newMovieId -> Movie
+        // using this we can check
+
+        // need a name -> id lookup table
+        // we will just assume that acturso have unique names (which is also what the dataset assumes)
+
+//        var sp = new StarParser();
+        var stars = parse("actors63.xml", starLookupTable);
+        writeFile("new_stars.csv", stars);
+        printSummary(stars);
+
+
+    }
+
 
     public List<Star> parse(String filename, Map<String, Star> starLookupTable) throws IOException, SAXException {
         Document doc = builder.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         var root = doc.getDocumentElement();
-
-        List<Star> stars = new ArrayList<>();
 
         NodeList actorNodes = root.getElementsByTagName("actor");
         for (int i = 0; i < actorNodes.getLength(); i++) {

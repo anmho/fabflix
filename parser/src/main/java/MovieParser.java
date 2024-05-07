@@ -1,4 +1,5 @@
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,20 +10,16 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.sql.Types;
+import java.util.*;
 
 public class MovieParser {
     private final DocumentBuilder builder;
-    public MovieParser() throws ParserConfigurationException, IOException, SAXException {
+    public MovieParser() throws ParserConfigurationException  {
         var factory = DocumentBuilderFactory.newInstance();
         builder = factory.newDocumentBuilder();
     }
@@ -40,6 +37,37 @@ public class MovieParser {
         System.out.println("All genres: " + genres);
     }
 
+    public void run() throws IOException, SAXException, SQLException {
+        Map<String, Movie> movieLookupTable = new HashMap<>();
+        Reader reader = new FileReader("current_movies.csv");
+        CSVParser csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
+
+        for (var row : csvParser) {
+            var movie = new Movie();
+
+            String title = row.get("title");
+            String director = row.get("director");
+            String year = row.get("year");
+
+
+            String key = String.format("%s,%s", title.trim(), director.trim());
+            movie.setTitle(title.trim());
+            movie.setDirector(director);
+            movie.setYear(Integer.parseInt(year));
+
+            movieLookupTable.put(key, movie);
+        }
+
+
+        List<Movie> movies = parse("mains243.xml", movieLookupTable);
+        writeFile("new_movies.csv", movies);
+        printSummary(movies);
+
+
+        var db = Database.getInstance();
+        var conn = db.getConnection();
+        insertMovies(conn, movies);
+    }
 
     public List<Movie> parse(String filename, Map<String, Movie> moviesLookupTable) throws IOException, SAXException {
         Document doc = builder.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
@@ -47,6 +75,7 @@ public class MovieParser {
         var root = doc.getDocumentElement();
 
         List<Movie> movies = new ArrayList<>();
+        Set<String> dupSet = new HashSet<>();
 
         var directorFilms = root.getElementsByTagName("directorfilms");
         for (int i = 0; i < directorFilms.getLength(); i++) {
@@ -80,7 +109,7 @@ public class MovieParser {
                         String movieId = filmId.getTextContent();
 
                         var titleNode = film.getElementsByTagName("t").item(0);
-                        String title = titleNode.getTextContent();
+                        String title = titleNode.getTextContent().trim();
 
 
                         Integer year = null;
@@ -110,7 +139,7 @@ public class MovieParser {
                         categories = genres;
 
 
-                        String key = String.format("%s,%s", title.trim(), director);
+                        String key = String.format("%s,%s", title, director);
                         if (moviesLookupTable.containsKey(key)) {
                             System.out.println(key);
                             System.out.println("found duplicate movie" + title + " " + director + " " + year);
@@ -121,12 +150,24 @@ public class MovieParser {
                         }
 
                         Movie movie = new Movie();
+                        if (dupSet.contains(movieId)) {
+                            movieId = UUID.randomUUID().toString();
+                        }
                         movie.setId(movieId);
                         movie.setTitle(title);
                         movie.setDirector(director);
                         movie.setYear(year);
                         movie.setGenres(categories);
-                        movies.add(movie);
+                        String dupkey = String.format("%s,%s", title, director);
+
+                        // can't have screwed up movie, maybe we can add later by cleaning
+                        if (!dupSet.contains(dupkey) && movie.getTitle() != null && movie.getYear() != null) {
+                            dupSet.add(dupkey);
+                            dupSet.add(movieId);
+                            movies.add(movie);
+                        } else {
+                            System.out.println("found duplicate cast " + dupkey);
+                        }
                     }
                 }
             }
@@ -302,12 +343,46 @@ public class MovieParser {
 
         // insert into the db
 
-        var stmt = conn.createStatement();
+        System.out.printf("Batch inserting %d new movies: \n", movies.size());
 
-        var rs = stmt.executeQuery("SELECT * FROM movies;");
-        while (rs.next()) {
-            System.out.println(rs.getString("title"));
+
+        Movie recentMovie = null;
+        try {
+        conn.setAutoCommit(false);
+            var stmt = conn.prepareStatement(
+                "INSERT INTO movies " +
+                "(id, title, year, director, price)" +
+                "VALUES (?, ?, ?, ?, ?);"
+            );
+
+            for (var movie : movies) {
+                recentMovie = movie;
+
+                stmt.setString(1, movie.getId());
+                stmt.setString(2, movie.getTitle());
+                if (movie.getYear() != null) {
+                    stmt.setInt(3, movie.getYear());
+                } else {
+                    stmt.setNull(3, Types.INTEGER);
+                }
+                stmt.setString(4, movie.getDirector());
+                stmt.setFloat(5, 5.0f);
+                stmt.addBatch();
+            }
+            stmt.executeLargeBatch();
+            var q = conn.createStatement();
+            var rs2 = q.executeQuery("SELECT COUNT(id) as count FROM movies");
+            while (rs2.next()) {
+                System.out.println("new count: " + rs2.getInt("count"));
+            }
+
+        } catch (SQLException e) {
+//            System.out.println(e.getStackTrace());
+            e.printStackTrace();
+            System.out.println(recentMovie);
+            conn.rollback();
+            throw e;
         }
-
+//        conn.commit();
     }
 }
