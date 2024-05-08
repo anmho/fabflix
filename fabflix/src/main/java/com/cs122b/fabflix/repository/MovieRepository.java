@@ -13,6 +13,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 
 public class MovieRepository {
@@ -146,6 +147,50 @@ public class MovieRepository {
 
     }
 
+
+
+    // Creates a new movie with a single star which starred in it
+    public String createMovie(Movie movie) throws SQLException {
+        if (movie.getGenres().size() != 1) {
+            throw new IllegalArgumentException("only 1 genre supported");
+        }
+
+        Star star = movie.getStars().get(0);
+
+        try (var conn = Database.getInstance().getConnection()) {
+            // this is error prone lol
+
+//            CALL add_movie (
+//                    'The Shawshank Redemption',
+//                    'Frank Darabont',
+//                    'Drama',
+//                    14.99,
+//                    1994,
+//                    NULL,
+//                    'Morgan Freeman',
+//                    1937,
+//            @_movieId
+//            );
+            CallableStatement proc = conn.prepareCall("{? = CALL add_movie(?,?,?,?,?,?)}");
+            proc.registerOutParameter(1, Types.VARCHAR);
+            proc.setString(2, movie.getTitle());
+            proc.setString(3, movie.getDirector());
+            proc.setFloat(4, (float)movie.getPrice());
+            proc.setInt(5, movie.getYear());
+            proc.setString(6, movie.getGenres().get(0).getName());
+
+            if (star.getId() == null) {
+                proc.setNull(7, Types.VARCHAR);
+                // insert null as the arg
+            } else {
+                proc.setString(7, star.getId());
+            }
+            proc.setString(8, star.getName());
+            proc.setInt(9, star.getBirthYear());
+            proc.execute();
+            return proc.getString(1);
+        }
+    }
 
     public List<Movie> filterMovies(
             MovieFilterParams filters,
@@ -285,8 +330,6 @@ public class MovieRepository {
 
         return queryBuilder.build();
     }
-
-
 
     private Movie parseMovieRow(ResultSet rs) throws SQLException {
         Movie movie = new Movie(

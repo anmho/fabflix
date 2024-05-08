@@ -2,6 +2,7 @@ package com.cs122b.fabflix.services;
 
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.models.PaginatedResults;
+import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.params.MovieFilterParams;
 import com.cs122b.fabflix.params.MovieSortParams;
 import com.cs122b.fabflix.params.PaginationParams;
@@ -34,7 +35,17 @@ public class MovieService {
     }
 
 
+    public String createMovie(Movie movie) throws SQLException {
+        if (movie.getGenres().size() != 1) {
+            throw new IllegalArgumentException("new movie must have exactly one genre");
+        }
 
+        if (movie.getStars().size() != 1) {
+            throw new IllegalArgumentException("new movie must have 1 star");
+        }
+        String movieId = movieRepository.createMovie(movie);
+        return movieId;
+    }
     public Movie findMovieById(String id) throws SQLException {
         return movieRepository.getMovieById(id);
     }

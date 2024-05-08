@@ -17,9 +17,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+
+
+
 
 @WebServlet(name = "movieServlet", value="/movies")
 public class MovieServlet extends HttpServlet {
@@ -82,6 +86,23 @@ public class MovieServlet extends HttpServlet {
         log.info(String.format("/movies response time (ms): %d", System.currentTimeMillis() - start));
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+
+
+        var mapper = new ObjectMapper();
+        try {
+            Movie movie = mapper.readValue(req.getInputStream(), Movie.class);
+//            movieService.createMovie();
+            ResponseBuilder.json(res, movie, 200);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+    }
     public void destroy() {
 
     }
