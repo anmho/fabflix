@@ -150,12 +150,12 @@ public class MovieRepository {
 
 
     // Creates a new movie with a single star which starred in it
-    public String createMovie(Movie movie) throws SQLException {
+    public String createMovie(CreateMovieParams movie) throws SQLException {
         if (movie.getGenres().size() != 1) {
             throw new IllegalArgumentException("only 1 genre supported");
         }
 
-        Star star = movie.getStars().get(0);
+        StarParams star = movie.getStars().get(0);
 
         try (var conn = Database.getInstance().getConnection()) {
             // this is error prone lol
@@ -169,26 +169,26 @@ public class MovieRepository {
 //                    NULL,
 //                    'Morgan Freeman',
 //                    1937,
-//            @_movieId
+//                  @_movieId
 //            );
-            CallableStatement proc = conn.prepareCall("{? = CALL add_movie(?,?,?,?,?,?)}");
-            proc.registerOutParameter(1, Types.VARCHAR);
-            proc.setString(2, movie.getTitle());
-            proc.setString(3, movie.getDirector());
+            CallableStatement proc = conn.prepareCall("{CALL add_movie(?,?,?,?,?,?,?,?,?)}");
+            proc.registerOutParameter(9, Types.VARCHAR);
+            proc.setString(1, movie.getTitle());
+            proc.setString(2, movie.getDirector());
+            proc.setString(3, movie.getGenres().get(0).getName());
             proc.setFloat(4, (float)movie.getPrice());
             proc.setInt(5, movie.getYear());
-            proc.setString(6, movie.getGenres().get(0).getName());
 
             if (star.getId() == null) {
-                proc.setNull(7, Types.VARCHAR);
+                proc.setNull(6, Types.VARCHAR);
                 // insert null as the arg
             } else {
-                proc.setString(7, star.getId());
+                proc.setString(6, star.getId());
             }
-            proc.setString(8, star.getName());
-            proc.setInt(9, star.getBirthYear());
+            proc.setString(7, star.getName());
+            proc.setInt(8, star.getBirthYear());
             proc.execute();
-            return proc.getString(1);
+            return proc.getString(9);
         }
     }
 

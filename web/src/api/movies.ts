@@ -1,6 +1,7 @@
 import { Movie, MovieSortDimension } from "~/interfaces/movie";
 import { PaginatedResult } from "~/interfaces/paginated-result";
 import { http } from "./http";
+import { MovieParams } from "~/validators/movies";
 
 export interface MovieFilters {
   title?: string;
@@ -105,4 +106,9 @@ export const getMovieById = async (id: string): Promise<Movie> => {
   const movie = await http.get(`/movies?id=${id}`).then((res) => res.data);
   console.log(movie);
   return movie;
+};
+
+export const createMovie = async (params: MovieParams): Promise<Movie> => {
+  const response = await http.post("/movies", params);
+  return response.data;
 };

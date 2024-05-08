@@ -50,17 +50,6 @@ public class Movie {
         this.quantity = 1;
 
     }
-    public Movie(String id, String title, int year, String director) {
-        this.id = id;
-        this.title = title;
-        this.year = year;
-        this.director = director;
-        this.genres = new ArrayList<>();
-        this.stars = new ArrayList<>();
-        this.rating = 0;
-        this.price = 5.99;
-        this.quantity = 1;
-    }
 
     public Movie() {}
 

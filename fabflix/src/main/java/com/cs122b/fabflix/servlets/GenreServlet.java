@@ -25,22 +25,23 @@ public class GenreServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            var conn = db.getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM genres;");
+            try (var conn = db.getConnection()) {
+                var stmt = conn.prepareStatement("SELECT * FROM genres;");
 
-            ResultSet rs = stmt.executeQuery();
-            List<Genre> genres = new ArrayList<>();
+                ResultSet rs = stmt.executeQuery();
+                List<Genre> genres = new ArrayList<>();
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
 
-                Genre genre = new Genre(id, name);
-                genres.add(genre);
+                    Genre genre = new Genre(id, name);
+                    genres.add(genre);
+                }
+
+                ResponseBuilder.json(response, genres, 200);
+
             }
-
-            ResponseBuilder.json(response, genres, 200);
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
