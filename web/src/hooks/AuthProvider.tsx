@@ -26,8 +26,7 @@ export interface AuthContextValue {
   login: (params: LoginParams) => Promise<LoginResponse>;
   logout: () => Promise<LoginResponse>;
   handleEmployeeLogin: (
-    email: string,
-    password: string
+    params: LoginParams
   ) => Promise<{ success: boolean; message?: string; employeeData?: any }>;
 }
 
@@ -35,7 +34,7 @@ const AuthContext = createContext<AuthContextValue>({
   session: null,
   login: (params: LoginParams) => Promise.reject(new Error("Not implemented")),
   logout: () => Promise.reject(new Error("Not implemented")),
-  handleEmployeeLogin: (email: string, password: string) =>
+  handleEmployeeLogin: (params: LoginParams) =>
     Promise.reject(new Error("Not implemented")),
 });
 
@@ -67,7 +66,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     checkUserType();
   }, []);
 
-  const handleLogin = async ({ email, password, recaptchaToken }: LoginParams) => {
+  const handleLogin = async ({
+    email,
+    password,
+    recaptchaToken,
+  }: LoginParams) => {
     const response = await login({ email, password, recaptchaToken });
     if (response.success) {
       refetchCart();
@@ -79,28 +82,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return response;
   };
 
-  const handleEmployeeLogin = async (email: string, password: string) => {
-    const formData = new URLSearchParams();
-    formData.append("email", email);
-    formData.append("password", password);
-
-    try {
-      const response = await employeeLogin(formData);
-      if (response.success) {
-        refetchCart();
-        const userTypeResponse = await isUserLoggedIn();
-        if (
-          userTypeResponse.isLoggedIn &&
-          userTypeResponse.userType === "employee"
-        ) {
-          setUserType(userTypeResponse.userType);
-        }
+  const handleEmployeeLogin = async ({
+    email,
+    password,
+    recaptchaToken,
+  }: LoginParams) => {
+    console.log("auth", email, password, recaptchaToken);
+    const response = await employeeLogin({ email, password, recaptchaToken });
+    if (response.success) {
+      refetchCart();
+      const userTypeResponse = await isUserLoggedIn();
+      if (
+        userTypeResponse.isLoggedIn &&
+        userTypeResponse.userType === "employee"
+      ) {
+        setUserType(userTypeResponse.userType);
       }
-      return response;
-    } catch (error) {
-      console.error("Error in employee login:", error);
-      throw error;
     }
+    return response;
   };
 
   const handleLogout = async () => {

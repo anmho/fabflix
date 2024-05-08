@@ -10,13 +10,13 @@ export const queryClient = new QueryClient();
 
 http.interceptors.response.use(undefined, errorHandler);
 
+const allowedPaths = new Set(["/", "/login", "/employeeLogin", "/_dashboard"]);
+
 function errorHandler(error: AxiosError) {
   const url = new URL(window.location.href);
 
-  if (error.response?.status === 401) {
-    if (url.pathname !== "/login") {
-      window.location.href = "/login";
-    }
+  if (error.response?.status === 401 && !allowedPaths.has(url.pathname)) {
+    window.location.href = "/login";
   }
 
   return Promise.reject(error);
