@@ -69,8 +69,9 @@ public class MovieParser implements Runnable {
 
 
             var db = Database.getInstance();
-            var conn = db.getConnection();
-            insertDB(conn, movies);
+            try (var conn = db.getConnection()) {
+                insertDB(conn, movies);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -247,16 +248,26 @@ public class MovieParser implements Runnable {
             while (rs.next()) {
                 System.out.println("new count: " + rs.getInt("count"));
             }
+            q = conn.createStatement();
+            rs = q.executeQuery("SELECT name FROM genres");
+            Set<String> existingGenres = new HashSet<>();
+            while (rs.next()) {
+                var genreName = rs.getString("name");
+                existingGenres.add(genreName);
+            }
+
 
 
             // insert new genres
             Set<String> genres = new HashSet<>();
             for (var movie : movies) {
-                genres.addAll(movie.getGenres());
+                for (var genre : movie.getGenres()) {
+                    if (!existingGenres.contains(genre)) {
+                        genres.add(genre);
+                    }
+                }
             }
             insertGenres(conn, genres);
-
-
             insertGenresInMovies(conn, movies);
 
         } catch (SQLException e) {
@@ -265,7 +276,6 @@ public class MovieParser implements Runnable {
             throw e;
         }
         conn.commit();
-        conn.close();
     }
 
 
@@ -279,8 +289,6 @@ public class MovieParser implements Runnable {
         );
 
         for (var movie : movies) {
-            recentMovie = movie;
-
             stmt.setString(1, movie.getId());
             stmt.setString(2, movie.getTitle());
             if (movie.getYear() != null) {
@@ -296,11 +304,10 @@ public class MovieParser implements Runnable {
 
     }
 
-    private void insertGenres(Connection conn, Set<String> genres) throws SQLException {
+    private void insertGenres(Connection conn, Set<String> newGenres) throws SQLException {
+        var stmt = conn.prepareStatement("INSERT INTO genres (name) VALUES (?)");
 
-        var stmt = conn.prepareStatement("INSERT IGNORE INTO genres (name) VALUES (?)");
-
-        for (var genre : genres) {
+        for (var genre : newGenres) {
             stmt.setString(1, genre);
             stmt.addBatch();
         }
@@ -314,11 +321,11 @@ public class MovieParser implements Runnable {
         var rs = q.executeQuery("SELECT id, name FROM genres");
 
         // lookup genre by name to id
-        Map<String, String> genreLookupTable = new HashMap<>();
+        Map<String, String> existingGenreIds = new HashMap<>();
         while (rs.next()) {
             var id = rs.getString("id");
             var name = rs.getString("name");
-            genreLookupTable.put(name, id);
+            existingGenreIds.put(name, id);
         }
 
 
@@ -330,12 +337,14 @@ public class MovieParser implements Runnable {
         for (var movie : movies) {
             Set<String> genreSet = new HashSet<>(movie.getGenres());
             for (var genre : genreSet) {
+                if (!existingGenreIds.containsKey(genre)) {
+                    var genreId = existingGenreIds.get(genre);
+                    System.out.printf("genre %s %s %s\n", genreId, genre, movie.getId());
+                    stmt.setString(1, genreId);
+                    stmt.setString(2, movie.getId());
+                    stmt.addBatch();
+                }
 
-                var genreId = genreLookupTable.get(genre);
-                System.out.printf("genre %s %s %s\n", genreId, genre, movie.getId());
-                stmt.setString(1, genreId);
-                stmt.setString(2, movie.getId());
-                stmt.addBatch();
             }
         }
 

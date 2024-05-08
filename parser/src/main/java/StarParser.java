@@ -91,10 +91,9 @@ public class StarParser {
         writeFile("new_stars.csv", stars);
         printSummary(stars);
 
-        var conn = Database.getInstance().getConnection();
-        insertDB(conn, stars);
-
-
+        try (var conn = Database.getInstance().getConnection()) {
+            insertDB(conn, stars);
+        }
     }
 
 
@@ -239,8 +238,5 @@ public class StarParser {
             throw new RuntimeException(e);
         }
         conn.commit();
-        conn.close();
-
-
     }
 }

@@ -68,9 +68,10 @@ public class CastParser {
         printSummary(starsInMovies);
 
         Database db = Database.getInstance();
-        var conn = db.getConnection();
+        try (var conn = db.getConnection()) {
+            insertCast(conn, movieIds, starNameIdLookupTable, starsInMovies);
+        }
 
-        insertCast(conn, movieIds, starNameIdLookupTable, starsInMovies);
     }
 
 
@@ -185,8 +186,6 @@ public class CastParser {
             e.printStackTrace();
             conn.rollback();
         }
-
 //        conn.commit();
-
     }
 }
