@@ -53,14 +53,6 @@ BEGIN
 		_movieId, movieTitle, movieDirector, releaseYear, moviePrice
 	);
 
-
-
-	INSERT INTO stars (
-		id, name, birthYear
-	) VALUES (
-		UUID(), starName, starBirthYear
-	);
-
 	INSERT INTO genres_in_movies (
 		genreId, movieId
 	) VALUES (
@@ -68,7 +60,7 @@ BEGIN
 	);
 
 	INSERT INTO stars_in_movies (
-		starid, movieId
+		starId, movieId
 	) VALUES (
 		_starId, _movieId
 	);

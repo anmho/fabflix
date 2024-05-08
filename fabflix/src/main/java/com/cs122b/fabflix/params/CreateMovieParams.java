@@ -73,4 +73,18 @@ public class CreateMovieParams {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "CreateMovieParams{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", year=" + year +
+                ", director='" + director + '\'' +
+                ", genres=" + genres +
+                ", stars=" + stars +
+                ", rating=" + rating +
+                ", price=" + price +
+                '}';
+    }
 }

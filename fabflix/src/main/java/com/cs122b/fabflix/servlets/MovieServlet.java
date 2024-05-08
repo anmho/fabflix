@@ -57,7 +57,6 @@ public class MovieServlet extends HttpServlet {
             return;
         }
 
-
         // sub endpoints to route from here
         try {
             if (filterParams.getId() != null) {
@@ -95,6 +94,8 @@ public class MovieServlet extends HttpServlet {
         try {
             CreateMovieParams movieParams = mapper.readValue(req.getInputStream(), CreateMovieParams.class);
             String movieId = movieService.createMovie(movieParams);
+            System.out.println("MovieParams: " + movieParams);
+
             Map<String, Object> data = new HashMap<>();
             data.put("id", movieId);
             ResponseBuilder.json(res, data, 200);

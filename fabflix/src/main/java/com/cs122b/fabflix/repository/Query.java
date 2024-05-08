@@ -151,8 +151,8 @@ public class Query {
         }
 
         // JOIN stars s ON
-        public Builder join(String table, String on) {
-            joinClauses.add(String.format("JOIN %s ON %s", table, on));
+        public Builder join(String type, String table, String on) {
+            joinClauses.add(String.format("%s JOIN %s ON %s", type, table, on));
             return this;
         }
 

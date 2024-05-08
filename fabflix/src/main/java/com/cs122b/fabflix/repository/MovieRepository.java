@@ -105,7 +105,7 @@ public class MovieRepository {
                 "    ) AS stars\n" +
                 "FROM\n" +
                 "    movies m\n" +
-                "JOIN\n" +
+                "LEFT JOIN\n" +
                 "    ratings r ON m.id = r.movieId\n" +
                 "WHERE\n" +
                 "    m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?)\n" +
@@ -258,7 +258,7 @@ public class MovieRepository {
 
 
         queryBuilder.from("movies m");
-        queryBuilder.join("ratings r", "m.id=r.movieId");
+        queryBuilder.join("LEFT", "ratings r", "m.id=r.movieId");
 
         if (filters != null) {
             if (filters.getTitle() != null) {
@@ -294,8 +294,8 @@ public class MovieRepository {
                 String pattern = String.format("%%%s%%", filters.getStar()); // THIS IS UNSAFE. MUST FIX
                 // "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                 // "JOIN stars s ON s.id = sim.starId " +
-                queryBuilder.join("stars_in_movies sim", "m.id = sim.movieId");
-                queryBuilder.join("stars s", "s.id = sim.starId");
+                queryBuilder.join("", "stars_in_movies sim", "m.id = sim.movieId");
+                queryBuilder.join("", "stars s", "s.id = sim.starId");
                 queryBuilder.where("s.name", "LIKE", pattern);
 
             }
@@ -303,8 +303,8 @@ public class MovieRepository {
             if (filters.getGenre() != null) {
                 // "JOIN genres_in_movies gim ON m.id = gim.movieId " +
                 // "JOIN genres g ON gim.genreId = g.id ";
-                queryBuilder.join("genres_in_movies gim", "m.id = gim.movieId");
-                queryBuilder.join("genres g", "gim.genreId = g.id");
+                queryBuilder.join("", "genres_in_movies gim", "m.id = gim.movieId");
+                queryBuilder.join("", "genres g", "gim.genreId = g.id");
                 queryBuilder.where("g.name", "=", filters.getGenre());
             }
         }
@@ -357,7 +357,8 @@ public class MovieRepository {
 
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {
-            throw new IllegalStateException("null starsString");
+//            throw new IllegalStateException("null starsString");
+            return new ArrayList<>();
         }
         String[] starPairs = starsString.split(";");
         List<Star> stars = new ArrayList<>();
@@ -392,7 +393,8 @@ public class MovieRepository {
 
     private List<Genre> parseGenres(String genresString) {
         if (genresString == null) {
-            throw new IllegalStateException("null genresString");
+            return new ArrayList<>();
+//            throw new IllegalStateException("null genresString");
         }
         String[] genrePairs = genresString.split(";");
         List<Genre> genres = new ArrayList<>();
