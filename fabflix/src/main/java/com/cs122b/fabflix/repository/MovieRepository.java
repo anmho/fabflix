@@ -13,6 +13,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 
 public class MovieRepository {
@@ -104,7 +105,7 @@ public class MovieRepository {
                 "    ) AS stars\n" +
                 "FROM\n" +
                 "    movies m\n" +
-                "JOIN\n" +
+                "LEFT JOIN\n" +
                 "    ratings r ON m.id = r.movieId\n" +
                 "WHERE\n" +
                 "    m.id IN (SELECT movieId FROM stars_in_movies WHERE starId = ?)\n" +
@@ -146,6 +147,50 @@ public class MovieRepository {
 
     }
 
+
+
+    // Creates a new movie with a single star which starred in it
+    public String createMovie(CreateMovieParams movie) throws SQLException {
+        if (movie.getGenres().size() != 1) {
+            throw new IllegalArgumentException("only 1 genre supported");
+        }
+
+        StarParams star = movie.getStars().get(0);
+
+        try (var conn = Database.getInstance().getConnection()) {
+            // this is error prone lol
+
+//            CALL add_movie (
+//                    'The Shawshank Redemption',
+//                    'Frank Darabont',
+//                    'Drama',
+//                    14.99,
+//                    1994,
+//                    NULL,
+//                    'Morgan Freeman',
+//                    1937,
+//                  @_movieId
+//            );
+            CallableStatement proc = conn.prepareCall("{CALL add_movie(?,?,?,?,?,?,?,?,?)}");
+            proc.registerOutParameter(9, Types.VARCHAR);
+            proc.setString(1, movie.getTitle());
+            proc.setString(2, movie.getDirector());
+            proc.setString(3, movie.getGenres().get(0).getName());
+            proc.setFloat(4, (float)movie.getPrice());
+            proc.setInt(5, movie.getYear());
+
+            if (star.getId() == null) {
+                proc.setNull(6, Types.VARCHAR);
+                // insert null as the arg
+            } else {
+                proc.setString(6, star.getId());
+            }
+            proc.setString(7, star.getName());
+            proc.setInt(8, star.getBirthYear());
+            proc.execute();
+            return proc.getString(9);
+        }
+    }
 
     public List<Movie> filterMovies(
             MovieFilterParams filters,
@@ -213,7 +258,7 @@ public class MovieRepository {
 
 
         queryBuilder.from("movies m");
-        queryBuilder.join("ratings r", "m.id=r.movieId");
+        queryBuilder.join("LEFT", "ratings r", "m.id=r.movieId");
 
         if (filters != null) {
             if (filters.getTitle() != null) {
@@ -249,8 +294,8 @@ public class MovieRepository {
                 String pattern = String.format("%%%s%%", filters.getStar()); // THIS IS UNSAFE. MUST FIX
                 // "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                 // "JOIN stars s ON s.id = sim.starId " +
-                queryBuilder.join("stars_in_movies sim", "m.id = sim.movieId");
-                queryBuilder.join("stars s", "s.id = sim.starId");
+                queryBuilder.join("", "stars_in_movies sim", "m.id = sim.movieId");
+                queryBuilder.join("", "stars s", "s.id = sim.starId");
                 queryBuilder.where("s.name", "LIKE", pattern);
 
             }
@@ -258,8 +303,8 @@ public class MovieRepository {
             if (filters.getGenre() != null) {
                 // "JOIN genres_in_movies gim ON m.id = gim.movieId " +
                 // "JOIN genres g ON gim.genreId = g.id ";
-                queryBuilder.join("genres_in_movies gim", "m.id = gim.movieId");
-                queryBuilder.join("genres g", "gim.genreId = g.id");
+                queryBuilder.join("", "genres_in_movies gim", "m.id = gim.movieId");
+                queryBuilder.join("", "genres g", "gim.genreId = g.id");
                 queryBuilder.where("g.name", "=", filters.getGenre());
             }
         }
@@ -285,8 +330,6 @@ public class MovieRepository {
 
         return queryBuilder.build();
     }
-
-
 
     private Movie parseMovieRow(ResultSet rs) throws SQLException {
         Movie movie = new Movie(
@@ -314,7 +357,8 @@ public class MovieRepository {
 
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {
-            throw new IllegalStateException("null starsString");
+//            throw new IllegalStateException("null starsString");
+            return new ArrayList<>();
         }
         String[] starPairs = starsString.split(";");
         List<Star> stars = new ArrayList<>();
@@ -349,7 +393,8 @@ public class MovieRepository {
 
     private List<Genre> parseGenres(String genresString) {
         if (genresString == null) {
-            throw new IllegalStateException("null genresString");
+            return new ArrayList<>();
+//            throw new IllegalStateException("null genresString");
         }
         String[] genrePairs = genresString.split(";");
         List<Genre> genres = new ArrayList<>();

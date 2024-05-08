@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { Genre } from "./genre";
 import { Star } from "./star";
+import { StarParams } from "~/api/stars";
 
 export interface Movie {
   id: string;
@@ -38,23 +39,6 @@ const MovieSortDimensionSchema = z.object({
 
 export class MovieSortDimension {
   public constructor(public field: MovieSortField, public order: SortOrder) {}
-
-  // public get type() {
-  //   if (this.field === "title") {
-  //     return this.order === "asc"
-  //       ? SortActionEnum.TITLE_ASC
-  //       : SortActionEnum.TITLE_DESC;
-  //   } else if (this.field === "rating") {
-  //     return this.order === "asc"
-  //       ? SortActionEnum.RATING_ASC
-  //       : SortActionEnum.RATING_DESC;
-  //   } else {
-  //     return this.order === "asc"
-  //       ? SortActionEnum.YEAR_ASC
-  //       : SortActionEnum.YEAR_DESC;
-  //   }
-  // }
-  // field1:asc,field2:desc
   public static parse(sortString: string) {
     const [field, order] = sortString.split(":");
 

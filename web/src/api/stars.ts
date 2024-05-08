@@ -1,4 +1,5 @@
 import { StarDetail } from "~/interfaces/star";
+import { http } from "./http";
 
 export const fetchStarById = async (id: string): Promise<StarDetail | null> => {
   const [starResponse, movieResponse] = await Promise.all([
@@ -28,3 +29,34 @@ export const fetchStarById = async (id: string): Promise<StarDetail | null> => {
 
   return starDetails;
 };
+
+export interface StarParams {
+  name: string;
+  birthYear?: number;
+}
+
+export interface StarResponse {
+  numMovies?: number;
+  id?: string;
+  name?: string;
+  birthYear?: number;
+  message: string;
+  status: number;
+}
+
+export async function addStar(
+  starData: StarParams
+): Promise<StarResponse> {
+  const { name, birthYear } = starData;
+  const queryParams = new URLSearchParams();
+  if (name) queryParams.append("name", name);
+  if (birthYear) queryParams.append("birthYear", birthYear.toString());
+
+  const response = await http.post("/addStar", starData, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+
+  return { ...response.data, status: 200, message: "Star successfully added." };
+}

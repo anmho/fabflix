@@ -2,6 +2,7 @@ package com.cs122b.fabflix.servlets;
 
 import com.cs122b.fabflix.ResponseBuilder;
 import com.cs122b.fabflix.models.Movie;
+import com.cs122b.fabflix.params.CreateMovieParams;
 import com.cs122b.fabflix.repository.Database;
 import com.cs122b.fabflix.repository.MovieRepository;
 import com.cs122b.fabflix.params.MovieFilterParams;
@@ -17,9 +18,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @WebServlet(name = "movieServlet", value="/movies")
 public class MovieServlet extends HttpServlet {
@@ -52,7 +57,6 @@ public class MovieServlet extends HttpServlet {
             return;
         }
 
-
         // sub endpoints to route from here
         try {
             if (filterParams.getId() != null) {
@@ -82,6 +86,28 @@ public class MovieServlet extends HttpServlet {
         log.info(String.format("/movies response time (ms): %d", System.currentTimeMillis() - start));
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+
+
+        var mapper = new ObjectMapper();
+        try {
+            CreateMovieParams movieParams = mapper.readValue(req.getInputStream(), CreateMovieParams.class);
+            String movieId = movieService.createMovie(movieParams);
+            System.out.println("MovieParams: " + movieParams);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("id", movieId);
+            ResponseBuilder.json(res, data, 200);
+
+        } catch (IOException e) {
+            log.error(e);
+            ResponseBuilder.error(res, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        } catch (SQLException e) {
+            log.error(e);
+            ResponseBuilder.error(res, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
     public void destroy() {
 
     }
