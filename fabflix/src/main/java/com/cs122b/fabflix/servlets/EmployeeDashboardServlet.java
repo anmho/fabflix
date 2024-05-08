@@ -4,6 +4,7 @@ import com.cs122b.fabflix.ResponseBuilder;
 import com.cs122b.fabflix.filters.LoginFilter;
 import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.models.User;
+import com.cs122b.fabflix.repository.Database;
 import com.cs122b.fabflix.repository.StarRepository;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,9 +16,13 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-
-@WebServlet(name = "EmployeeDashboardServlet", value = "/addStar")
+import java.sql.*;
+@WebServlet(name = "EmployeeDashboardServlet", value = {"/addStar", "/getDatabaseSchema"})
 public class EmployeeDashboardServlet extends HttpServlet {
     private final Logger log = LogManager.getLogger(LoginFilter.class.getName());
 
@@ -28,9 +33,8 @@ public class EmployeeDashboardServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user"); // Cast to User
-        if (user == null || !"employee".equals(user.getUserType())) {
+
+        if (!this.isAuthorized(request, response)) {
             ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access");
             return;
         }
@@ -71,6 +75,70 @@ public class EmployeeDashboardServlet extends HttpServlet {
             ResponseBuilder.error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred");
         }
     }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        if (!this.isAuthorized(request, response)) {
+            ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized access");
+            return;
+        }
+
+
+        String path = request.getServletPath();
+        if ("/getDatabaseSchema".equals(path)) {
+            log.debug("/getDatabaseSchema" );
+            getDatabaseSchema(request, response);
+        }
+    }
+
+
+    private boolean isAuthorized (HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        if (user == null || !"employee".equals(user.getUserType())) {
+            return false;
+        }
+        return true;
+    }
+    private void getDatabaseSchema(HttpServletRequest request, HttpServletResponse response) {
+        Database db = Database.getInstance();
+        List<Map<String, Object>> schemaList = new ArrayList<>();
+
+        try (Connection conn = db.getConnection(); Statement stmt = conn.createStatement()) {
+            List<String> tableNames = new ArrayList<>();
+            ResultSet tables = stmt.executeQuery("SHOW TABLES");
+
+            while (tables.next()) {
+                String tableName = tables.getString(1);
+                tableNames.add(tableName);
+            }
+
+            for (String tableName : tableNames) {
+                Map<String, Object> tableMap = new HashMap<>();
+                tableMap.put("name", tableName);
+                List<Map<String, String>> attributes = new ArrayList<>();
+
+                try (PreparedStatement describeStmt = conn.prepareStatement("DESCRIBE " + tableName)) {
+                    ResultSet columns = describeStmt.executeQuery();
+                    while (columns.next()) {
+                        Map<String, String> columnMap = new HashMap<>();
+                        columnMap.put("name", columns.getString("Field"));
+                        columnMap.put("type", columns.getString("Type"));
+
+                        attributes.add(columnMap);
+                    }
+                }
+
+                tableMap.put("attributes", attributes);
+                schemaList.add(tableMap);
+            }
+
+            ResponseBuilder.json(response, schemaList, HttpServletResponse.SC_OK);
+        } catch (SQLException e) {
+            log.error("Database error in /getDatabaseSchema", e);
+            ResponseBuilder.error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred");
+        }
+    }
+
 
     private String generateStarId() {
         long currentTimeMillis = System.currentTimeMillis();
