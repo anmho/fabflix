@@ -40,7 +40,7 @@ export function CreateMovieCard() {
   if (isPending) return <Loading />;
 
   const handleChangeStarName = (name: string) => {
-      setStarName(name);
+    setStarName(name);
   };
 
   const handleChangeStarBirthYear = (birthYear: number) => {
@@ -58,7 +58,7 @@ export function CreateMovieCard() {
       director: director,
       price: price,
       rating: rating,
-      stars: [{name: starName, birthYear, id: null}],
+      stars: [{ name: starName, birthYear, id: null }],
       genres: [genre],
     });
     if (!result.success) {
@@ -66,14 +66,16 @@ export function CreateMovieCard() {
       return;
     }
 
-    const movieId = await createMovie(result.data).catch(console.error);
-    if (!movieId) {
+    const res = await createMovie(result.data).catch(console.error);
+    if (!res || !res.id) {
+      toast.error(`an error occurred while creating the movie`);
       return;
     }
 
-    console.log(movieId);
+    const { id } = res;
+    console.log(id);
 
-    toast(`${title} (${year}) added!`);
+    toast(`${title} (${year}) added with id ${id}!`);
 
     // print the errors maybe
   };

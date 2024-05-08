@@ -108,7 +108,9 @@ export const getMovieById = async (id: string): Promise<Movie> => {
   return movie;
 };
 
-export const createMovie = async (params: MovieParams): Promise<Movie> => {
+export const createMovie = async (
+  params: MovieParams
+): Promise<{ id: string }> => {
   const response = await http.post("/movies", params);
   return response.data;
 };

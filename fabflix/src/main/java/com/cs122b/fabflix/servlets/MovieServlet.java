@@ -96,7 +96,7 @@ public class MovieServlet extends HttpServlet {
             CreateMovieParams movieParams = mapper.readValue(req.getInputStream(), CreateMovieParams.class);
             String movieId = movieService.createMovie(movieParams);
             Map<String, Object> data = new HashMap<>();
-            data.put("movieId", movieId);
+            data.put("id", movieId);
             ResponseBuilder.json(res, data, 200);
 
         } catch (IOException e) {
