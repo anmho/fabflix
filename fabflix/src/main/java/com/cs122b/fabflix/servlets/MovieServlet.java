@@ -105,6 +105,11 @@ public class MovieServlet extends HttpServlet {
             ResponseBuilder.error(res, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         } catch (SQLException e) {
             log.error(e);
+
+            if (e.getSQLState().equals("02000")) {
+                ResponseBuilder.error(res, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+                return;
+            }
             ResponseBuilder.error(res, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }

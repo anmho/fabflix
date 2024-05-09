@@ -394,7 +394,6 @@ public class MovieRepository {
     private List<Genre> parseGenres(String genresString) {
         if (genresString == null) {
             return new ArrayList<>();
-//            throw new IllegalStateException("null genresString");
         }
         String[] genrePairs = genresString.split(";");
         List<Genre> genres = new ArrayList<>();

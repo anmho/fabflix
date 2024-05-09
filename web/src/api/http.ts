@@ -16,6 +16,7 @@ function errorHandler(error: AxiosError) {
   const url = new URL(window.location.href);
 
   if (error.response?.status === 401 && !allowedPaths.has(url.pathname)) {
+    console.error("should redirect", error);
     window.location.href = "/login";
   }
 
