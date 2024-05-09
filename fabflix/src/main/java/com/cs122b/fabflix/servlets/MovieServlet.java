@@ -106,7 +106,7 @@ public class MovieServlet extends HttpServlet {
         } catch (SQLException e) {
             log.error(e);
 
-            if (e.getSQLState().equals("02000")) {
+            if (e.getSQLState().equals("02000") || e.getSQLState().equals("23000")) {
                 ResponseBuilder.error(res, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
                 return;
             }

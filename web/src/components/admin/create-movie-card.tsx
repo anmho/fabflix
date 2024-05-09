@@ -119,7 +119,7 @@ export function CreateMovieCard() {
       if (e instanceof AxiosError) {
         message = e.response?.data.message ?? message;
       }
-      toast.error(`Error: ${e}`);
+      toast.error(`Error: ${message}`);
       return null;
     });
     if (!res || !res.id) {

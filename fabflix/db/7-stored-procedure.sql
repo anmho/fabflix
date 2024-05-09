@@ -28,6 +28,11 @@ BEGIN
 			  SIGNAL SQLSTATE '23000' SET message_text = 'null: null parameter';
 	END IF;
 
+    IF EXISTS (SELECT id FROM movies WHERE title = movieTitle AND year = releaseYear AND director = movieDirector)
+    THEN
+        SIGNAL SQLSTATE '23000' SET message_text = 'movie already exists';
+    END IF;
+
 	IF _starId IS NOT NULL
     THEN
 
@@ -36,6 +41,7 @@ BEGIN
             SIGNAL SQLSTATE '02000' SET message_text = 'star with id not found';
         END IF;
     END IF;
+
 	IF movieGenre IN (SELECT name FROM genres) THEN
 		SELECT id INTO _genreId FROM genres g WHERE g.name = movieGenre;
 	ELSE
