@@ -40,6 +40,7 @@ public class MovieParser implements Runnable {
         System.out.println("All genres: " + genres);
     }
 
+    @Override
     public void run() throws RuntimeException {
         Map<String, Movie> movieLookupTable = new HashMap<>();
         try {

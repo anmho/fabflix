@@ -11,17 +11,14 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.*;
 
-public class StarParser {
+public class StarParser implements Runnable {
     private final DocumentBuilder builder;
     List<Star> stars;
     public StarParser() throws ParserConfigurationException {
@@ -39,11 +36,22 @@ public class StarParser {
         System.out.println("Stars parsed: " + stars.size());
     }
 
-    public void run() throws IOException, SAXException, SQLException {
+    @Override
+    public void run() throws RuntimeException {
         // create a stars_in_movies lookup table
         Map<String, Star> starLookupTable = new HashMap<>();
-        var reader = new FileReader("current_stars.csv");
-        var csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
+        FileReader reader = null;
+        try {
+            reader = new FileReader("current_stars.csv");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        CSVParser csvParser = null;
+        try {
+            csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
         // this should be a select statement for all the inserted stars by name
@@ -87,12 +95,25 @@ public class StarParser {
         // we will just assume that acturso have unique names (which is also what the dataset assumes)
 
 //        var sp = new StarParser();
-        var stars = parse("actors63.xml", starLookupTable);
-        writeFile("new_stars.csv", stars);
+        List<Star> stars = null;
+        try {
+            stars = parse("actors63.xml", starLookupTable);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            writeFile("new_stars.csv", stars);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         printSummary(stars);
 
         try (var conn = Database.getInstance().getConnection()) {
             insertDB(conn, stars);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
