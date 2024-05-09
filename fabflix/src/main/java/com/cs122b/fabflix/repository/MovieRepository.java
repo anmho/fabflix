@@ -159,20 +159,20 @@ public class MovieRepository {
 
         try (var conn = Database.getInstance().getConnection()) {
             // this is error prone lol
-
+//            USE moviedb;
 //            CALL add_movie (
-//                    'The Shawshank Redemption',
-//                    'Frank Darabont',
-//                    'Drama',
-//                    14.99,
-//                    1994,
-//                    NULL,
-//                    'Morgan Freeman',
-//                    1937,
-//                  @_movieId
-//            );
-            CallableStatement proc = conn.prepareCall("{CALL add_movie(?,?,?,?,?,?,?,?,?)}");
-            proc.registerOutParameter(9, Types.VARCHAR);
+//                    'The Shawshank Redemption', 1
+//                    'Frank Darabont', 2
+//                    'Drama', 3
+//                    14.99, 4
+//                    1994,  5
+//                    NULL, 6
+//                    'Morgan Freeman', 7
+//                    1937, 8
+//            @movie_id 9
+//);
+            CallableStatement proc = conn.prepareCall("{CALL add_movie(" +
+                    "?,?,?,?,?,?,?,?,?)}");
             proc.setString(1, movie.getTitle());
             proc.setString(2, movie.getDirector());
             proc.setString(3, movie.getGenres().get(0).getName());
@@ -187,6 +187,7 @@ public class MovieRepository {
             }
             proc.setString(7, star.getName());
             proc.setInt(8, star.getBirthYear());
+            proc.registerOutParameter(9, Types.VARCHAR);
             proc.execute();
             return proc.getString(9);
         }
