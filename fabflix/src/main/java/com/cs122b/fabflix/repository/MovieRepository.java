@@ -186,6 +186,7 @@ public class MovieRepository {
                 proc.setString(6, star.getId());
             }
             proc.setString(7, star.getName());
+            log.debug("star birth year: %d{}", star.getBirthYear());
             proc.setInt(8, star.getBirthYear());
             proc.registerOutParameter(9, Types.VARCHAR);
             proc.execute();

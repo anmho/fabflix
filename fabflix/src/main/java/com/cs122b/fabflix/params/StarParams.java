@@ -28,4 +28,13 @@ public class StarParams {
     public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
+
+    @Override
+    public String toString() {
+        return "StarParams{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", birthYear=" + birthYear +
+                '}';
+    }
 }

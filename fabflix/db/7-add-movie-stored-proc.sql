@@ -50,7 +50,7 @@ BEGIN
 		INSERT INTO stars (
 			id, name, birthYear
 		) VALUES (
-			_starId, starName, birthYear
+			_starId, starName, starBirthYear
 		);
 	END IF;
 

@@ -94,7 +94,7 @@ public class MovieServlet extends HttpServlet {
         try {
             CreateMovieParams movieParams = mapper.readValue(req.getInputStream(), CreateMovieParams.class);
             String movieId = movieService.createMovie(movieParams);
-            System.out.println("MovieParams: " + movieParams);
+            log.debug("MovieParams: " + movieParams);
 
             Map<String, Object> data = new HashMap<>();
             data.put("id", movieId);
