@@ -1,5 +1,5 @@
 CREATE INDEX idx_movies
-ON employees (title, year, director);
+ON movies (title, year, director);
 
 CREATE INDEX idx_ratings
 ON  ratings (rating)

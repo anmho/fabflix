@@ -331,7 +331,7 @@ public class MovieParser implements Runnable {
         stmt = conn.prepareStatement("INSERT INTO genres (name) VALUES (?)");
 
         for (var genre : newGenres) {
-            if (!existingGenres.contains(genre)) {
+            if (existingGenres.contains(genre)) {
                 System.out.println("Existing genre: " + genre);
                 continue;
             }
