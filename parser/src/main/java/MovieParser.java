@@ -306,9 +306,35 @@ public class MovieParser implements Runnable {
     }
 
     private void insertGenres(Connection conn, Set<String> newGenres) throws SQLException {
-        var stmt = conn.prepareStatement("INSERT INTO genres (name) VALUES (?)");
+
+
+
+        var stmt = conn.prepareStatement("SELECT id, name FROM genres");
+        var genreSet = stmt.executeQuery();
+
+//        for (var row : genreSet) {
+//            var genreId =
+//
+//        }
+
+
+        Set<String> existingGenres = new HashSet<>();
+
+
+        while (genreSet.next()) {
+            var genreId = genreSet.getString("id");
+            var genreName = genreSet.getString("name");
+            existingGenres.add(genreName);
+        }
+
+
+        stmt = conn.prepareStatement("INSERT INTO genres (name) VALUES (?)");
 
         for (var genre : newGenres) {
+            if (!existingGenres.contains(genre)) {
+                System.out.println("Existing genre: " + genre);
+                continue;
+            }
             stmt.setString(1, genre);
             stmt.addBatch();
         }
