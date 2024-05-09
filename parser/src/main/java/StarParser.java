@@ -154,7 +154,7 @@ public class StarParser implements Runnable {
                         try {
                             dateOfBirth = Integer.parseInt(dobNode.getTextContent().trim());
                         } catch (NumberFormatException e) {
-                            System.out.println(stagename + " -- invalid year: " + dobNode.getTextContent());
+                            System.out.println(stagename + " -- invalid dob year: " + dobNode.getTextContent());
                         }
 
                     }
@@ -162,7 +162,7 @@ public class StarParser implements Runnable {
 
                 var star = new Star();
                 star.setStagename(stagename);
-                System.out.println(stagename);
+//                System.out.println(stagename);
 
 
 
@@ -237,6 +237,7 @@ public class StarParser implements Runnable {
                 if (star.getDateOfBirth() != null) {
                     stmt.setInt(3, star.getDateOfBirth());
                 } else {
+                    System.out.println("found null dob");
                     stmt.setNull(3, Types.INTEGER);
                 }
 
@@ -254,7 +255,7 @@ public class StarParser implements Runnable {
 
 
         } catch (SQLException e) {
-            System.out.println(recentStar);
+            System.out.println("unable to insert star: " + recentStar);
             conn.rollback();
             throw new RuntimeException(e);
         }

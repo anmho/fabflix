@@ -104,6 +104,8 @@ public class MovieParser implements Runnable {
 
                 Node dirnNode = directorElement.getElementsByTagName("dirn").item(0);
 
+
+                // director name may be "dirname" or "dirn"
                 if (dirnameNode != null) {
                     director = dirnameNode.getTextContent();
                 } else if (dirnNode != null) {
@@ -159,9 +161,7 @@ public class MovieParser implements Runnable {
                         if (moviesLookupTable.containsKey(key)) {
                             System.out.println(key);
                             System.out.println("found duplicate movie" + title + " " + director + " " + year);
-                            System.out.println(key);
                             System.out.println(moviesLookupTable.get(key));
-
                             continue; // already in the tables, lets skip
                         }
 

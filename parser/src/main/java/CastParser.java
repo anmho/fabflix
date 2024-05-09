@@ -57,7 +57,7 @@ public class CastParser {
             String name = row.get("name");
             String title = row.get("title");
 
-            System.out.println("csv: " + name);
+//            System.out.println("csv: " + name);
             String key = String.format("%s,%s", title.trim(), name.trim());
             castLookupTable.add(key);
         }
@@ -167,11 +167,13 @@ public class CastParser {
             for (var star : starredIn) {
                 var movieId = star.getMovieId();
                 if (!validMovieIds.contains(movieId)) {
+                    System.out.println("not a valid movie due to earlier null constraints: " + movieId);
                     continue;
                 }
                 var name = star.getStagename();
                 var starId = starNameIdLookupTable.get(name);
                 if (starId == null) {
+                    System.out.println("skipping star in movie since they were invalid star: " + name);
                     continue;
                 }
 
@@ -186,6 +188,6 @@ public class CastParser {
             e.printStackTrace();
             conn.rollback();
         }
-//        conn.commit();
+        conn.commit();
     }
 }
