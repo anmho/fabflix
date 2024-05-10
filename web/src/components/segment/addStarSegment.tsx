@@ -34,7 +34,12 @@ const AddStarSegment: React.FC = () => {
         setFeedback(response.message || "Failed to add star");
         setFeedbackType("error");
       } else {
-        setFeedback("Star added successfully!");
+        console.log(response);
+        setFeedback(
+          `Star added successfully: ID: ${response.id}, Name: ${
+            response.name
+          }, DOB: ${response?.birthYear ?? "NA"}`
+        );
         setAddedStars((previousStars) => [...previousStars, response]);
         setFeedbackType("success");
       }
@@ -56,13 +61,11 @@ const AddStarSegment: React.FC = () => {
                 className="bg-background border-border text-foreground mr-1"
               >
                 <Link href={`/stars/${star.id}`}>
-                  {star.name}{" "}
-                  {`(${
+                  {`ID: ${star.id}, NAME: ${star.name}, DOB:${
                     star.birthYear !== undefined && star?.birthYear > 0
                       ? star?.birthYear
                       : "N/A"
-                  })`}{" "}
-                  {star.numMovies}{" "}
+                  }`}
                 </Link>
               </Badge>
             ))}
