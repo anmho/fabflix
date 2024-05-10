@@ -94,7 +94,7 @@ public class MovieServlet extends HttpServlet {
         try {
             CreateMovieParams movieParams = mapper.readValue(req.getInputStream(), CreateMovieParams.class);
             String movieId = movieService.createMovie(movieParams);
-            System.out.println("MovieParams: " + movieParams);
+            log.debug("MovieParams: " + movieParams);
 
             Map<String, Object> data = new HashMap<>();
             data.put("id", movieId);
@@ -105,6 +105,11 @@ public class MovieServlet extends HttpServlet {
             ResponseBuilder.error(res, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         } catch (SQLException e) {
             log.error(e);
+
+            if (e.getSQLState().equals("02000") || e.getSQLState().equals("23000")) {
+                ResponseBuilder.error(res, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+                return;
+            }
             ResponseBuilder.error(res, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }

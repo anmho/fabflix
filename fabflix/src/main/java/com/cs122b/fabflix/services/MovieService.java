@@ -36,6 +36,8 @@ public class MovieService {
     }
 
 
+
+    // should return a response object, sqlexceptions should not be leaky like that
     public String createMovie(CreateMovieParams params) throws SQLException {
         if (params.getGenres().size() != 1) {
             throw new IllegalArgumentException("new movie must have exactly one genre");

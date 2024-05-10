@@ -191,7 +191,7 @@ const SearchMoviesPage: React.FC = () => {
   };
 
   return (
-    <div
+    <main
       className={cn(
         theme,
         "flex align-center flex-col bg-background xl:max-w-[1440px] w-full text-center sm:px-20 px-5 justify-center"
@@ -250,7 +250,7 @@ const SearchMoviesPage: React.FC = () => {
         handlePageChange={handlePageChange}
       />
       {/* <BentoGrid /> */}
-    </div>
+    </main>
   );
 };
 

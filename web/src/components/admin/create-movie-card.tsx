@@ -22,6 +22,7 @@ import { GenreParams } from "~/validators/genres";
 import { Birthstone } from "next/font/google";
 import { toast } from "sonner";
 import { createMovie } from "~/api/movies";
+import { AxiosError } from "axios";
 
 export function CreateMovieCard() {
   const { data: allGenres, isPending } = useQuery({
@@ -35,40 +36,93 @@ export function CreateMovieCard() {
   const [director, setDirector] = useState<string | null>(null);
   const [birthYear, setBirthYear] = useState<number | null>(null);
   const [starName, setStarName] = useState<string | null>(null);
+  const [starId, setStarId] = useState<string | null>(null);
   const [genre, setGenre] = useState<GenreParams | null>(null);
 
   if (isPending) return <Loading />;
 
-  const handleChangeStarName = (name: string) => {
-    setStarName(name);
+  const handleChangeReleaseYear = (year: string) => {
+    if (year === "" || year === undefined) {
+      setYear(null);
+      return;
+    }
+    setYear(parseInt(year));
   };
 
-  const handleChangeStarBirthYear = (birthYear: number) => {
-    setBirthYear(birthYear);
+  const handleChangeStarId = (id: string) => {
+    setStarId(id);
+  };
+  const handleChangeStarName = (name: string) => {
+    setStarName(name ?? null);
+  };
+
+  const handleChangeStarBirthYear = (birthYear: string) => {
+    if (birthYear === "" || birthYear === undefined) {
+      setBirthYear(null);
+      return;
+    }
+    setBirthYear(parseInt(birthYear));
+  };
+  const handleChangePrice = (price: string) => {
+    if (price === "" || price === undefined) {
+      setPrice(null);
+      return;
+    }
+    setPrice(parseFloat(price));
   };
 
   const handleChangeGenre = (genre: GenreParams) => {
     setGenre(genre);
   };
 
+  const handleChangeRating = (rating: string) => {
+    if (rating === "" || rating === undefined) {
+      setPrice(null);
+      return;
+    }
+    setPrice(parseFloat(rating));
+  };
+
   const handleSubmit = async () => {
-    const result = MovieParamsSchema.safeParse({
+    const data = {
       title: title,
       year: year,
       director: director,
       price: price,
       rating: rating,
-      stars: [{ name: starName, birthYear, id: null }],
+      stars: [{ name: starName, birthYear, id: starId }],
       genres: [genre],
-    });
+    };
+    console.log(data);
+    const result = MovieParamsSchema.safeParse(data);
     if (!result.success) {
       toast.error(`Error: ${fromError(result.error).toString().split(";")[0]}`);
       return;
     }
 
-    const res = await createMovie(result.data).catch(console.error);
+    const params = result.data;
+
+    if (params.stars[0].id && params.stars[0].name) {
+      toast.error("Error: only existing star or new star allowed.");
+      return;
+    }
+
+    if (!params.stars[0].id && !params.stars[0].name) {
+      toast.error("Error: must supply star id or name.");
+      return;
+    }
+
+    // set the error message
+    const res = await createMovie(result.data).catch((e) => {
+      // refine
+      let message = "Unknown error occurred";
+      if (e instanceof AxiosError) {
+        message = e.response?.data.message ?? message;
+      }
+      toast.error(`Error: ${message}`);
+      return null;
+    });
     if (!res || !res.id) {
-      toast.error(`an error occurred while creating the movie`);
       return;
     }
 
@@ -76,8 +130,6 @@ export function CreateMovieCard() {
     console.log(id);
 
     toast(`${title} (${year}) added with id ${id}!`);
-
-    // print the errors maybe
   };
 
   return (
@@ -121,35 +173,56 @@ export function CreateMovieCard() {
                 onChangeGenre={handleChangeGenre}
               />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label>Cast</Label>
-              <div className="flex space-x-1">
+              <div>
+                <div className="flex space-x-1">
+                  <Input
+                    id="name"
+                    placeholder="Arnold Schwarzenegger"
+                    className="w-2/3"
+                    onChange={(e) => {
+                      handleChangeStarName(e.target.value);
+                    }}
+                  />
+                  <Input
+                    id="year"
+                    type="number"
+                    placeholder="1947"
+                    className="w-1/3"
+                    onChange={(e) => {
+                      handleChangeStarBirthYear(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="relative my-2">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                      Or add existing star by ID
+                    </span>
+                  </div>
+                </div>
                 <Input
-                  id="name"
-                  placeholder="Arnold Schwarzenegger"
-                  className="w-2/3"
+                  id="starId"
+                  placeholder="nm0000216"
                   onChange={(e) => {
-                    handleChangeStarName(e.target.value);
-                  }}
-                />
-                <Input
-                  id="year"
-                  type="number"
-                  placeholder="1947"
-                  className="w-1/3"
-                  onChange={(e) => {
-                    handleChangeStarBirthYear(parseInt(e.target.value));
+                    handleChangeStarId(e.target.value);
                   }}
                 />
               </div>
+
               <div className="flex flex-row space-x-1.5 mt-2">
                 <div>
-                  <Label htmlFor="year">Price (USD)</Label>
+                  <Label htmlFor="price">Price (USD)</Label>
                   <Input
-                    id="year"
+                    id="price"
                     placeholder="4.99"
+                    step={0.01}
                     type="number"
-                    onChange={(e) => setPrice(parseInt(e.target.value))}
+                    onChange={(e) => handleChangePrice(e.target.value)}
                   />
                 </div>
                 <div>
@@ -157,8 +230,9 @@ export function CreateMovieCard() {
                   <Input
                     id="year"
                     placeholder="2.5"
+                    step={0.1}
                     type="number"
-                    onChange={(e) => setRating(parseInt(e.target.value))}
+                    onChange={(e) => handleChangeRating(e.target.value)}
                   />
                 </div>
               </div>

@@ -9,8 +9,8 @@ const MovieParamsSchema = z.object({
   director: z.string(),
   price: z.number(),
   rating: z.number().nullable(),
-  stars: z.array(StarParamsSchema),
-  genres: z.array(GenreParamsSchema),
+  stars: z.array(StarParamsSchema).min(1),
+  genres: z.array(GenreParamsSchema).min(1),
 });
 export type MovieParams = z.infer<typeof MovieParamsSchema>;
 

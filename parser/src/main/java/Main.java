@@ -18,13 +18,27 @@ public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException, SQLException {
         Database.getInstance(); // initialize for no race conditions
 
+        List<Thread> threads = new ArrayList<>();
 
         var movieParser = new MovieParser();
         var starParser = new StarParser();
 
-        movieParser.run();
-        starParser.run();
+        Thread movieThread = new Thread(movieParser);
+        threads.add(movieThread);
+        movieThread.start();
 
+        Thread starThread = new Thread(starParser);
+        threads.add(starThread);
+        starThread.start();
+
+
+        for (var thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         var movies = movieParser.getMovies();
         var stars = starParser.getStars();

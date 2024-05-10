@@ -21,10 +21,9 @@ import CreateMovieCard from "~/components/admin/create-movie-card";
 
 const AddMovieSegment: React.FC = () => {
   return (
-    <>
-      <div>AddMovieSegment</div>
+    <main className="max-w-[1440px] flex items-center justify-center">
       <CreateMovieCard />
-    </>
+    </main>
   );
 };
 

@@ -14,6 +14,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Button } from "~/components/ui/button";
 import { BackButton } from "~/components/navigation/back-button";
 import { Loading } from "~/components/navigation/loading";
+import { useTheme } from "next-themes";
 
 const CheckoutPage: React.FC = () => {
   const [creditCardId, setCreditCardId] = useState("");
