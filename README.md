@@ -2,6 +2,32 @@
 
 [Demo Project 1](https://www.youtube.com/watch?v=IbJSeyeTfig&ab_channel=MehmetNadi)
 [Demo Project 2](https://www.loom.com/share/8825fc9f871f4e20834d4b7e92305752)
+[Demo Project 3](https://www.youtube.com/watch?v=gwFAarzxbwI&ab_channel=MehmetNadi)
+## Contributions
+### Project 3
+| Task | Entry | Assignee |
+|----------|-----------|--------------|
+|reCAPTCHA|reCAPTCHA works properly, with appropriate error messages.		|Mehmet Nadi, Andrew Ho|
+|HTTPS|HTTPS works properly.		|Andrew Ho|
+|HTTPS|Redirect all HTTP traffic to HTTPS (force use HTTPS).		|Andrew Ho|
+|Password Encryption	|Encrypt password in DB, and login should verify user input with encrypted password	|Mehmet Nadi|
+|Prepared Statement	|Use prepared statements for all queries in the codebase and included in README		|Mehmet Nadi, Andrew Ho|
+|Employee Dashboard	|Login to dashboard page using employee credentials	|Mehmet Nadi|
+|Employee Dashboard	|reCAPTCHA works properly, with appropriate error messages.		|Mehmet Nadi|
+|Employee Dashboard	|Show database metadata		|Mehmet Nadi|
+|Employee Dashboard	|Add a new star successfully. Stars linked to movie should be searchable/accessible on the webpage		|Mehmet Nadi|
+|Employee Dashboard	|Add a new movie successfully with a new star, a new genre. Should be searchable/accessible on the webpage			|Andrew Ho|
+|Employee Dashboard	|Add a new movie successfully with existing star, existing genre. Should be searchable/accessible on the webpage			|Andrew Ho|
+|Employee Dashboard	|Show error message when adding an existing movie (same title, year and director)			|Andrew Ho|
+|Employee Dashboard	|Show all proper success messages and error messages		|Mehmet Nadi, Andrew Ho|
+|XML Parsing	|Parsing main.xml successfully, movie title and director information shown correctly. Should be searchable/accessible on the webpage			|Andrew Ho|
+|XML Parsing	|Parsing actors.xml successfully, birthYear of actors can be shown correctly. Stars linked to movie should be searchable/accessible on the webpage		|Andrew Ho|
+|XML Parsing	|Parsing casts.xml successfully. Actors of movies should be searchable/accessible on the webpage		|Andrew Ho|
+|XML Parsing	|Report inconsistency data to the user and included in README.		|Andrew Ho|
+|XML Parsing	|Two parsing time optimization strategies, compared with the naive approach, included in README		|Andrew Ho|
+|Extra Credit	|Register a domain name for Fabflix	|Andrew Ho|
+
+
 ## Contributions
 ### Project 2
 | Task | Entry | Assignee |
