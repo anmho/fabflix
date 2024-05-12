@@ -32,7 +32,6 @@ export function CreateMovieCard() {
   const [title, setTitle] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
   const [year, setYear] = useState<number | null>(null);
-  const [rating, setRating] = useState<number | null>(null);
   const [director, setDirector] = useState<string | null>(null);
   const [birthYear, setBirthYear] = useState<number | null>(null);
   const [starName, setStarName] = useState<string | null>(null);
@@ -75,13 +74,13 @@ export function CreateMovieCard() {
     setGenre(genre);
   };
 
-  const handleChangeRating = (rating: string) => {
-    if (rating === "" || rating === undefined) {
-      setPrice(null);
-      return;
-    }
-    setPrice(parseFloat(rating));
-  };
+  // const handleChangeRating = (rating: string) => {
+  //   if (rating === "" || rating === undefined) {
+  //     setPrice(null);
+  //     return;
+  //   }
+  //   setPrice(parseFloat(rating));
+  // };
 
   const handleSubmit = async () => {
     const data = {
@@ -89,7 +88,7 @@ export function CreateMovieCard() {
       year: year,
       director: director,
       price: price,
-      rating: rating,
+      rating: 0,
       stars: [{ name: starName, birthYear, id: starId }],
       genres: [genre],
     };
@@ -225,16 +224,16 @@ export function CreateMovieCard() {
                     onChange={(e) => handleChangePrice(e.target.value)}
                   />
                 </div>
-                <div>
-                  <Label htmlFor="year">Rating</Label>
-                  <Input
+                {/* <div> */}
+                {/* <Label htmlFor="year">Rating</Label> */}
+                {/* <Input
                     id="year"
                     placeholder="2.5"
                     step={0.1}
                     type="number"
                     onChange={(e) => handleChangeRating(e.target.value)}
-                  />
-                </div>
+                  /> */}
+                {/* </div> */}
               </div>
             </div>
           </div>
