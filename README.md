@@ -57,7 +57,7 @@ Optimization Techniques:
 2) Use hashmaps and hash sets to check for duplicates items and quick lookups for key value pairs (vs querying database for occurrence)
 3) Use batch inserts to prevent round trips to the database
 
-These optimizations significantly reduce parsing and insertion time from the naive approach which is to parse sequentially and insert each item separately. About 3x performance gain. Total parsing time is about 6 seconds. 
+These optimizations significantly reduce parsing and insertion time from the naive approach which is to parse sequentially and insert each item separately. About 3x performance gain. Total parsing time is about 8 seconds. 
 
 
 
