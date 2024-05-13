@@ -51,11 +51,11 @@ Porb -> Adult
 Gibberish genres -> set to unknown genres for the movie
 Strange tilde formatting with prefixes and suffixes (Mr., Jr., III, II)
 
-Optimization Techniques
+Optimization Techniques:
 
-Run StarParser and MovieParser on two threads so that parsing and inserting can happen in parallel. Finally join these results to insert new stars_in_movies
-Use hashmaps and hash sets to check for duplicates items and quick lookups for key value pairs (vs querying database for occurrence)
-Use batch inserts to prevent round trips to the database 
+1) Run StarParser and MovieParser on two threads so that parsing and inserting can happen in parallel. Finally join these results to insert new stars_in_movies
+2) Use hashmaps and hash sets to check for duplicates items and quick lookups for key value pairs (vs querying database for occurrence)
+3) Use batch inserts to prevent round trips to the database 
 
 
 
