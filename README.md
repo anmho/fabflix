@@ -27,6 +27,37 @@
 |XML Parsing	|Two parsing time optimization strategies, compared with the naive approach, included in README		|Andrew Ho|
 |Extra Credit	|Register a domain name for Fabflix	|Andrew Ho|
 
+### Inconsistencies Report 
+Invalid Movies: 1184
+Invalid Stars: 2769
+Invalid Cast Members: 23269
+
+For a more detailed view open inconsistencies.txt
+
+Some inconsistencies found include:
+Director name is under dirn  or dirname (not listed in the dtd specifications
+Names containing tilde ~ 
+Prefixes and postfixes
+Null years
+Null star names
+‘S a’ (unknown actor) -> toss in the bin
+Since our schema
+Fuzzy matching for genre names using substring matching. Examples:
+Multiple genres per <cat> tag
+Romt.comd -> romance and comedy
+Cnr -> comedy and romance
+Things like dicu ducu dici -> docu (Very strange!)
+Porb -> Adult
+Gibberish genres -> set to unknown genres for the movie
+Strange tilde formatting with prefixes and suffixes (Mr., Jr., III, II)
+
+Optimization Techniques
+
+Run StarParser and MovieParser on two threads so that parsing and inserting can happen in parallel. Finally join these results to insert new stars_in_movies
+Use hashmaps and hash sets to check for duplicates items and quick lookups for key value pairs (vs querying database for occurrence)
+Use batch inserts to prevent round trips to the database 
+
+
 
 ## Contributions
 ### Project 2
