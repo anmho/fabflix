@@ -179,5 +179,4 @@ public class LoginServlet extends HttpServlet {
 
         ResponseBuilder.json(response, loginStatus, HttpServletResponse.SC_OK);
     }
-
 }

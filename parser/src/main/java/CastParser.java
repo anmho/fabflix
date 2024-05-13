@@ -27,19 +27,33 @@ public class CastParser {
 
     private final List<StarredInRow> starredInMovies;
 
-    public CastParser(List<Star> stars, List<Movie> movies) throws ParserConfigurationException {
+    public CastParser() throws ParserConfigurationException {
         var factory = DocumentBuilderFactory.newInstance();
         builder = factory.newDocumentBuilder();
 
-
         starNameIdLookupTable = new HashMap<>();
-        for (var star : stars) {
-            starNameIdLookupTable.put(star.getStagename(), star.getId());
-        }
-//        // will use later
-
         movieIds = new HashSet<>();
-        movieIds.addAll(movies.stream().map(Movie::getId).collect(Collectors.toList()));
+
+        try (var conn = Database.getInstance().getConnection()) {
+            var query = conn.prepareStatement("SELECT id FROM movies");
+            var rs = query.executeQuery();
+            while (rs.next()) {
+                var movieId = rs.getString("id");
+                movieIds.add(movieId);
+            }
+
+            query = conn.prepareStatement("SELECT id, name from stars");
+            rs = query.executeQuery();
+            while (rs.next()) {
+                var starId = rs.getString("id");
+                var name = rs.getString("name");
+                starNameIdLookupTable.put(name, starId);
+            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         starredInMovies = new ArrayList<>();
 
 
@@ -75,12 +89,12 @@ public class CastParser {
     }
 
 
-    public List<StarredInRow> parse(String filename, Set<String> castLookupTable, Set<String> movieIds) throws IOException, SAXException {
+    public List<StarredInRow> parse(String filename, Set<String> castMembers, Set<String> movieIds) throws IOException, SAXException {
         Document doc = builder.parse(this.getClass().getClassLoader().getResourceAsStream(filename));
 
         var root = doc.getDocumentElement();
 
-        Set<String> keyset = new HashSet<>();
+        Set<String> visited = new HashSet<>();
 
         NodeList movieCastNodes = root.getElementsByTagName("m");
         for (int i = 0; i < movieCastNodes.getLength(); i++) {
@@ -91,28 +105,25 @@ public class CastParser {
                 String title = movieCastElement.getElementsByTagName("t").item(0).getTextContent().trim();
                 String stagename = movieCastElement.getElementsByTagName("a").item(0).getTextContent().trim();
 
-//                System.out.println("movieId: " + movieId + " title: " + title + " starName: " + stagename);
-
-
-
                 var star = new StarredInRow();
                 star.setStagename(stagename.trim());
                 star.setMovieId(movieId);
 
                 String key = String.format("%s,%s", title.trim(), stagename.trim());
-                if (castLookupTable.contains(key)) {
-                    System.out.println("duplicate cast member found: " + key);
+                if (castMembers.contains(key)) {
+                    System.out.println("invalid cast member: duplicate cast member found: " + key);
                     continue;
                 }
                 if (!movieIds.contains(movieId)) {
-                    System.out.println("invalid movie id for cast member: " + movieId + " " + stagename);
+                    System.out.println("invalid cast member: invalid movie id for cast member: " + movieId + " " + stagename);
+                    continue;
                 }
 
-                String dupKey = String.format("%s,%s", movieId, stagename.trim());
-                if (keyset.contains(dupKey)) {
-                    System.out.println("duplicate cast member found: " + dupKey);
+                String castKey = String.format("%s,%s", movieId, stagename.trim());
+                if (visited.contains(castKey)) {
+                    System.out.println("invalid cast member: duplicate cast member found: " + castKey);
                 } else {
-                    keyset.add(dupKey);
+                    visited.add(castKey);
                     starredInMovies.add(star);
                 }
             }
@@ -167,13 +178,13 @@ public class CastParser {
             for (var star : starredIn) {
                 var movieId = star.getMovieId();
                 if (!validMovieIds.contains(movieId)) {
-                    System.out.println("not a valid movie due to earlier null constraints: " + movieId);
+                    System.out.println("invalid cast member: movie not found in list of valid stars: " + movieId);
                     continue;
                 }
                 var name = star.getStagename();
                 var starId = starNameIdLookupTable.get(name);
                 if (starId == null) {
-                    System.out.println("skipping star in movie since they were invalid star: " + name);
+                    System.out.println("invalid cast member: star not found in list of valid stars: " + name);
                     continue;
                 }
 
