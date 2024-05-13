@@ -28,9 +28,9 @@
 |Extra Credit	|Register a domain name for Fabflix	|Andrew Ho|
 
 ### Inconsistencies Report 
-Invalid Movies: 1184
+Invalid Movies: 95
 Invalid Stars: 2769
-Invalid Cast Members: 23269
+Invalid Cast Members: 16870
 
 For a more detailed view open inconsistencies.txt
 
