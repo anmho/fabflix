@@ -64,7 +64,7 @@ public class StarParser implements Runnable {
             String name = row.get("name");
             String birthYear = row.get("birthYear");
 
-            System.out.println("csv: " + name);
+//            System.out.println("csv: " + name);
             star.setStagename(name);
             star.setId(id);
             try {
@@ -154,7 +154,7 @@ public class StarParser implements Runnable {
                         try {
                             dateOfBirth = Integer.parseInt(dobNode.getTextContent().trim());
                         } catch (NumberFormatException e) {
-                            System.out.println(stagename + " -- invalid dob year: " + dobNode.getTextContent());
+                            System.out.println("invalid star: invalid dob stagename" + dobNode.getTextContent());
                         }
 
                     }
@@ -175,7 +175,7 @@ public class StarParser implements Runnable {
                 // lookup in the table to attempt to assign an id
                 String key = String.format("%s,%s", stagename, dateOfBirth);
                 if (starLookupTable.containsKey(key)) {
-                    System.out.println("found duplicate star: " + starLookupTable.get(key).toString() + " " + star.toString());
+                    System.out.println("invalid star: found duplicate star " + starLookupTable.get(key).toString() + " " + star.toString());
                     // lets skip the movie if we already have it
                     // non duplicates we can
                     // we should create a map of the newId -> original id  or we could just lookup by name
@@ -237,7 +237,7 @@ public class StarParser implements Runnable {
                 if (star.getDateOfBirth() != null) {
                     stmt.setInt(3, star.getDateOfBirth());
                 } else {
-                    System.out.println("found null dob");
+                    System.out.println("invalid star: null dob");
                     stmt.setNull(3, Types.INTEGER);
                 }
 
@@ -255,7 +255,7 @@ public class StarParser implements Runnable {
 
 
         } catch (SQLException e) {
-            System.out.println("unable to insert star: " + recentStar);
+            System.out.println("unable to insert star: " + recentStar + e);
             conn.rollback();
             throw new RuntimeException(e);
         }

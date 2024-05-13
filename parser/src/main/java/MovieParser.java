@@ -160,7 +160,7 @@ public class MovieParser implements Runnable {
                         String key = String.format("%s,%s", title, director);
                         if (moviesLookupTable.containsKey(key)) {
                             System.out.println(key);
-                            System.out.println("found duplicate movie" + title + " " + director + " " + year);
+                            System.out.println("invalid movie: found duplicate movie" + title + " " + director + " " + year);
                             System.out.println(moviesLookupTable.get(key));
                             continue; // already in the tables, lets skip
                         }
@@ -182,7 +182,7 @@ public class MovieParser implements Runnable {
                             dupSet.add(movieId);
                             movies.add(movie);
                         } else {
-                            System.out.println("found duplicate cast " + dupkey);
+                            System.out.println("invalid movie: found duplicate cast " + dupkey);
                         }
                     }
                 }
@@ -332,7 +332,7 @@ public class MovieParser implements Runnable {
 
         for (var genre : newGenres) {
             if (existingGenres.contains(genre)) {
-                System.out.println("Existing genre: " + genre);
+                System.out.println("invalid genre: existing genre: " + genre);
                 continue;
             }
             stmt.setString(1, genre);
@@ -485,6 +485,7 @@ public class MovieParser implements Runnable {
         }
 
         if (genres.isEmpty() && !cat.isEmpty()) {
+            System.out.println("invalid genre: unknown genre: " + cat);
 //            genres.add(cat.substring(0, 1).toUpperCase() + cat.substring(1));
             genres.add("Unknown");
         }

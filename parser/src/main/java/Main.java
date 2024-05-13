@@ -40,9 +40,9 @@ public class Main {
             }
         }
 
-        var movies = movieParser.getMovies();
-        var stars = starParser.getStars();
-        var castParser = new CastParser(stars, movies);
+//        movieParser.getMovies();
+//        starParser.getStars();
+        var castParser = new CastParser();
         castParser.run();
     }
 }
