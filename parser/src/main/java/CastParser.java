@@ -67,11 +67,9 @@ public class CastParser {
         var csvParser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().build());
 
         for (var row : csvParser) {
-
             String name = row.get("name");
             String title = row.get("title");
 
-//            System.out.println("csv: " + name);
             String key = String.format("%s,%s", title.trim(), name.trim());
             castLookupTable.add(key);
         }

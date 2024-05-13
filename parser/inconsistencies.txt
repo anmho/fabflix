@@ -1,287 +1,285 @@
-Invalid birthyear: NULLInvalid birthyear: NULLInvalid birthyear: NULLInvalid birthyear: NULLInvalid birthyear: NULLInvalid birthyear: NULLinvalid star: found duplicate star Star{id='nm0000724', stagename='Brooke Adams', dateOfBirth=1949} Star{id='70df31b1-6667-4a26-ba52-f96b3c4171c7', stagename='Brooke Adams', dateOfBirth=1949}
-invalid star: found duplicate star Star{id='nm0000728', stagename='Mario Adorf', dateOfBirth=1930} Star{id='1e06e6fe-8115-4603-b31a-0180fd2aff4a', stagename='Mario Adorf', dateOfBirth=1930}
+Invalid birthyear: NULLInvalid birthyear: NULLInvalid birthyear: NULLInvalid birthyear: NULLInvalid birthyear: NULLInvalid birthyear: NULLinvalid star: found duplicate star Star{id='nm0000724', stagename='Brooke Adams', dateOfBirth=1949} Star{id='b2528c12-0386-4f65-adf7-99644f3b9fc7', stagename='Brooke Adams', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0000728', stagename='Mario Adorf', dateOfBirth=1930} Star{id='fe2223b7-408f-46e5-9587-70cbfa838426', stagename='Mario Adorf', dateOfBirth=1930}
 Edward Albert Jr.
-invalid star: found duplicate star Star{id='nm0000257', stagename='Alan Alda', dateOfBirth=1936} Star{id='a956dcfa-b902-42e6-819f-f7bcdb2a4243', stagename='Alan Alda', dateOfBirth=1936}
-invalid star: found duplicate star Star{id='nm0000095', stagename='Woody Allen', dateOfBirth=1935} Star{id='e0193a00-946f-41f0-bfdc-ab01b6013c7d', stagename='Woody Allen', dateOfBirth=1935}
+invalid star: found duplicate star Star{id='nm0000257', stagename='Alan Alda', dateOfBirth=1936} Star{id='574e15b0-42bd-4bdb-8525-1ae619a7b5d5', stagename='Alan Alda', dateOfBirth=1936}
+invalid star: found duplicate star Star{id='nm0000095', stagename='Woody Allen', dateOfBirth=1935} Star{id='27e84ada-cf9f-409d-9bbc-917535917078', stagename='Woody Allen', dateOfBirth=1935}
 Joseph Allen Jr.
 Michael Anderson Jr.
-invalid star: found duplicate star Star{id='nm0000266', stagename='Ursula Andress', dateOfBirth=1936} Star{id='29a2e5d0-e7c0-4884-93f6-d0af7976d898', stagename='Ursula Andress', dateOfBirth=1936}
+invalid star: found duplicate star Star{id='nm0000266', stagename='Ursula Andress', dateOfBirth=1936} Star{id='8e87a761-da29-4a09-b97e-9ca8333245bd', stagename='Ursula Andress', dateOfBirth=1936}
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000272', stagename='Fanny Ardant', dateOfBirth=1949} Star{id='044dcd0a-9b9b-4ff7-acfe-7bbca59d36ee', stagename='Fanny Ardant', dateOfBirth=1949}
-invalid star: found duplicate star Star{id='nm0000273', stagename='Alan Arkin', dateOfBirth=1934} Star{id='6e189c33-3879-43d9-83df-4a8f27e6e3f0', stagename='Alan Arkin', dateOfBirth=1934}
+invalid star: found duplicate star Star{id='nm0000272', stagename='Fanny Ardant', dateOfBirth=1949} Star{id='79a4e99c-2b6a-42b0-92ba-9e40a6219228', stagename='Fanny Ardant', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0000273', stagename='Alan Arkin', dateOfBirth=1934} Star{id='d546417f-8423-44be-a45e-aa26f1392c90', stagename='Alan Arkin', dateOfBirth=1934}
 Desi Arnaz Jr.
-invalid star: found duplicate star Star{id='nm0000001', stagename='Fred Astaire', dateOfBirth=1899} Star{id='c6e24543-b895-4273-bbee-a6497617950e', stagename='Fred Astaire', dateOfBirth=1899}
-invalid star: found duplicate star Star{id='nm0000803', stagename='Christopher Atkins', dateOfBirth=1961} Star{id='d32f3532-bacc-4f08-9c22-2dda22056933', stagename='Christopher Atkins', dateOfBirth=1961}
-invalid star: found duplicate star Star{id='nm0000277', stagename='Richard Attenborough', dateOfBirth=1923} Star{id='88675916-52f8-4c9f-92e7-453e4c6a283a', stagename='Richard Attenborough', dateOfBirth=1923}
-invalid star: found duplicate star Star{id='nm0000279', stagename='Hank Azaria', dateOfBirth=1964} Star{id='3542593d-e8d5-46cf-8a5c-3bcd57d07163', stagename='Hank Azaria', dateOfBirth=1964}
-invalid star: found duplicate star Star{id='nm0000821', stagename='Amitabh Bachchan', dateOfBirth=1942} Star{id='60a8e944-6c87-45da-b5dd-c19c96ba480c', stagename='Amitabh Bachchan', dateOfBirth=1942}
+invalid star: found duplicate star Star{id='nm0000001', stagename='Fred Astaire', dateOfBirth=1899} Star{id='cd25896e-21ae-44ce-b56b-81803366cdae', stagename='Fred Astaire', dateOfBirth=1899}
+invalid star: found duplicate star Star{id='nm0000803', stagename='Christopher Atkins', dateOfBirth=1961} Star{id='c3b9df4c-8e6b-4484-a673-b4f7cd27fad5', stagename='Christopher Atkins', dateOfBirth=1961}
+invalid star: found duplicate star Star{id='nm0000277', stagename='Richard Attenborough', dateOfBirth=1923} Star{id='725d3b1c-8b8a-40f0-af71-f703fca2bd83', stagename='Richard Attenborough', dateOfBirth=1923}
+invalid star: found duplicate star Star{id='nm0000279', stagename='Hank Azaria', dateOfBirth=1964} Star{id='5e0cfd4c-83a7-4a7c-805b-2bbd6edc53d3', stagename='Hank Azaria', dateOfBirth=1964}
+invalid star: found duplicate star Star{id='nm0000821', stagename='Amitabh Bachchan', dateOfBirth=1942} Star{id='23980243-89da-4177-8f54-dd108657cf8a', stagename='Amitabh Bachchan', dateOfBirth=1942}
 invalid star: invalid dob stagename195x
 invalid star: invalid dob stagename1963+
-invalid star: found duplicate star Star{id='nm0000287', stagename='William Baldwin', dateOfBirth=1963} Star{id='afc36105-abce-4fe9-bdcd-9853d07fac3f', stagename='William Baldwin', dateOfBirth=1963}
+invalid star: found duplicate star Star{id='nm0000287', stagename='William Baldwin', dateOfBirth=1963} Star{id='9a0d44b3-5275-4e30-a79f-73d4bf7dad47', stagename='William Baldwin', dateOfBirth=1963}
 invalid star: invalid dob stagename*
-invalid star: found duplicate star Star{id='nm0000843', stagename='Anne Bancroft', dateOfBirth=1931} Star{id='b4fc56a8-4f3a-4470-aefa-f4b2f88011aa', stagename='Anne Bancroft', dateOfBirth=1931}
-invalid star: found duplicate star Star{id='nm0000104', stagename='Antonio Banderas', dateOfBirth=1960} Star{id='69949f47-dd0b-44b0-b617-62a7b8c860ad', stagename='Antonio Banderas', dateOfBirth=1960}
-invalid star: found duplicate star Star{id='nm0000289', stagename='Ellen Barkin', dateOfBirth=1954} Star{id='24be8201-28e2-4c8b-9eff-c97ed3ff918f', stagename='Ellen Barkin', dateOfBirth=1954}
+invalid star: found duplicate star Star{id='nm0000843', stagename='Anne Bancroft', dateOfBirth=1931} Star{id='72b635a2-2cd2-4ed3-bf28-157ece6c57d3', stagename='Anne Bancroft', dateOfBirth=1931}
+invalid star: found duplicate star Star{id='nm0000104', stagename='Antonio Banderas', dateOfBirth=1960} Star{id='312351f6-eb5c-4158-a9e9-cbcacb6a1bc4', stagename='Antonio Banderas', dateOfBirth=1960}
+invalid star: found duplicate star Star{id='nm0000289', stagename='Ellen Barkin', dateOfBirth=1954} Star{id='0f6ddc56-9abb-42f0-94e8-ba2d73b9b5ad', stagename='Ellen Barkin', dateOfBirth=1954}
 John Barrymore Jr.
 John Barrymore III
-invalid star: found duplicate star Star{id='nm0000107', stagename='Kim Basinger', dateOfBirth=1953} Star{id='1a1871ad-2069-496a-8032-5aaa936757e4', stagename='Kim Basinger', dateOfBirth=1953}
-invalid star: found duplicate star Star{id='nm0000291', stagename='Angela Bassett', dateOfBirth=1958} Star{id='023351ca-ae60-4cc0-941a-1d9f9699dc42', stagename='Angela Bassett', dateOfBirth=1958}
+invalid star: found duplicate star Star{id='nm0000107', stagename='Kim Basinger', dateOfBirth=1953} Star{id='9566c992-0fb3-47cc-92a5-c7b39b40c368', stagename='Kim Basinger', dateOfBirth=1953}
+invalid star: found duplicate star Star{id='nm0000291', stagename='Angela Bassett', dateOfBirth=1958} Star{id='ef22fff6-5b0b-49cb-99ec-95c0e4abd905', stagename='Angela Bassett', dateOfBirth=1958}
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000885', stagename='Ned Beatty', dateOfBirth=1937} Star{id='c9a6c623-7d7c-4146-990b-c6212e9afc15', stagename='Ned Beatty', dateOfBirth=1937}
-invalid star: found duplicate star Star{id='nm0000886', stagename='Warren Beatty', dateOfBirth=1937} Star{id='e8e6281a-f8e9-4677-bfe3-e05b8739bd42', stagename='Warren Beatty', dateOfBirth=1937}
+invalid star: found duplicate star Star{id='nm0000885', stagename='Ned Beatty', dateOfBirth=1937} Star{id='f95ba738-c733-4030-99f5-f16032a66b7e', stagename='Ned Beatty', dateOfBirth=1937}
+invalid star: found duplicate star Star{id='nm0000886', stagename='Warren Beatty', dateOfBirth=1937} Star{id='48c2e3cc-bb0c-40e6-bf89-34a6c7345ffb', stagename='Warren Beatty', dateOfBirth=1937}
 Noah Beery Jr.
 Ed Begley Jr.
-invalid star: found duplicate star Star{id='nm0000896', stagename='Harry Belafonte', dateOfBirth=1927} Star{id='dbfa9844-4caa-4a6e-bda4-efd199d47040', stagename='Harry Belafonte', dateOfBirth=1927}
-invalid star: found duplicate star Star{id='nm0000298', stagename='Candice Bergen', dateOfBirth=1946} Star{id='1dde8292-7e80-4c4d-a4bf-913b451b430e', stagename='Candice Bergen', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0000896', stagename='Harry Belafonte', dateOfBirth=1927} Star{id='5fa507cd-ef8d-4761-aa7e-b31126636dc7', stagename='Harry Belafonte', dateOfBirth=1927}
+invalid star: found duplicate star Star{id='nm0000298', stagename='Candice Bergen', dateOfBirth=1946} Star{id='11cfe734-b1e6-4df6-8eca-53d4b65edf2d', stagename='Candice Bergen', dateOfBirth=1946}
 invalid star: invalid dob stagename196x
 Paul Boensh III
-invalid star: found duplicate star Star{id='nm0000958', stagename='John Boorman', dateOfBirth=1933} Star{id='a2cad8ab-32b3-4bc7-a495-42fee239f8a2', stagename='John Boorman', dateOfBirth=1933}
-invalid star: found duplicate star Star{id='nm0000309', stagename='David Bowie', dateOfBirth=1947} Star{id='53a66f10-beaf-415b-ad01-99047b703c17', stagename='David Bowie', dateOfBirth=1947}
-invalid star: found duplicate star Star{id='nm0000310', stagename='Bruce Boxleitner', dateOfBirth=1950} Star{id='90b66d6b-04a9-44a4-b53b-b08b4bc5a03c', stagename='Bruce Boxleitner', dateOfBirth=1950}
+invalid star: found duplicate star Star{id='nm0000958', stagename='John Boorman', dateOfBirth=1933} Star{id='89cfe9f9-d2b4-4af7-8597-ffe13c0e381b', stagename='John Boorman', dateOfBirth=1933}
+invalid star: found duplicate star Star{id='nm0000309', stagename='David Bowie', dateOfBirth=1947} Star{id='f314bc07-e3d2-41fe-bcd1-d7136b0eb449', stagename='David Bowie', dateOfBirth=1947}
+invalid star: found duplicate star Star{id='nm0000310', stagename='Bruce Boxleitner', dateOfBirth=1950} Star{id='21164c2f-b2d3-4c09-be85-4207820044b0', stagename='Bruce Boxleitner', dateOfBirth=1950}
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000110', stagename='Kenneth Branagh', dateOfBirth=1960} Star{id='d53e8966-16b9-4b90-879d-f7a04764ad0d', stagename='Kenneth Branagh', dateOfBirth=1960}
+invalid star: found duplicate star Star{id='nm0000110', stagename='Kenneth Branagh', dateOfBirth=1960} Star{id='52a52649-fb07-4ff1-b652-5a4b6335ab1c', stagename='Kenneth Branagh', dateOfBirth=1960}
 invalid star: invalid dob stagenamedob
-invalid star: found duplicate star Star{id='nm0000008', stagename='Marlon Brando', dateOfBirth=1924} Star{id='5004786f-163b-4818-ada2-b8e65349ef94', stagename='Marlon Brando', dateOfBirth=1924}
-invalid star: found duplicate star Star{id='nm0000977', stagename='Beau Bridges', dateOfBirth=1941} Star{id='9870e8ee-1dcf-4810-bb78-265c45346762', stagename='Beau Bridges', dateOfBirth=1941}
-invalid star: found duplicate star Star{id='nm0000313', stagename='Jeff Bridges', dateOfBirth=1949} Star{id='1fef5d96-8983-4ea0-8943-e2261feed58e', stagename='Jeff Bridges', dateOfBirth=1949}
-invalid star: found duplicate star Star{id='nm0000981', stagename='James Brolin', dateOfBirth=1940} Star{id='58b3cb04-d985-453d-b02c-0d274cc9a27c', stagename='James Brolin', dateOfBirth=1940}
+invalid star: found duplicate star Star{id='nm0000008', stagename='Marlon Brando', dateOfBirth=1924} Star{id='292394f6-64fe-40c0-853c-4690efef8250', stagename='Marlon Brando', dateOfBirth=1924}
+invalid star: found duplicate star Star{id='nm0000977', stagename='Beau Bridges', dateOfBirth=1941} Star{id='9eedc9be-2a7b-492d-8a90-de0f23ff6b3c', stagename='Beau Bridges', dateOfBirth=1941}
+invalid star: found duplicate star Star{id='nm0000313', stagename='Jeff Bridges', dateOfBirth=1949} Star{id='e8b76366-c988-4ef8-8625-9bd985465ab0', stagename='Jeff Bridges', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0000981', stagename='James Brolin', dateOfBirth=1940} Star{id='e0d51f9b-c3a9-44ae-9fc6-db43a2ae9523', stagename='James Brolin', dateOfBirth=1940}
 J. Edward Bromberg
-invalid star: found duplicate star Star{id='nm0000983', stagename='Albert Brooks', dateOfBirth=1947} Star{id='fb0040dd-58e0-4390-ab0d-9b3aa10ef262', stagename='Albert Brooks', dateOfBirth=1947}
-invalid star: found duplicate star Star{id='nm0000316', stagename='Mel Brooks', dateOfBirth=1926} Star{id='35ca9f92-4e3f-44bc-8c1b-a558daed99f1', stagename='Mel Brooks', dateOfBirth=1926}
-invalid star: found duplicate star Star{id='nm0000987', stagename='Jim Brown', dateOfBirth=1936} Star{id='cb78b661-7ea7-4f2b-b8df-a6c2723c6115', stagename='Jim Brown', dateOfBirth=1936}
-invalid star: found duplicate star Star{id='nm0000993', stagename='Carol Burnett', dateOfBirth=1933} Star{id='b53db51c-f3a1-4787-a98c-2f3b8a88154d', stagename='Carol Burnett', dateOfBirth=1933}
-invalid star: found duplicate star Star{id='nm0000995', stagename='Ellen Burstyn', dateOfBirth=1932} Star{id='ed976f90-0078-40af-8b8e-d6d76d320044', stagename='Ellen Burstyn', dateOfBirth=1932}
-invalid star: found duplicate star Star{id='nm0000997', stagename='Gary Busey', dateOfBirth=1944} Star{id='e5b8f0fa-7b69-466f-808f-1b5ee0910d2a', stagename='Gary Busey', dateOfBirth=1944}
-invalid star: found duplicate star Star{id='nm0000115', stagename='Nicolas Cage', dateOfBirth=1964} Star{id='140b5404-51d2-4340-b7e4-f08a6cfb45ff', stagename='Nicolas Cage', dateOfBirth=1964}
-invalid star: found duplicate star Star{id='nm0000323', stagename='Michael Caine', dateOfBirth=1933} Star{id='9202e3e4-951b-4242-b18a-b03bce52947e', stagename='Michael Caine', dateOfBirth=1933}
+invalid star: found duplicate star Star{id='nm0000983', stagename='Albert Brooks', dateOfBirth=1947} Star{id='dd97e64e-580b-447d-b647-608d182c9b2e', stagename='Albert Brooks', dateOfBirth=1947}
+invalid star: found duplicate star Star{id='nm0000316', stagename='Mel Brooks', dateOfBirth=1926} Star{id='18b3dcf8-18fd-4be7-a085-e8513eb4c76e', stagename='Mel Brooks', dateOfBirth=1926}
+invalid star: found duplicate star Star{id='nm0000987', stagename='Jim Brown', dateOfBirth=1936} Star{id='d8efabf0-b022-4f1d-9deb-7859a3280f2f', stagename='Jim Brown', dateOfBirth=1936}
+invalid star: found duplicate star Star{id='nm0000993', stagename='Carol Burnett', dateOfBirth=1933} Star{id='9f7e18f1-7adf-417e-a7f5-fe93c683fb5f', stagename='Carol Burnett', dateOfBirth=1933}
+invalid star: found duplicate star Star{id='nm0000995', stagename='Ellen Burstyn', dateOfBirth=1932} Star{id='f0f6e8df-23d5-4639-8e72-32d6e833a2ed', stagename='Ellen Burstyn', dateOfBirth=1932}
+invalid star: found duplicate star Star{id='nm0000997', stagename='Gary Busey', dateOfBirth=1944} Star{id='43f01b0c-87b9-4325-b891-ada6be654a15', stagename='Gary Busey', dateOfBirth=1944}
+invalid star: found duplicate star Star{id='nm0000115', stagename='Nicolas Cage', dateOfBirth=1964} Star{id='f79be917-527d-4182-84c4-8fa92501df75', stagename='Nicolas Cage', dateOfBirth=1964}
+invalid star: found duplicate star Star{id='nm0000323', stagename='Michael Caine', dateOfBirth=1933} Star{id='b950e1d8-54d6-4fe5-91d6-d00cfc93a953', stagename='Michael Caine', dateOfBirth=1933}
 Harry Carey Jr.
-invalid star: found duplicate star Star{id='nm0000307', stagename='Helena Bonham Carter', dateOfBirth=1966} Star{id='81c5d037-69d3-470c-8a3e-db23f5073754', stagename='Helena Bonham Carter', dateOfBirth=1966}
-invalid star: found duplicate star Star{id='nm0001021', stagename='Veronica Cartwright', dateOfBirth=1949} Star{id='080d4537-cf3a-4931-847c-dbf2e0b1fd68', stagename='Veronica Cartwright', dateOfBirth=1949}
-invalid star: found duplicate star Star{id='nm0001025', stagename='Seymour Cassel', dateOfBirth=1935} Star{id='0c480f00-efbf-40ad-b32a-b928d90a51f8', stagename='Seymour Cassel', dateOfBirth=1935}
-invalid star: found duplicate star Star{id='nm0000121', stagename='Phoebe Cates', dateOfBirth=1963} Star{id='d819ec24-4a44-43d1-b55c-7a56b7a7d164', stagename='Phoebe Cates', dateOfBirth=1963}
+invalid star: found duplicate star Star{id='nm0000307', stagename='Helena Bonham Carter', dateOfBirth=1966} Star{id='99dad6cd-78ce-41d1-b4aa-d26fb50130bf', stagename='Helena Bonham Carter', dateOfBirth=1966}
+invalid star: found duplicate star Star{id='nm0001021', stagename='Veronica Cartwright', dateOfBirth=1949} Star{id='47bf32f0-d770-4ac9-a64f-df616e5d6c30', stagename='Veronica Cartwright', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0001025', stagename='Seymour Cassel', dateOfBirth=1935} Star{id='12dba5b8-d06c-45b9-bcde-480769eaa06f', stagename='Seymour Cassel', dateOfBirth=1935}
+invalid star: found duplicate star Star{id='nm0000121', stagename='Phoebe Cates', dateOfBirth=1963} Star{id='bb48c8dd-13ad-4140-ad85-7a7bf02774c2', stagename='Phoebe Cates', dateOfBirth=1963}
 Lon Chaney Jr.
-invalid star: found duplicate star Star{id='nm0000330', stagename='Stockard Channing', dateOfBirth=1944} Star{id='16a07e51-b7fa-41e4-987d-beb5a2ba0654', stagename='Stockard Channing', dateOfBirth=1944}
-invalid star: found duplicate star Star{id='nm0001036', stagename='Geraldine Chaplin', dateOfBirth=1944} Star{id='71dc39c5-8e3a-4f5c-85d3-047acccd515b', stagename='Geraldine Chaplin', dateOfBirth=1944}
+invalid star: found duplicate star Star{id='nm0000330', stagename='Stockard Channing', dateOfBirth=1944} Star{id='41c815b2-d94d-4c68-b7a1-aecdfa6e791b', stagename='Stockard Channing', dateOfBirth=1944}
+invalid star: found duplicate star Star{id='nm0001036', stagename='Geraldine Chaplin', dateOfBirth=1944} Star{id='57a2477e-561a-40d4-bcd5-388221421c8c', stagename='Geraldine Chaplin', dateOfBirth=1944}
 invalid star: invalid dob stagename19bb
-invalid star: found duplicate star Star{id='nm0000333', stagename='Cher', dateOfBirth=1946} Star{id='e8dc874d-bcdd-49ee-9965-eaaba7ddaa2d', stagename='Cher', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0000333', stagename='Cher', dateOfBirth=1946} Star{id='be437ae3-653f-425f-9fdf-d857b6d32f15', stagename='Cher', dateOfBirth=1946}
 invalid star: invalid dob stagename1915+
-invalid star: found duplicate star Star{id='nm0001046', stagename='Julie Christie', dateOfBirth=1940} Star{id='869c77aa-3ab0-4fb5-ba42-4d38d52a1799', stagename='Julie Christie', dateOfBirth=1940}
-invalid star: found duplicate star Star{id='nm0000092', stagename='John Cleese', dateOfBirth=1939} Star{id='88d77461-7cdd-4e9e-8047-c644b0f6d096', stagename='John Cleese', dateOfBirth=1939}
+invalid star: found duplicate star Star{id='nm0001046', stagename='Julie Christie', dateOfBirth=1940} Star{id='5110c72f-07a9-45e4-85fc-76a133cc945b', stagename='Julie Christie', dateOfBirth=1940}
+invalid star: found duplicate star Star{id='nm0000092', stagename='John Cleese', dateOfBirth=1939} Star{id='d44cc086-61cc-4b68-9cd5-349d5c6bb2dc', stagename='John Cleese', dateOfBirth=1939}
 invalid star: invalid dob stagenamedob
-invalid star: found duplicate star Star{id='nm0000335', stagename='Glenn Close', dateOfBirth=1947} Star{id='de23e178-29e3-4943-922a-6845b6efe65a', stagename='Glenn Close', dateOfBirth=1947}
-invalid star: found duplicate star Star{id='nm0000336', stagename='James Coburn', dateOfBirth=1928} Star{id='01524507-eb53-4981-b3be-48b5b1c4751f', stagename='James Coburn', dateOfBirth=1928}
+invalid star: found duplicate star Star{id='nm0000335', stagename='Glenn Close', dateOfBirth=1947} Star{id='dae31d63-78b7-4859-bef5-69603240b79a', stagename='Glenn Close', dateOfBirth=1947}
+invalid star: found duplicate star Star{id='nm0000336', stagename='James Coburn', dateOfBirth=1928} Star{id='d149c6f8-7c5e-48eb-85d1-cb106b1ffba3', stagename='James Coburn', dateOfBirth=1928}
 David Colin Jr.
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0001063', stagename='Jeff Conaway', dateOfBirth=1950} Star{id='c5e8371f-79f8-4d67-9e41-718f8b84c816', stagename='Jeff Conaway', dateOfBirth=1950}
-invalid star: found duplicate star Star{id='nm0001066', stagename='Robert Conrad', dateOfBirth=1935} Star{id='cf6f575d-5b69-4c57-80fd-8240aa43f3f3', stagename='Robert Conrad', dateOfBirth=1935}
+invalid star: found duplicate star Star{id='nm0001063', stagename='Jeff Conaway', dateOfBirth=1950} Star{id='662248cd-e76e-43f6-bc08-6d595295fba2', stagename='Jeff Conaway', dateOfBirth=1950}
+invalid star: found duplicate star Star{id='nm0001066', stagename='Robert Conrad', dateOfBirth=1935} Star{id='eb0c25a3-ee4f-45e4-9eae-b58d96da46aa', stagename='Robert Conrad', dateOfBirth=1935}
 Elisha Cook Jr.
-invalid star: found duplicate star Star{id='nm0000338', stagename='Francis Ford Coppola', dateOfBirth=1939} Star{id='f3fc1e10-1d23-46f9-8e12-52b45b55c563', stagename='Francis Ford Coppola', dateOfBirth=1939}
-invalid star: found duplicate star Star{id='nm0000339', stagename='Roger Corman', dateOfBirth=1926} Star{id='5b1b78f5-6639-4daa-8301-b02eca77fe2a', stagename='Roger Corman', dateOfBirth=1926}
-invalid star: found duplicate star Star{id='nm0000126', stagename='Kevin Costner', dateOfBirth=1955} Star{id='af9be7fc-f36a-4c22-ad20-5efe2de8b885', stagename='Kevin Costner', dateOfBirth=1955}
-invalid star: found duplicate star Star{id='nm0001074', stagename='Ronny Cox', dateOfBirth=1938} Star{id='508c919d-6ea4-41e5-8b50-1da776d4b0a3', stagename='Ronny Cox', dateOfBirth=1938}
+invalid star: found duplicate star Star{id='nm0000338', stagename='Francis Ford Coppola', dateOfBirth=1939} Star{id='8e5f0474-af7a-4cd2-abd4-b5153f1f98fe', stagename='Francis Ford Coppola', dateOfBirth=1939}
+invalid star: found duplicate star Star{id='nm0000339', stagename='Roger Corman', dateOfBirth=1926} Star{id='6d8c0c6a-c548-46cb-b725-40530c5e7c74', stagename='Roger Corman', dateOfBirth=1926}
+invalid star: found duplicate star Star{id='nm0000126', stagename='Kevin Costner', dateOfBirth=1955} Star{id='ce3f5ae5-29d3-4424-9846-0474ab495464', stagename='Kevin Costner', dateOfBirth=1955}
+invalid star: found duplicate star Star{id='nm0001074', stagename='Ronny Cox', dateOfBirth=1938} Star{id='5ad47798-7fb9-499f-bc44-5d9d516407df', stagename='Ronny Cox', dateOfBirth=1938}
 invalid star: invalid dob stagename 
-invalid star: found duplicate star Star{id='nm0000345', stagename='Billy Crystal', dateOfBirth=1948} Star{id='a58ac567-7e59-4ddb-b8dc-fdbe268e6c3d', stagename='Billy Crystal', dateOfBirth=1948}
-invalid star: found duplicate star Star{id='nm0001085', stagename='Kieran Culkin', dateOfBirth=1982} Star{id='044d945a-1063-4274-a23d-248c6a023ae6', stagename='Kieran Culkin', dateOfBirth=1982}
-invalid star: found duplicate star Star{id='nm0000347', stagename='Tim Curry', dateOfBirth=1946} Star{id='217e9f62-d467-400d-9f00-0b2c19db4fe7', stagename='Tim Curry', dateOfBirth=1946}
-invalid star: found duplicate star Star{id='nm0000130', stagename='Jamie Lee Curtis', dateOfBirth=1958} Star{id='2021112c-27ef-4b8e-be7b-b6516abd3b28', stagename='Jamie Lee Curtis', dateOfBirth=1958}
-invalid star: found duplicate star Star{id='nm0001115', stagename='Ossie Davis', dateOfBirth=1917} Star{id='36056b6d-461a-486c-8387-ad9f54931c24', stagename='Ossie Davis', dateOfBirth=1917}
+invalid star: found duplicate star Star{id='nm0000345', stagename='Billy Crystal', dateOfBirth=1948} Star{id='2b56d1d4-cabb-4fad-8b7e-f32869f06e5b', stagename='Billy Crystal', dateOfBirth=1948}
+invalid star: found duplicate star Star{id='nm0001085', stagename='Kieran Culkin', dateOfBirth=1982} Star{id='eb0c47b9-74a0-40a7-8a75-579103977daf', stagename='Kieran Culkin', dateOfBirth=1982}
+invalid star: found duplicate star Star{id='nm0000347', stagename='Tim Curry', dateOfBirth=1946} Star{id='dfd4bdfa-5680-431c-9900-58b7753aa6f5', stagename='Tim Curry', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0000130', stagename='Jamie Lee Curtis', dateOfBirth=1958} Star{id='e5d0c273-80b5-44ba-80b2-79de33dd29e0', stagename='Jamie Lee Curtis', dateOfBirth=1958}
+invalid star: found duplicate star Star{id='nm0001115', stagename='Ossie Davis', dateOfBirth=1917} Star{id='1ca08a21-fb25-4220-a08d-90160a04f61c', stagename='Ossie Davis', dateOfBirth=1917}
 Sammy Davis Jr.
-invalid star: found duplicate star Star{id='nm0000365', stagename='Julie Delpy', dateOfBirth=1969} Star{id='6c331bb0-33e1-476c-a604-b1750476a528', stagename='Julie Delpy', dateOfBirth=1969}
-invalid star: found duplicate star Star{id='nm0001123', stagename='Dom DeLuise', dateOfBirth=1933} Star{id='e8d5b11f-09be-4abd-b5f5-fe2d5a180a29', stagename='Dom DeLuise', dateOfBirth=1933}
-invalid star: found duplicate star Star{id='nm0001132', stagename='Judi Dench', dateOfBirth=1934} Star{id='b6513ee0-bf93-4665-b50a-61d3efac1951', stagename='Judi Dench', dateOfBirth=1934}
-invalid star: found duplicate star Star{id='nm0000366', stagename='Catherine Deneuve', dateOfBirth=1943} Star{id='564a755d-b31b-4391-a651-363cde92a4dc', stagename='Catherine Deneuve', dateOfBirth=1943}
+invalid star: found duplicate star Star{id='nm0000365', stagename='Julie Delpy', dateOfBirth=1969} Star{id='ce61ad4d-51f4-4df1-abb5-785631a9d268', stagename='Julie Delpy', dateOfBirth=1969}
+invalid star: found duplicate star Star{id='nm0001123', stagename='Dom DeLuise', dateOfBirth=1933} Star{id='65441378-96d3-49e5-a358-9ca7677ef9da', stagename='Dom DeLuise', dateOfBirth=1933}
+invalid star: found duplicate star Star{id='nm0001132', stagename='Judi Dench', dateOfBirth=1934} Star{id='a7726f68-ae7c-4372-aea4-3cc83a830c37', stagename='Judi Dench', dateOfBirth=1934}
+invalid star: found duplicate star Star{id='nm0000366', stagename='Catherine Deneuve', dateOfBirth=1943} Star{id='86ea5283-957c-420f-8514-0a458f396455', stagename='Catherine Deneuve', dateOfBirth=1943}
 invalid star: invalid dob stagename 
-invalid star: found duplicate star Star{id='nm0001136', stagename='Bruce Dern', dateOfBirth=1936} Star{id='22117fbd-49b5-4156-b3b8-71723dfcf29a', stagename='Bruce Dern', dateOfBirth=1936}
-invalid star: found duplicate star Star{id='nm0000368', stagename='Laura Dern', dateOfBirth=1967} Star{id='7fdbec97-ca7a-41ae-a54b-1dd290c7333f', stagename='Laura Dern', dateOfBirth=1967}
-invalid star: found duplicate star Star{id='nm0000017', stagename='Marlene Dietrich', dateOfBirth=1901} Star{id='91e13aee-5d60-4fc9-abb4-8cd4c0582de7', stagename='Marlene Dietrich', dateOfBirth=1901}
-invalid star: found duplicate star Star{id='nm0000369', stagename='Matt Dillon', dateOfBirth=1964} Star{id='b3544c6f-1239-497e-9ef6-2fdb4fba1479', stagename='Matt Dillon', dateOfBirth=1964}
-invalid star: found duplicate star Star{id='nm0000018', stagename='Kirk Douglas', dateOfBirth=1916} Star{id='916a03c2-f722-48ca-a3b8-331301281f73', stagename='Kirk Douglas', dateOfBirth=1916}
-invalid star: found duplicate star Star{id='nm0000374', stagename='Brad Dourif', dateOfBirth=1950} Star{id='2983429e-8618-47ff-8421-35bc7ed59233', stagename='Brad Dourif', dateOfBirth=1950}
+invalid star: found duplicate star Star{id='nm0001136', stagename='Bruce Dern', dateOfBirth=1936} Star{id='b76a00cf-f395-4ad4-8371-46bc85dd0170', stagename='Bruce Dern', dateOfBirth=1936}
+invalid star: found duplicate star Star{id='nm0000368', stagename='Laura Dern', dateOfBirth=1967} Star{id='367c1c35-cda5-4358-9eae-33484bf9fb66', stagename='Laura Dern', dateOfBirth=1967}
+invalid star: found duplicate star Star{id='nm0000017', stagename='Marlene Dietrich', dateOfBirth=1901} Star{id='4c1b4381-7406-4626-9efc-dba3de46b264', stagename='Marlene Dietrich', dateOfBirth=1901}
+invalid star: found duplicate star Star{id='nm0000369', stagename='Matt Dillon', dateOfBirth=1964} Star{id='9a8a9f04-9515-46c6-a09f-2d66ebf75214', stagename='Matt Dillon', dateOfBirth=1964}
+invalid star: found duplicate star Star{id='nm0000018', stagename='Kirk Douglas', dateOfBirth=1916} Star{id='fa94c0a5-b872-4015-85f2-4262ab1070d3', stagename='Kirk Douglas', dateOfBirth=1916}
+invalid star: found duplicate star Star{id='nm0000374', stagename='Brad Dourif', dateOfBirth=1950} Star{id='9761aa3d-afe3-46e5-9856-c44ae05dd058', stagename='Brad Dourif', dateOfBirth=1950}
 Robert Downey Jr.
-invalid star: found duplicate star Star{id='nm0000375', stagename='Robert Downey Jr.', dateOfBirth=1965} Star{id='cbb1f2ed-a64a-4f7e-b6e9-a3e5c6f21bff', stagename='Robert Downey Jr.', dateOfBirth=1965}
-invalid star: found duplicate star Star{id='nm0001159', stagename='Faye Dunaway', dateOfBirth=1941} Star{id='0740d9cf-450e-48cb-b395-7bf79f91d752', stagename='Faye Dunaway', dateOfBirth=1941}
-invalid star: found duplicate star Star{id='nm0001162', stagename='Griffin Dunne', dateOfBirth=1955} Star{id='bf17f1f3-3cee-49a7-be64-45d213859842', stagename='Griffin Dunne', dateOfBirth=1955}
-invalid star: found duplicate star Star{id='nm0000380', stagename='Robert Duvall', dateOfBirth=1931} Star{id='93d0ed63-de8f-4806-b794-3090b8e9000d', stagename='Robert Duvall', dateOfBirth=1931}
-invalid star: found duplicate star Star{id='nm0000142', stagename='Clint Eastwood', dateOfBirth=1930} Star{id='528b5ba8-f335-4384-ba98-2f917a38f9ee', stagename='Clint Eastwood', dateOfBirth=1930}
+invalid star: found duplicate star Star{id='nm0000375', stagename='Robert Downey Jr.', dateOfBirth=1965} Star{id='9731d3c1-eda1-46aa-99a6-6850319689eb', stagename='Robert Downey Jr.', dateOfBirth=1965}
+invalid star: found duplicate star Star{id='nm0001159', stagename='Faye Dunaway', dateOfBirth=1941} Star{id='b04b565c-2343-4033-bbd8-0602c307876d', stagename='Faye Dunaway', dateOfBirth=1941}
+invalid star: found duplicate star Star{id='nm0001162', stagename='Griffin Dunne', dateOfBirth=1955} Star{id='e13d46cb-ecfe-42f3-b5d7-21cb03975577', stagename='Griffin Dunne', dateOfBirth=1955}
+invalid star: found duplicate star Star{id='nm0000380', stagename='Robert Duvall', dateOfBirth=1931} Star{id='e496f986-7b83-4e0b-ab5e-f1843da54dc7', stagename='Robert Duvall', dateOfBirth=1931}
+invalid star: found duplicate star Star{id='nm0000142', stagename='Clint Eastwood', dateOfBirth=1930} Star{id='db2cd3a5-f8df-4327-8982-26a8f0186885', stagename='Clint Eastwood', dateOfBirth=1930}
 Gosta Eckman Sr.
-invalid star: found duplicate star Star{id='nm0001175', stagename='Blake Edwards', dateOfBirth=1922} Star{id='d5ef5b87-48da-46e3-b2d5-354ce82a2e3a', stagename='Blake Edwards', dateOfBirth=1922}
-invalid star: found duplicate star Star{id='nm0001185', stagename='Hector Elizondo', dateOfBirth=1936} Star{id='1cdf63cb-772c-48f3-a1c1-bf531c1a6ff9', stagename='Hector Elizondo', dateOfBirth=1936}
-invalid star: found duplicate star Star{id='nm0000385', stagename='Sam Elliott', dateOfBirth=1944} Star{id='1962f6f4-4a65-449e-ba46-0f86c2cb8ff3', stagename='Sam Elliott', dateOfBirth=1944}
+invalid star: found duplicate star Star{id='nm0001175', stagename='Blake Edwards', dateOfBirth=1922} Star{id='222cf51f-316b-4895-90d0-1bed7762d6c9', stagename='Blake Edwards', dateOfBirth=1922}
+invalid star: found duplicate star Star{id='nm0001185', stagename='Hector Elizondo', dateOfBirth=1936} Star{id='27e7af0d-9f15-4c48-88db-3773a21f6eb7', stagename='Hector Elizondo', dateOfBirth=1936}
+invalid star: found duplicate star Star{id='nm0000385', stagename='Sam Elliott', dateOfBirth=1944} Star{id='90dfa24e-eeb1-4587-a0da-d4b43ecb0384', stagename='Sam Elliott', dateOfBirth=1944}
 Douglas Fairbanks Sr
 Douglas Fairbanks Jr.
-invalid star: found duplicate star Star{id='nm0000393', stagename='Peter Falk', dateOfBirth=1927} Star{id='cf92c0c1-f8ad-4752-9191-6521da4b5074', stagename='Peter Falk', dateOfBirth=1927}
-invalid star: found duplicate star Star{id='nm0001201', stagename='Mia Farrow', dateOfBirth=1945} Star{id='cd49b40f-c6e0-41a3-b82b-40d68bc2ba26', stagename='Mia Farrow', dateOfBirth=1945}
-invalid star: found duplicate star Star{id='nm0000145', stagename='Sherilyn Fenn', dateOfBirth=1965} Star{id='5632b966-eca4-45f6-9adb-7e42155215a6', stagename='Sherilyn Fenn', dateOfBirth=1965}
-invalid star: found duplicate star Star{id='nm0000398', stagename='Sally Field', dateOfBirth=1946} Star{id='4bbdfecd-7620-43dd-a1bb-477521df314a', stagename='Sally Field', dateOfBirth=1946}
-invalid star: found duplicate star Star{id='nm0001215', stagename='Albert Finney', dateOfBirth=1936} Star{id='6f6c610a-e5a9-45f8-97e6-64b3d22e9ba4', stagename='Albert Finney', dateOfBirth=1936}
-invalid star: found duplicate star Star{id='nm0000403', stagename='Bridget Fonda', dateOfBirth=1964} Star{id='fb0ce590-b29a-4ffe-93d5-a32d5bc950b0', stagename='Bridget Fonda', dateOfBirth=1964}
-invalid star: found duplicate star Star{id='nm0000149', stagename='Jodie Foster', dateOfBirth=1962} Star{id='1ecadbee-44b2-491f-a169-25b597b99f24', stagename='Jodie Foster', dateOfBirth=1962}
-invalid star: found duplicate star Star{id='nm0000150', stagename='Michael J. Fox', dateOfBirth=1961} Star{id='bc43addd-3bff-4d0c-9611-4fe603c34c5d', stagename='Michael J. Fox', dateOfBirth=1961}
+invalid star: found duplicate star Star{id='nm0000393', stagename='Peter Falk', dateOfBirth=1927} Star{id='44d01db3-ad04-4080-a02c-96826d7e610d', stagename='Peter Falk', dateOfBirth=1927}
+invalid star: found duplicate star Star{id='nm0001201', stagename='Mia Farrow', dateOfBirth=1945} Star{id='67f617d9-3330-4e95-b60e-ade9f793581d', stagename='Mia Farrow', dateOfBirth=1945}
+invalid star: found duplicate star Star{id='nm0000145', stagename='Sherilyn Fenn', dateOfBirth=1965} Star{id='3dc23b99-e24c-4438-a919-70041651b810', stagename='Sherilyn Fenn', dateOfBirth=1965}
+invalid star: found duplicate star Star{id='nm0000398', stagename='Sally Field', dateOfBirth=1946} Star{id='7c6e99ea-c5bb-4e37-b9f8-891a65c2bfdd', stagename='Sally Field', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0001215', stagename='Albert Finney', dateOfBirth=1936} Star{id='bb252c5f-6345-431f-be67-01cc4044d850', stagename='Albert Finney', dateOfBirth=1936}
+invalid star: found duplicate star Star{id='nm0000403', stagename='Bridget Fonda', dateOfBirth=1964} Star{id='cf48392c-e652-4bad-be3e-e6b59cf8ad15', stagename='Bridget Fonda', dateOfBirth=1964}
+invalid star: found duplicate star Star{id='nm0000149', stagename='Jodie Foster', dateOfBirth=1962} Star{id='794e76fd-1f25-45c3-a088-c408c1a02d12', stagename='Jodie Foster', dateOfBirth=1962}
+invalid star: found duplicate star Star{id='nm0000150', stagename='Michael J. Fox', dateOfBirth=1961} Star{id='ce1492b9-3120-48e0-a6c3-530053e5db4c', stagename='Michael J. Fox', dateOfBirth=1961}
 Eddie Foy Jr.
 invalid star: invalid dob stagename*
 Al Freeman Jr
 invalid star: invalid dob stagename*
-invalid star: found duplicate star Star{id='nm0001256', stagename='Greta Garbo', dateOfBirth=1905} Star{id='be86aefe-19d8-4fe9-aa68-1047f7f62d98', stagename='Greta Garbo', dateOfBirth=1905}
-invalid star: found duplicate star Star{id='nm0001258', stagename='James Garner', dateOfBirth=1928} Star{id='1120cd0c-267f-4354-ac2a-fda0eb63e644', stagename='James Garner', dateOfBirth=1928}
+invalid star: found duplicate star Star{id='nm0001256', stagename='Greta Garbo', dateOfBirth=1905} Star{id='282bd3c7-52cf-4eda-84bd-1ce008548c35', stagename='Greta Garbo', dateOfBirth=1905}
+invalid star: found duplicate star Star{id='nm0001258', stagename='James Garner', dateOfBirth=1928} Star{id='a2b61aba-b2d9-4770-82fe-f86b93d78fe4', stagename='James Garner', dateOfBirth=1928}
 Joaquin Garay III
-invalid star: found duplicate star Star{id='nm0001262', stagename='Ben Gazzara', dateOfBirth=1930} Star{id='c56bcd05-ec5d-4604-80e5-7dfb7a981889', stagename='Ben Gazzara', dateOfBirth=1930}
-invalid star: found duplicate star Star{id='nm0000152', stagename='Richard Gere', dateOfBirth=1949} Star{id='77cb7449-627f-4fea-ba1c-99c604c316ea', stagename='Richard Gere', dateOfBirth=1949}
-invalid star: found duplicate star Star{id='nm0001267', stagename='Balthazar Getty', dateOfBirth=1975} Star{id='d7a952a6-e809-44b0-87e5-bfed19ab7a87', stagename='Balthazar Getty', dateOfBirth=1975}
-invalid star: found duplicate star Star{id='nm0001274', stagename='Paul Michael Glaser', dateOfBirth=1943} Star{id='68e321e5-a256-417e-aea5-4028947e59e8', stagename='Paul Michael Glaser', dateOfBirth=1943}
-invalid star: found duplicate star Star{id='nm0000156', stagename='Jeff Goldblum', dateOfBirth=1952} Star{id='1be4acc1-7bb7-4ee0-a440-761e36c7a21f', stagename='Jeff Goldblum', dateOfBirth=1952}
+invalid star: found duplicate star Star{id='nm0001262', stagename='Ben Gazzara', dateOfBirth=1930} Star{id='960935e8-a4cb-42fe-97ce-859d7b385da5', stagename='Ben Gazzara', dateOfBirth=1930}
+invalid star: found duplicate star Star{id='nm0000152', stagename='Richard Gere', dateOfBirth=1949} Star{id='b4b07802-4cf5-4ed7-849f-6e751e0a8e26', stagename='Richard Gere', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0001267', stagename='Balthazar Getty', dateOfBirth=1975} Star{id='387425cc-a72d-4144-b98a-9303544e7a9a', stagename='Balthazar Getty', dateOfBirth=1975}
+invalid star: found duplicate star Star{id='nm0001274', stagename='Paul Michael Glaser', dateOfBirth=1943} Star{id='c76b266f-df53-4adb-9383-823b80643b5c', stagename='Paul Michael Glaser', dateOfBirth=1943}
+invalid star: found duplicate star Star{id='nm0000156', stagename='Jeff Goldblum', dateOfBirth=1952} Star{id='6688bb02-a505-469c-936b-ed400cfb0644', stagename='Jeff Goldblum', dateOfBirth=1952}
 C. Henry Gordon
 Lou Gossett Jr.
-invalid star: found duplicate star Star{id='nm0001285', stagename='Elliott Gould', dateOfBirth=1938} Star{id='7bdf5243-d105-4e0a-8587-44d638ecd6df', stagename='Elliott Gould', dateOfBirth=1938}
-invalid star: found duplicate star Star{id='nm0001294', stagename='Graham Greene', dateOfBirth=1904} Star{id='004a4502-0fd7-40ae-97c2-911da0603d62', stagename='Graham Greene', dateOfBirth=1904}
-invalid star: found duplicate star Star{id='nm0000427', stagename='Pam Grier', dateOfBirth=1949} Star{id='a5a82392-7c7a-4e61-ac13-d11d22033801', stagename='Pam Grier', dateOfBirth=1949}
-invalid star: found duplicate star Star{id='nm0000429', stagename='Melanie Griffith', dateOfBirth=1957} Star{id='c2de860c-a9c6-468d-a243-facffa559cd9', stagename='Melanie Griffith', dateOfBirth=1957}
-invalid star: found duplicate star Star{id='nm0001301', stagename='Charles Grodin', dateOfBirth=1935} Star{id='e116b2ee-7859-495c-bab5-99418236ca2e', stagename='Charles Grodin', dateOfBirth=1935}
+invalid star: found duplicate star Star{id='nm0001285', stagename='Elliott Gould', dateOfBirth=1938} Star{id='c461076d-089e-4089-85a0-3bbd994c2841', stagename='Elliott Gould', dateOfBirth=1938}
+invalid star: found duplicate star Star{id='nm0001294', stagename='Graham Greene', dateOfBirth=1904} Star{id='c7767f6a-a4b8-4a05-83e3-9042b087a78b', stagename='Graham Greene', dateOfBirth=1904}
+invalid star: found duplicate star Star{id='nm0000427', stagename='Pam Grier', dateOfBirth=1949} Star{id='4e60bdb5-96ff-409c-b564-d471396fa052', stagename='Pam Grier', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0000429', stagename='Melanie Griffith', dateOfBirth=1957} Star{id='7b52e6e2-08ba-4a00-b501-90b3b50786fb', stagename='Melanie Griffith', dateOfBirth=1957}
+invalid star: found duplicate star Star{id='nm0001301', stagename='Charles Grodin', dateOfBirth=1935} Star{id='882a56d6-87e4-405c-b5e6-f656b935f477', stagename='Charles Grodin', dateOfBirth=1935}
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000432', stagename='Gene Hackman', dateOfBirth=1930} Star{id='32c83b13-82ba-404a-93d9-55de065af1d6', stagename='Gene Hackman', dateOfBirth=1930}
+invalid star: found duplicate star Star{id='nm0000432', stagename='Gene Hackman', dateOfBirth=1930} Star{id='38a417d3-7b46-40ef-bfa6-8165646a4a6a', stagename='Gene Hackman', dateOfBirth=1930}
 Alan Hale Jr.
 invalid star: invalid dob stagename[1]1905
-invalid star: found duplicate star Star{id='nm0000158', stagename='Tom Hanks', dateOfBirth=1956} Star{id='6cac37e7-56af-4073-a27a-3790cd89b8f0', stagename='Tom Hanks', dateOfBirth=1956}
-invalid star: found duplicate star Star{id='nm0001319', stagename='Mark Harmon', dateOfBirth=1951} Star{id='b403dd0a-5250-4166-bf94-1c884360daa6', stagename='Mark Harmon', dateOfBirth=1951}
+invalid star: found duplicate star Star{id='nm0000158', stagename='Tom Hanks', dateOfBirth=1956} Star{id='7fa9ce4b-44a5-4e69-a12e-6054bd847449', stagename='Tom Hanks', dateOfBirth=1956}
+invalid star: found duplicate star Star{id='nm0001319', stagename='Mark Harmon', dateOfBirth=1951} Star{id='97a2d8ef-6380-4247-8d7e-1385b96ba00e', stagename='Mark Harmon', dateOfBirth=1951}
 invalid star: invalid dob stagenamedob
-invalid star: found duplicate star Star{id='nm0000442', stagename='Rutger Hauer', dateOfBirth=1944} Star{id='ad367b97-6950-4d88-b33a-bc0fbb4eb057', stagename='Rutger Hauer', dateOfBirth=1944}
+invalid star: found duplicate star Star{id='nm0000442', stagename='Rutger Hauer', dateOfBirth=1944} Star{id='766fa777-c55c-43f3-b733-897245b9e97c', stagename='Rutger Hauer', dateOfBirth=1944}
 invalid star: invalid dob stagename19bb
-invalid star: found duplicate star Star{id='nm0000443', stagename='Goldie Hawn', dateOfBirth=1945} Star{id='faed7a00-f3d3-47b0-a8a4-2470a0379c9a', stagename='Goldie Hawn', dateOfBirth=1945}
-invalid star: found duplicate star Star{id='nm0001334', stagename='John Heard', dateOfBirth=1946} Star{id='95e2d90b-c41b-4d9d-98ea-4c867476abb0', stagename='John Heard', dateOfBirth=1946}
-invalid star: found duplicate star Star{id='nm0000446', stagename='Mariel Hemingway', dateOfBirth=1961} Star{id='ea0c1d1d-7624-4450-a39a-913261fcf188', stagename='Mariel Hemingway', dateOfBirth=1961}
+invalid star: found duplicate star Star{id='nm0000443', stagename='Goldie Hawn', dateOfBirth=1945} Star{id='5844768b-46c3-431d-944f-acc9473fbedc', stagename='Goldie Hawn', dateOfBirth=1945}
+invalid star: found duplicate star Star{id='nm0001334', stagename='John Heard', dateOfBirth=1946} Star{id='850e5651-1e5b-48c6-ab56-ed0da21744cd', stagename='John Heard', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0000446', stagename='Mariel Hemingway', dateOfBirth=1961} Star{id='df269bf9-7669-443e-aec2-a7bcbcb738fc', stagename='Mariel Hemingway', dateOfBirth=1961}
 Arnold Hess Jr.
-invalid star: found duplicate star Star{id='nm0000163', stagename='Dustin Hoffman', dateOfBirth=1937} Star{id='22f69461-e3bb-49c5-b2c2-be8d8f789f01', stagename='Dustin Hoffman', dateOfBirth=1937}
-invalid star: found duplicate star Star{id='nm0001364', stagename='Bob Hoskins', dateOfBirth=1942} Star{id='2686e065-ede0-4267-9f88-850d41bd186e', stagename='Bob Hoskins', dateOfBirth=1942}
-invalid star: found duplicate star Star{id='nm0000166', stagename='Helen Hunt', dateOfBirth=1963} Star{id='1252eff2-a3fa-4a9b-ad67-b4607f3f2799', stagename='Helen Hunt', dateOfBirth=1963}
-invalid star: found duplicate star Star{id='nm0000456', stagename='Holly Hunter', dateOfBirth=1958} Star{id='a868a385-c43c-4e31-9eaa-0e3a6ea1cf76', stagename='Holly Hunter', dateOfBirth=1958}
-invalid star: found duplicate star Star{id='nm0000167', stagename='Elizabeth Hurley', dateOfBirth=1965} Star{id='b1d663e4-dd10-4599-8de9-60fbfd48c72a', stagename='Elizabeth Hurley', dateOfBirth=1965}
-invalid star: found duplicate star Star{id='nm0000457', stagename='John Hurt', dateOfBirth=1940} Star{id='90072e44-6ae4-46c4-b828-d5dd474c423f', stagename='John Hurt', dateOfBirth=1940}
-invalid star: found duplicate star Star{id='nm0000458', stagename='William Hurt', dateOfBirth=1950} Star{id='2b3acfc0-caf4-4a7b-96dc-38f49cc4ec36', stagename='William Hurt', dateOfBirth=1950}
-invalid star: found duplicate star Star{id='nm0001377', stagename='Olivia Hussey', dateOfBirth=1951} Star{id='379822d0-a86b-4814-94d7-0632500b2671', stagename='Olivia Hussey', dateOfBirth=1951}
-invalid star: found duplicate star Star{id='nm0001378', stagename='Anjelica Huston', dateOfBirth=1951} Star{id='e12e7743-994d-4bda-aac1-e516e00b83ac', stagename='Anjelica Huston', dateOfBirth=1951}
-invalid star: found duplicate star Star{id='nm0000459', stagename='Timothy Hutton', dateOfBirth=1960} Star{id='c703c522-79b9-46ae-b6db-c2540b259f97', stagename='Timothy Hutton', dateOfBirth=1960}
-invalid star: found duplicate star Star{id='nm0000460', stagename='Jeremy Irons', dateOfBirth=1948} Star{id='680ddef8-b4c7-4f0a-84bc-4159f0fd2653', stagename='Jeremy Irons', dateOfBirth=1948}
-invalid star: found duplicate star Star{id='nm0000168', stagename='Samuel L. Jackson', dateOfBirth=1948} Star{id='1f394531-a52b-4d3f-b43c-a268ca8c18b8', stagename='Samuel L. Jackson', dateOfBirth=1948}
-invalid star: found duplicate star Star{id='nm0001394', stagename='Derek Jacobi', dateOfBirth=1938} Star{id='09b81e14-5d95-48de-9517-9add830c72d1', stagename='Derek Jacobi', dateOfBirth=1938}
+invalid star: found duplicate star Star{id='nm0000163', stagename='Dustin Hoffman', dateOfBirth=1937} Star{id='5b1709d1-5dbf-4790-ba35-bb328e66c893', stagename='Dustin Hoffman', dateOfBirth=1937}
+invalid star: found duplicate star Star{id='nm0001364', stagename='Bob Hoskins', dateOfBirth=1942} Star{id='4bd8932d-fd07-4b30-be0c-c3b5889c1ae4', stagename='Bob Hoskins', dateOfBirth=1942}
+invalid star: found duplicate star Star{id='nm0000166', stagename='Helen Hunt', dateOfBirth=1963} Star{id='56b081e8-95f4-4d10-bd41-4bc310385d7e', stagename='Helen Hunt', dateOfBirth=1963}
+invalid star: found duplicate star Star{id='nm0000456', stagename='Holly Hunter', dateOfBirth=1958} Star{id='121db51a-c4c8-4a70-83ae-aef4d9e3815d', stagename='Holly Hunter', dateOfBirth=1958}
+invalid star: found duplicate star Star{id='nm0000167', stagename='Elizabeth Hurley', dateOfBirth=1965} Star{id='3cb61f05-338e-4399-8b2d-6aa88a25e250', stagename='Elizabeth Hurley', dateOfBirth=1965}
+invalid star: found duplicate star Star{id='nm0000457', stagename='John Hurt', dateOfBirth=1940} Star{id='a4febc02-608d-4014-bfba-432b4138cc82', stagename='John Hurt', dateOfBirth=1940}
+invalid star: found duplicate star Star{id='nm0000458', stagename='William Hurt', dateOfBirth=1950} Star{id='5a6df352-7871-44fc-aba7-ba33613199d1', stagename='William Hurt', dateOfBirth=1950}
+invalid star: found duplicate star Star{id='nm0001377', stagename='Olivia Hussey', dateOfBirth=1951} Star{id='98344828-49b3-4424-b6df-510da8cf9172', stagename='Olivia Hussey', dateOfBirth=1951}
+invalid star: found duplicate star Star{id='nm0001378', stagename='Anjelica Huston', dateOfBirth=1951} Star{id='a555c819-7650-4ed1-9fc0-97804effbc35', stagename='Anjelica Huston', dateOfBirth=1951}
+invalid star: found duplicate star Star{id='nm0000459', stagename='Timothy Hutton', dateOfBirth=1960} Star{id='7297cfe4-5e9c-4b1b-82ea-ef032e88cbde', stagename='Timothy Hutton', dateOfBirth=1960}
+invalid star: found duplicate star Star{id='nm0000460', stagename='Jeremy Irons', dateOfBirth=1948} Star{id='8d84154e-95dc-4a9a-acaa-774f47178dd4', stagename='Jeremy Irons', dateOfBirth=1948}
+invalid star: found duplicate star Star{id='nm0000168', stagename='Samuel L. Jackson', dateOfBirth=1948} Star{id='afb3e073-2714-44b0-9c93-193a2df8160b', stagename='Samuel L. Jackson', dateOfBirth=1948}
+invalid star: found duplicate star Star{id='nm0001394', stagename='Derek Jacobi', dateOfBirth=1938} Star{id='77d82b2d-df90-4cbb-8341-f8028c8fdf7d', stagename='Derek Jacobi', dateOfBirth=1938}
 Claude Jarman Jr.
-invalid star: found duplicate star Star{id='nm0000169', stagename='Tommy Lee Jones', dateOfBirth=1946} Star{id='4db3ac89-bd93-4136-be46-da50113a42a7', stagename='Tommy Lee Jones', dateOfBirth=1946}
-invalid star: found duplicate star Star{id='nm0001421', stagename='George Kennedy', dateOfBirth=1925} Star{id='518792a0-ee28-4e24-ab26-6fbdfa9538ca', stagename='George Kennedy', dateOfBirth=1925}
+invalid star: found duplicate star Star{id='nm0000169', stagename='Tommy Lee Jones', dateOfBirth=1946} Star{id='1de05973-18ba-42a4-a3e0-75884e878dde', stagename='Tommy Lee Jones', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0001421', stagename='George Kennedy', dateOfBirth=1925} Star{id='92cc580d-f163-4a05-af7e-31f9ed28cd35', stagename='George Kennedy', dateOfBirth=1925}
 J. Herbert Kerr Jr.
-invalid star: found duplicate star Star{id='nm0000173', stagename='Nicole Kidman', dateOfBirth=1967} Star{id='2b6f682e-bebc-4d8a-9abb-31ce29410897', stagename='Nicole Kidman', dateOfBirth=1967}
+invalid star: found duplicate star Star{id='nm0000173', stagename='Nicole Kidman', dateOfBirth=1967} Star{id='b35f9e91-4402-4823-bab6-b9c1c253e60f', stagename='Nicole Kidman', dateOfBirth=1967}
 invalid star: invalid dob stagenamen.a.
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000174', stagename='Val Kilmer', dateOfBirth=1959} Star{id='51158c59-650f-4a76-8f18-a810596d9594', stagename='Val Kilmer', dateOfBirth=1959}
-invalid star: found duplicate star Star{id='nm0001427', stagename='Greg Kinnear', dateOfBirth=1963} Star{id='575467bf-14c7-4889-a73d-7bd3f11f0597', stagename='Greg Kinnear', dateOfBirth=1963}
+invalid star: found duplicate star Star{id='nm0000174', stagename='Val Kilmer', dateOfBirth=1959} Star{id='e1ccb67b-0740-480e-89ac-0ef7ae9e77bc', stagename='Val Kilmer', dateOfBirth=1959}
+invalid star: found duplicate star Star{id='nm0001427', stagename='Greg Kinnear', dateOfBirth=1963} Star{id='be8271c6-edd0-4a70-9c36-1e5ec6b63031', stagename='Greg Kinnear', dateOfBirth=1963}
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0001434', stagename='Kris Kristofferson', dateOfBirth=1936} Star{id='a12612d7-e4ac-4cd2-ac29-b79141a2a92f', stagename='Kris Kristofferson', dateOfBirth=1936}
-invalid star: found duplicate star Star{id='nm0000178', stagename='Diane Lane', dateOfBirth=1965} Star{id='889152cb-4e31-41c9-af43-7c4e12017695', stagename='Diane Lane', dateOfBirth=1965}
-invalid star: found duplicate star Star{id='nm0001448', stagename='Jessica Lange', dateOfBirth=1949} Star{id='dcf72452-2273-4240-9e15-c33641d3d5e5', stagename='Jessica Lange', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0001434', stagename='Kris Kristofferson', dateOfBirth=1936} Star{id='04037e49-60b7-4636-9ae3-578573cdb0a6', stagename='Kris Kristofferson', dateOfBirth=1936}
+invalid star: found duplicate star Star{id='nm0000178', stagename='Diane Lane', dateOfBirth=1965} Star{id='54a42c37-d0bc-4441-8e23-923d21dbf385', stagename='Diane Lane', dateOfBirth=1965}
+invalid star: found duplicate star Star{id='nm0001448', stagename='Jessica Lange', dateOfBirth=1949} Star{id='35270ac4-6d11-4066-9dd9-084f42cd077f', stagename='Jessica Lange', dateOfBirth=1949}
 invalid star: invalid dob stagename19bb
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0001458', stagename='Cloris Leachman', dateOfBirth=1926} Star{id='2ff00a95-2c05-4bd3-9fbe-540b522fc3b6', stagename='Cloris Leachman', dateOfBirth=1926}
-invalid star: found duplicate star Star{id='nm0000511', stagename='Shirley MacLaine', dateOfBirth=1934} Star{id='92dee2c6-49ae-4c52-a60e-56edaba7fae4', stagename='Shirley MacLaine', dateOfBirth=1934}
-invalid star: found duplicate star Star{id='nm0001506', stagename='Jane March', dateOfBirth=1973} Star{id='afb05515-64fc-47b1-b040-13943cdff449', stagename='Jane March', dateOfBirth=1973}
-invalid star: found duplicate star Star{id='nm0001506', stagename='Jane March', dateOfBirth=1973} Star{id='40c90e36-49cb-4d2e-a013-f02384fdc89b', stagename='Jane March', dateOfBirth=1973}
-invalid star: found duplicate star Star{id='nm0000188', stagename='Steve Martin', dateOfBirth=1945} Star{id='361f11da-cd4f-460b-8d23-9f720196ff77', stagename='Steve Martin', dateOfBirth=1945}
+invalid star: found duplicate star Star{id='nm0001458', stagename='Cloris Leachman', dateOfBirth=1926} Star{id='d20d1214-fd58-4f2b-b8bf-497d4f1fcdf9', stagename='Cloris Leachman', dateOfBirth=1926}
+invalid star: found duplicate star Star{id='nm0000511', stagename='Shirley MacLaine', dateOfBirth=1934} Star{id='0ef9cddb-3a09-4824-9717-0ed9a7ddfd70', stagename='Shirley MacLaine', dateOfBirth=1934}
+invalid star: found duplicate star Star{id='nm0001506', stagename='Jane March', dateOfBirth=1973} Star{id='5898ad05-3139-4a37-bb5d-b2bb8b4cb9e1', stagename='Jane March', dateOfBirth=1973}
+invalid star: found duplicate star Star{id='nm0001506', stagename='Jane March', dateOfBirth=1973} Star{id='c0d6ff30-f9e9-4672-a220-88ff65d676cf', stagename='Jane March', dateOfBirth=1973}
+invalid star: found duplicate star Star{id='nm0000188', stagename='Steve Martin', dateOfBirth=1945} Star{id='b7349e1c-93d8-46cd-932a-9978f691a9e3', stagename='Steve Martin', dateOfBirth=1945}
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000532', stagename='Malcolm McDowell', dateOfBirth=1943} Star{id='65fc874b-7a03-4b08-a1ac-0325b42f0850', stagename='Malcolm McDowell', dateOfBirth=1943}
+invalid star: found duplicate star Star{id='nm0000532', stagename='Malcolm McDowell', dateOfBirth=1943} Star{id='ac1faef4-1a10-45df-a575-6d9c2d284c66', stagename='Malcolm McDowell', dateOfBirth=1943}
 Fuller Mellish Jr.
-invalid star: found duplicate star Star{id='nm0001549', stagename='Rita Moreno', dateOfBirth=1931} Star{id='47fea2e4-f558-4334-8c61-750d2baeacab', stagename='Rita Moreno', dateOfBirth=1931}
+invalid star: found duplicate star Star{id='nm0001549', stagename='Rita Moreno', dateOfBirth=1931} Star{id='fa86e79e-b816-4a2e-8142-970689b54f59', stagename='Rita Moreno', dateOfBirth=1931}
 invalid star: invalid dob stagename19bb
 invalid star: invalid dob stagename19bb
 invalid star: invalid dob stagename18bb
-invalid star: found duplicate star Star{id='nm0000555', stagename='Judd Nelson', dateOfBirth=1959} Star{id='f12a4264-42bd-44fa-a592-a8d9c3a4d383', stagename='Judd Nelson', dateOfBirth=1959}
-invalid star: found duplicate star Star{id='nm0000056', stagename='Paul Newman', dateOfBirth=1925} Star{id='bb172616-7dbe-4513-aa86-d0f0787ead44', stagename='Paul Newman', dateOfBirth=1925}
-invalid star: found duplicate star Star{id='nm0000197', stagename='Jack Nicholson', dateOfBirth=1937} Star{id='94446a45-bbdc-488c-b1da-08b74a7d624c', stagename='Jack Nicholson', dateOfBirth=1937}
-invalid star: found duplicate star Star{id='nm0000560', stagename='Nick Nolte', dateOfBirth=1941} Star{id='195a21fe-facd-424e-a865-ca9550d531da', stagename='Nick Nolte', dateOfBirth=1941}
-invalid star: found duplicate star Star{id='nm0001571', stagename='Kim Novak', dateOfBirth=1933} Star{id='1020f71f-91eb-43c7-9b36-b3b9d2d9eb05', stagename='Kim Novak', dateOfBirth=1933}
-invalid star: found duplicate star Star{id='nm0000198', stagename='Gary Oldman', dateOfBirth=1958} Star{id='e3da6d9e-073e-4e2d-a2b4-d3e375ed9a2d', stagename='Gary Oldman', dateOfBirth=1958}
+invalid star: found duplicate star Star{id='nm0000555', stagename='Judd Nelson', dateOfBirth=1959} Star{id='94a401f8-1038-47b8-bf42-2607b106ed05', stagename='Judd Nelson', dateOfBirth=1959}
+invalid star: found duplicate star Star{id='nm0000056', stagename='Paul Newman', dateOfBirth=1925} Star{id='2dc8c15f-7d2c-4d4d-a293-cf1c0638f280', stagename='Paul Newman', dateOfBirth=1925}
+invalid star: found duplicate star Star{id='nm0000197', stagename='Jack Nicholson', dateOfBirth=1937} Star{id='4f0462bc-ac8b-43fe-8b11-a6c04cec0fac', stagename='Jack Nicholson', dateOfBirth=1937}
+invalid star: found duplicate star Star{id='nm0000560', stagename='Nick Nolte', dateOfBirth=1941} Star{id='125ed813-07b5-412f-a099-69da3307b481', stagename='Nick Nolte', dateOfBirth=1941}
+invalid star: found duplicate star Star{id='nm0001571', stagename='Kim Novak', dateOfBirth=1933} Star{id='bb614940-0968-4cdd-b57f-f296df5fbc71', stagename='Kim Novak', dateOfBirth=1933}
+invalid star: found duplicate star Star{id='nm0000198', stagename='Gary Oldman', dateOfBirth=1958} Star{id='c1463e92-7786-4844-90fa-a90c735ca192', stagename='Gary Oldman', dateOfBirth=1958}
 invalid star: invalid dob stagename~1945
-invalid star: found duplicate star Star{id='nm0000564', stagename='Peter OToole', dateOfBirth=1932} Star{id='db857317-5d18-49bc-bee7-83e810bc2835', stagename='Peter OToole', dateOfBirth=1932}
-invalid star: found duplicate star Star{id='nm0000568', stagename='Frank Oz', dateOfBirth=1944} Star{id='bb928e6e-7148-470c-b180-259f4389dfa2', stagename='Frank Oz', dateOfBirth=1944}
-invalid star: found duplicate star Star{id='nm0000572', stagename='Sarah Jessica Parker', dateOfBirth=1965} Star{id='de5c08c4-59ed-437b-be1b-14cc8e82d978', stagename='Sarah Jessica Parker', dateOfBirth=1965}
-invalid star: found duplicate star Star{id='nm0000573', stagename='Dolly Parton', dateOfBirth=1946} Star{id='36001499-e1cc-4c35-be27-016662a318cc', stagename='Dolly Parton', dateOfBirth=1946}
-invalid star: found duplicate star Star{id='nm0000576', stagename='Sean Penn', dateOfBirth=1960} Star{id='fa62e2f5-e81c-43e9-b63a-2d910897b519', stagename='Sean Penn', dateOfBirth=1960}
-invalid star: found duplicate star Star{id='nm0001613', stagename='Bernadette Peters', dateOfBirth=1948} Star{id='e228421a-0124-4d13-8d42-01529858ff9a', stagename='Bernadette Peters', dateOfBirth=1948}
+invalid star: found duplicate star Star{id='nm0000564', stagename='Peter OToole', dateOfBirth=1932} Star{id='c2db8647-a6d9-4aa9-acbd-c9396537489c', stagename='Peter OToole', dateOfBirth=1932}
+invalid star: found duplicate star Star{id='nm0000568', stagename='Frank Oz', dateOfBirth=1944} Star{id='85c4348b-4907-43e8-bf56-fa0dd4586f7d', stagename='Frank Oz', dateOfBirth=1944}
+invalid star: found duplicate star Star{id='nm0000572', stagename='Sarah Jessica Parker', dateOfBirth=1965} Star{id='40b079cc-6c64-450c-9f75-99127874a5c9', stagename='Sarah Jessica Parker', dateOfBirth=1965}
+invalid star: found duplicate star Star{id='nm0000573', stagename='Dolly Parton', dateOfBirth=1946} Star{id='953d0c04-0978-49c9-baae-488ad697271c', stagename='Dolly Parton', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0000576', stagename='Sean Penn', dateOfBirth=1960} Star{id='c79e9e01-3d20-46ce-99d1-0f5e252af28b', stagename='Sean Penn', dateOfBirth=1960}
+invalid star: found duplicate star Star{id='nm0001613', stagename='Bernadette Peters', dateOfBirth=1948} Star{id='86af0a00-7c1b-4129-bf1e-eee5c92f5b57', stagename='Bernadette Peters', dateOfBirth=1948}
 invalid star: invalid dob stagenamen.a.
 invalid star: invalid dob stagenamedob
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000591', stagename='Roman Polanski', dateOfBirth=1933} Star{id='68045e4e-c189-4570-8416-1abf0a2e0660', stagename='Roman Polanski', dateOfBirth=1933}
-invalid star: found duplicate star Star{id='nm0001628', stagename='Sydney Pollack', dateOfBirth=1934} Star{id='265de5b6-2ca7-4d03-9b91-1bea18897a95', stagename='Sydney Pollack', dateOfBirth=1934}
+invalid star: found duplicate star Star{id='nm0000591', stagename='Roman Polanski', dateOfBirth=1933} Star{id='253abdc5-0ad3-42fe-bedb-53f7d1715220', stagename='Roman Polanski', dateOfBirth=1933}
+invalid star: found duplicate star Star{id='nm0001628', stagename='Sydney Pollack', dateOfBirth=1934} Star{id='60014f82-e821-46e0-97cc-399859238b1b', stagename='Sydney Pollack', dateOfBirth=1934}
 invalid star: invalid dob stagename19bb
-invalid star: found duplicate star Star{id='nm0000204', stagename='Natalie Portman', dateOfBirth=1981} Star{id='74b1bb75-2be1-4e3b-a67e-8247321a13a4', stagename='Natalie Portman', dateOfBirth=1981}
-invalid star: found duplicate star Star{id='nm0000062', stagename='Elvis Presley', dateOfBirth=1935} Star{id='d3f3aa1b-14df-4b32-a643-a8a2d9c2d461', stagename='Elvis Presley', dateOfBirth=1935}
-invalid star: found duplicate star Star{id='nm0000596', stagename='Jonathan Pryce', dateOfBirth=1947} Star{id='5717a1e4-8fa8-49c8-9d71-9e190198c9f3', stagename='Jonathan Pryce', dateOfBirth=1947}
-invalid star: found duplicate star Star{id='nm0000063', stagename='Anthony Quinn', dateOfBirth=1915} Star{id='156b9749-af8e-4195-b039-d24299fca171', stagename='Anthony Quinn', dateOfBirth=1915}
+invalid star: found duplicate star Star{id='nm0000204', stagename='Natalie Portman', dateOfBirth=1981} Star{id='f21d8617-6456-4a6d-9fa8-1649d8f7440d', stagename='Natalie Portman', dateOfBirth=1981}
+invalid star: found duplicate star Star{id='nm0000062', stagename='Elvis Presley', dateOfBirth=1935} Star{id='398f9e17-a614-4a35-ace4-2494fc0c0ccc', stagename='Elvis Presley', dateOfBirth=1935}
+invalid star: found duplicate star Star{id='nm0000596', stagename='Jonathan Pryce', dateOfBirth=1947} Star{id='18e01a86-d5b8-41ae-aae6-b0580e2ae6d3', stagename='Jonathan Pryce', dateOfBirth=1947}
+invalid star: found duplicate star Star{id='nm0000063', stagename='Anthony Quinn', dateOfBirth=1915} Star{id='8b565325-208e-4965-91d7-c1965e909f64', stagename='Anthony Quinn', dateOfBirth=1915}
 invalid star: invalid dob stagename*
-invalid star: found duplicate star Star{id='nm0001654', stagename='Ronald Reagan', dateOfBirth=1911} Star{id='bedaa5e3-2797-490e-adaa-55829f0e2921', stagename='Ronald Reagan', dateOfBirth=1911}
-invalid star: found duplicate star Star{id='nm0001655', stagename='Lynn Redgrave', dateOfBirth=1943} Star{id='9f6d62c5-7a81-4546-9b9c-db27b3094e04', stagename='Lynn Redgrave', dateOfBirth=1943}
-invalid star: found duplicate star Star{id='nm0000603', stagename='Vanessa Redgrave', dateOfBirth=1937} Star{id='11917778-fc06-4f8a-9f44-102f031d6818', stagename='Vanessa Redgrave', dateOfBirth=1937}
+invalid star: found duplicate star Star{id='nm0001654', stagename='Ronald Reagan', dateOfBirth=1911} Star{id='b9ff5041-5aa0-4344-81e2-f2a98d3bd969', stagename='Ronald Reagan', dateOfBirth=1911}
+invalid star: found duplicate star Star{id='nm0001655', stagename='Lynn Redgrave', dateOfBirth=1943} Star{id='3a8c43aa-834c-40ec-9152-3babfda86e35', stagename='Lynn Redgrave', dateOfBirth=1943}
+invalid star: found duplicate star Star{id='nm0000603', stagename='Vanessa Redgrave', dateOfBirth=1937} Star{id='49c67374-9e95-4ea4-9894-e4fb29721531', stagename='Vanessa Redgrave', dateOfBirth=1937}
 invalid star: invalid dob stagename*
-invalid star: found duplicate star Star{id='nm0000608', stagename='Burt Reynolds', dateOfBirth=1936} Star{id='b25e893e-05f7-4222-9771-5898f2e84202', stagename='Burt Reynolds', dateOfBirth=1936}
-invalid star: found duplicate star Star{id='nm0001671', stagename='Diana Rigg', dateOfBirth=1938} Star{id='285bd8e1-c11b-452f-9503-1b1792e42593', stagename='Diana Rigg', dateOfBirth=1938}
-invalid star: found duplicate star Star{id='nm0000615', stagename='John Ritter', dateOfBirth=1948} Star{id='9ec31432-6a8a-4252-8203-361492c6084e', stagename='John Ritter', dateOfBirth=1948}
+invalid star: found duplicate star Star{id='nm0000608', stagename='Burt Reynolds', dateOfBirth=1936} Star{id='08b2f391-c8d7-4311-bbe3-f55a40d43a4b', stagename='Burt Reynolds', dateOfBirth=1936}
+invalid star: found duplicate star Star{id='nm0001671', stagename='Diana Rigg', dateOfBirth=1938} Star{id='e5eacf6e-b87f-41c7-944b-edfd942e11e6', stagename='Diana Rigg', dateOfBirth=1938}
+invalid star: found duplicate star Star{id='nm0000615', stagename='John Ritter', dateOfBirth=1948} Star{id='be798a85-cf63-448c-9926-2927bfbc49cb', stagename='John Ritter', dateOfBirth=1948}
 invalid star: invalid dob stagenamen.a.
 Jason Robards Jr.
-invalid star: found duplicate star Star{id='nm0000616', stagename='Eric Roberts', dateOfBirth=1956} Star{id='720c9af0-ba27-48b9-9234-4360ba6ac5fe', stagename='Eric Roberts', dateOfBirth=1956}
-invalid star: found duplicate star Star{id='nm0000210', stagename='Julia Roberts', dateOfBirth=1967} Star{id='2f4e9589-7a4d-4d32-b756-d153c6836ddc', stagename='Julia Roberts', dateOfBirth=1967}
+invalid star: found duplicate star Star{id='nm0000616', stagename='Eric Roberts', dateOfBirth=1956} Star{id='2b4da87d-2f4b-497c-8ea3-42780e683c14', stagename='Eric Roberts', dateOfBirth=1956}
+invalid star: found duplicate star Star{id='nm0000210', stagename='Julia Roberts', dateOfBirth=1967} Star{id='b6539572-fd0c-4adc-b471-edada80d4e0b', stagename='Julia Roberts', dateOfBirth=1967}
 invalid star: invalid dob stagename*
 Howard E. Rollins Jr.
 invalid star: invalid dob stagename*
-invalid star: found duplicate star Star{id='nm0001682', stagename='Mickey Rooney', dateOfBirth=1920} Star{id='877440c5-5742-4141-adde-8a9b63f7c276', stagename='Mickey Rooney', dateOfBirth=1920}
+invalid star: found duplicate star Star{id='nm0001682', stagename='Mickey Rooney', dateOfBirth=1920} Star{id='e84cc39d-2c2f-420a-a2bf-2b92e8c96038', stagename='Mickey Rooney', dateOfBirth=1920}
 invalid star: invalid dob stagename19bb
 invalid star: invalid dob stagename~1992
-invalid star: found duplicate star Star{id='nm0000621', stagename='Kurt Russell', dateOfBirth=1951} Star{id='cf1405a6-68c5-452b-bcde-889b03b529e5', stagename='Kurt Russell', dateOfBirth=1951}
-invalid star: found duplicate star Star{id='nm0000213', stagename='Winona Ryder', dateOfBirth=1971} Star{id='0bb1e838-cbf4-42f8-962b-730858fae0dc', stagename='Winona Ryder', dateOfBirth=1971}
-invalid star: found duplicate star Star{id='nm0001191', stagename='Adam Sandler', dateOfBirth=1966} Star{id='b3eb4fa3-99b6-4b31-9491-abfe21ed9ce6', stagename='Adam Sandler', dateOfBirth=1966}
-invalid star: found duplicate star Star{id='nm0001697', stagename='Chris Sarandon', dateOfBirth=1942} Star{id='62c39b56-7dd4-4564-9daa-1576891de3b4', stagename='Chris Sarandon', dateOfBirth=1942}
-invalid star: found duplicate star Star{id='nm0000215', stagename='Susan Sarandon', dateOfBirth=1946} Star{id='64b842c9-17f5-4dc8-82ae-9ef4e6f398d9', stagename='Susan Sarandon', dateOfBirth=1946}
-invalid star: found duplicate star Star{id='nm0000625', stagename='Fred Savage', dateOfBirth=1976} Star{id='14a68635-d5b4-4f01-9a3f-3f70d8fab861', stagename='Fred Savage', dateOfBirth=1976}
-invalid star: found duplicate star Star{id='nm0000627', stagename='Greta Scacchi', dateOfBirth=1960} Star{id='cac5eb22-158f-42c9-9741-f8d06e1ba20a', stagename='Greta Scacchi', dateOfBirth=1960}
+invalid star: found duplicate star Star{id='nm0000621', stagename='Kurt Russell', dateOfBirth=1951} Star{id='aae2343e-dbe3-40fe-b285-1c46ad134f65', stagename='Kurt Russell', dateOfBirth=1951}
+invalid star: found duplicate star Star{id='nm0000213', stagename='Winona Ryder', dateOfBirth=1971} Star{id='197db3b6-4b7b-4228-9c06-184d77223829', stagename='Winona Ryder', dateOfBirth=1971}
+invalid star: found duplicate star Star{id='nm0001191', stagename='Adam Sandler', dateOfBirth=1966} Star{id='b063dd6e-7700-48ef-993f-eaf6c150109c', stagename='Adam Sandler', dateOfBirth=1966}
+invalid star: found duplicate star Star{id='nm0001697', stagename='Chris Sarandon', dateOfBirth=1942} Star{id='f2eb055d-5d1f-4be8-ac2b-b6eeb08d35a1', stagename='Chris Sarandon', dateOfBirth=1942}
+invalid star: found duplicate star Star{id='nm0000215', stagename='Susan Sarandon', dateOfBirth=1946} Star{id='18988b47-aeda-413b-b385-f61e28080903', stagename='Susan Sarandon', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0000625', stagename='Fred Savage', dateOfBirth=1976} Star{id='8805ced6-bc4e-4e4f-bc45-d6b2194627d2', stagename='Fred Savage', dateOfBirth=1976}
+invalid star: found duplicate star Star{id='nm0000627', stagename='Greta Scacchi', dateOfBirth=1960} Star{id='123676bf-1c48-4358-a192-4047aac28132', stagename='Greta Scacchi', dateOfBirth=1960}
 invalid star: invalid dob stagename19bb
-invalid star: found duplicate star Star{id='nm0000216', stagename='Arnold Schwarzenegger', dateOfBirth=1947} Star{id='da9987bf-52eb-47cd-b516-afe61d58b13d', stagename='Arnold Schwarzenegger', dateOfBirth=1947}
-invalid star: found duplicate star Star{id='nm0000219', stagename='Steven Seagal', dateOfBirth=1952} Star{id='2c6dca9e-9e2e-40cc-ab8a-208033cc3b63', stagename='Steven Seagal', dateOfBirth=1952}
-invalid star: found duplicate star Star{id='nm0001719', stagename='George Segal', dateOfBirth=1934} Star{id='f4bb53ca-96fd-4396-87eb-a845678718be', stagename='George Segal', dateOfBirth=1934}
-invalid star: found duplicate star Star{id='nm0000637', stagename='Tupac Shakur', dateOfBirth=1971} Star{id='a7a863c6-6e8e-476f-8c37-73b6bac38a5d', stagename='Tupac Shakur', dateOfBirth=1971}
+invalid star: found duplicate star Star{id='nm0000216', stagename='Arnold Schwarzenegger', dateOfBirth=1947} Star{id='dd9fa1ea-f94c-4718-a531-ddd6d5421cca', stagename='Arnold Schwarzenegger', dateOfBirth=1947}
+invalid star: found duplicate star Star{id='nm0000219', stagename='Steven Seagal', dateOfBirth=1952} Star{id='5bec02cc-0612-4449-9ca7-a4aba6e852c8', stagename='Steven Seagal', dateOfBirth=1952}
+invalid star: found duplicate star Star{id='nm0001719', stagename='George Segal', dateOfBirth=1934} Star{id='7f44de29-17f2-4020-9169-eb229f7cd3fc', stagename='George Segal', dateOfBirth=1934}
+invalid star: found duplicate star Star{id='nm0000637', stagename='Tupac Shakur', dateOfBirth=1971} Star{id='ffcd0a3d-c9ce-4ffb-a8c8-9665e43d1c6b', stagename='Tupac Shakur', dateOfBirth=1971}
 invalid star: invalid dob stagename19bb
-invalid star: found duplicate star Star{id='nm0001725', stagename='Omar Sharif', dateOfBirth=1932} Star{id='a4949e71-7fb5-4201-be87-c5135e8de577', stagename='Omar Sharif', dateOfBirth=1932}
-invalid star: found duplicate star Star{id='nm0000638', stagename='William Shatner', dateOfBirth=1931} Star{id='7393abe4-6a43-418a-9b08-9a5f722187b1', stagename='William Shatner', dateOfBirth=1931}
-invalid star: found duplicate star Star{id='nm0000640', stagename='Martin Sheen', dateOfBirth=1940} Star{id='d585748d-86f1-4f5f-a787-9a09d60e7f52', stagename='Martin Sheen', dateOfBirth=1940}
-invalid star: found duplicate star Star{id='nm0001731', stagename='Sam Shepard', dateOfBirth=1943} Star{id='9a8d4ca8-e541-4566-a255-5b9fcd773c9a', stagename='Sam Shepard', dateOfBirth=1943}
-invalid star: found duplicate star Star{id='nm0001737', stagename='Martin Short', dateOfBirth=1950} Star{id='8f8dd95f-3cd1-4481-b1c6-fa56be252252', stagename='Martin Short', dateOfBirth=1950}
-invalid star: found duplicate star Star{id='nm0000643', stagename='Tom Skerritt', dateOfBirth=1933} Star{id='314cbf03-803c-47a7-932b-de8e7d27d560', stagename='Tom Skerritt', dateOfBirth=1933}
-invalid star: found duplicate star Star{id='nm0000225', stagename='Christian Slater', dateOfBirth=1969} Star{id='c9ca98f6-7949-417c-8568-d68646db4381', stagename='Christian Slater', dateOfBirth=1969}
-invalid star: found duplicate star Star{id='nm0001749', stagename='Maggie Smith', dateOfBirth=1934} Star{id='93000813-5776-41cb-99b9-6f8c58fac466', stagename='Maggie Smith', dateOfBirth=1934}
-invalid star: found duplicate star Star{id='nm0000649', stagename='Paul Sorvino', dateOfBirth=1939} Star{id='9f9d6a89-a1af-4b37-9de8-16acc2fa4b69', stagename='Paul Sorvino', dateOfBirth=1939}
+invalid star: found duplicate star Star{id='nm0001725', stagename='Omar Sharif', dateOfBirth=1932} Star{id='2040e5c9-ecd4-41b0-80e3-985a3a2342f4', stagename='Omar Sharif', dateOfBirth=1932}
+invalid star: found duplicate star Star{id='nm0000638', stagename='William Shatner', dateOfBirth=1931} Star{id='9e2c6e05-c825-4085-8017-ffbc9578228c', stagename='William Shatner', dateOfBirth=1931}
+invalid star: found duplicate star Star{id='nm0000640', stagename='Martin Sheen', dateOfBirth=1940} Star{id='f8afbe13-25b3-4e2b-b02d-0003c5f8146f', stagename='Martin Sheen', dateOfBirth=1940}
+invalid star: found duplicate star Star{id='nm0001731', stagename='Sam Shepard', dateOfBirth=1943} Star{id='e8477da6-dc8a-424a-a812-253acbbf105d', stagename='Sam Shepard', dateOfBirth=1943}
+invalid star: found duplicate star Star{id='nm0001737', stagename='Martin Short', dateOfBirth=1950} Star{id='32c65df4-337f-4200-8bec-ca3402da0ff9', stagename='Martin Short', dateOfBirth=1950}
+invalid star: found duplicate star Star{id='nm0000643', stagename='Tom Skerritt', dateOfBirth=1933} Star{id='d7db2073-4579-467b-9d53-9dca0c4c7932', stagename='Tom Skerritt', dateOfBirth=1933}
+invalid star: found duplicate star Star{id='nm0000225', stagename='Christian Slater', dateOfBirth=1969} Star{id='15a06eff-c061-41ad-b091-d205641e3978', stagename='Christian Slater', dateOfBirth=1969}
+invalid star: found duplicate star Star{id='nm0001749', stagename='Maggie Smith', dateOfBirth=1934} Star{id='4430579e-471a-4fb7-a14b-4801eb3ef1ee', stagename='Maggie Smith', dateOfBirth=1934}
+invalid star: found duplicate star Star{id='nm0000649', stagename='Paul Sorvino', dateOfBirth=1939} Star{id='ed18a81e-4969-454d-92ef-50934f9436e7', stagename='Paul Sorvino', dateOfBirth=1939}
 invalid star: invalid dob stagename19bb
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000230', stagename='Sylvester Stallone', dateOfBirth=1946} Star{id='df60792b-3dcf-4ec3-8a02-894a883b83a5', stagename='Sylvester Stallone', dateOfBirth=1946}
-invalid star: found duplicate star Star{id='nm0001768', stagename='Rod Steiger', dateOfBirth=1925} Star{id='3f0cd8ae-a9da-42a6-b329-5bdc01f5b150', stagename='Rod Steiger', dateOfBirth=1925}
+invalid star: found duplicate star Star{id='nm0000230', stagename='Sylvester Stallone', dateOfBirth=1946} Star{id='c13b8178-9b4f-48ad-8a54-39b5631f8130', stagename='Sylvester Stallone', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0001768', stagename='Rod Steiger', dateOfBirth=1925} Star{id='28579306-0d2a-4d79-88c3-243532cadd2a', stagename='Rod Steiger', dateOfBirth=1925}
 invalid star: invalid dob stagenamen.a.
-invalid star: found duplicate star Star{id='nm0000658', stagename='Meryl Streep', dateOfBirth=1949} Star{id='20f8808a-efed-4581-9ef3-9d6c2848c027', stagename='Meryl Streep', dateOfBirth=1949}
-invalid star: found duplicate star Star{id='nm0000661', stagename='Donald Sutherland', dateOfBirth=1935} Star{id='fd5875b0-5017-4a77-b32f-83a3a1b4b1a1', stagename='Donald Sutherland', dateOfBirth=1935}
-invalid star: found duplicate star Star{id='nm0000664', stagename='Patrick Swayze', dateOfBirth=1952} Star{id='0cff2ee9-96b3-401c-9086-b3aadd5cc788', stagename='Patrick Swayze', dateOfBirth=1952}
+invalid star: found duplicate star Star{id='nm0000658', stagename='Meryl Streep', dateOfBirth=1949} Star{id='ab23f257-9595-4507-b894-b5484e349c2d', stagename='Meryl Streep', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0000661', stagename='Donald Sutherland', dateOfBirth=1935} Star{id='05bd943e-133e-4298-a9cd-4c78c5fc2fcf', stagename='Donald Sutherland', dateOfBirth=1935}
+invalid star: found duplicate star Star{id='nm0000664', stagename='Patrick Swayze', dateOfBirth=1952} Star{id='406604d9-7462-41ce-bbc1-e26feefeaf98', stagename='Patrick Swayze', dateOfBirth=1952}
 invalid star: invalid dob stagename19bb
 invalid star: invalid dob stagenamedob
-invalid star: found duplicate star Star{id='nm0001800', stagename='Rip Torn', dateOfBirth=1931} Star{id='1bfa5e08-a7f9-4965-bed9-ad691a0fd015', stagename='Rip Torn', dateOfBirth=1931}
-invalid star: found duplicate star Star{id='nm0000237', stagename='John Travolta', dateOfBirth=1954} Star{id='5d62d5fb-5bce-4a4d-8f79-91362b9bc847', stagename='John Travolta', dateOfBirth=1954}
-invalid star: found duplicate star Star{id='nm0001816', stagename='Robert Vaughn', dateOfBirth=1932} Star{id='3e8f7ed2-ad85-4524-8807-a7c48c41fc23', stagename='Robert Vaughn', dateOfBirth=1932}
-invalid star: found duplicate star Star{id='nm0000685', stagename='Jon Voight', dateOfBirth=1938} Star{id='1d0fc49d-8815-4c93-add2-ff011601d2be', stagename='Jon Voight', dateOfBirth=1938}
-invalid star: found duplicate star Star{id='nm0000686', stagename='Christopher Walken', dateOfBirth=1943} Star{id='fae5babc-74a0-4dae-a8b9-6d49afda18fa', stagename='Christopher Walken', dateOfBirth=1943}
+invalid star: found duplicate star Star{id='nm0001800', stagename='Rip Torn', dateOfBirth=1931} Star{id='80a1e9c7-122e-49ed-95b4-809afe705e1d', stagename='Rip Torn', dateOfBirth=1931}
+invalid star: found duplicate star Star{id='nm0000237', stagename='John Travolta', dateOfBirth=1954} Star{id='afbd86bd-664d-4eed-930d-ff1e43bf91bd', stagename='John Travolta', dateOfBirth=1954}
+invalid star: found duplicate star Star{id='nm0001816', stagename='Robert Vaughn', dateOfBirth=1932} Star{id='04882396-f0f6-4d0c-ae8b-be9c26683624', stagename='Robert Vaughn', dateOfBirth=1932}
+invalid star: found duplicate star Star{id='nm0000685', stagename='Jon Voight', dateOfBirth=1938} Star{id='7e149353-088e-4b5c-b598-52e93bdd57ba', stagename='Jon Voight', dateOfBirth=1938}
+invalid star: found duplicate star Star{id='nm0000686', stagename='Christopher Walken', dateOfBirth=1943} Star{id='477c26cd-55bf-4abf-8a75-f039fe9d5d59', stagename='Christopher Walken', dateOfBirth=1943}
 Robert Walker Jr.
-invalid star: found duplicate star Star{id='nm0000690', stagename='Lesley Ann Warren', dateOfBirth=1946} Star{id='1f5ce7d2-86e5-4c33-81b1-992af876bbca', stagename='Lesley Ann Warren', dateOfBirth=1946}
-invalid star: found duplicate star Star{id='nm0000244', stagename='Sigourney Weaver', dateOfBirth=1949} Star{id='c8f8b63a-05e9-40f0-b70d-c97f411407cb', stagename='Sigourney Weaver', dateOfBirth=1949}
+invalid star: found duplicate star Star{id='nm0000690', stagename='Lesley Ann Warren', dateOfBirth=1946} Star{id='64fc1053-182c-44c7-87d0-da2de49af872', stagename='Lesley Ann Warren', dateOfBirth=1946}
+invalid star: found duplicate star Star{id='nm0000244', stagename='Sigourney Weaver', dateOfBirth=1949} Star{id='37856224-8cf3-40b8-b6ea-3297e986625f', stagename='Sigourney Weaver', dateOfBirth=1949}
 James Whitmore Jr.
 invalid star: invalid dob stagenamen.a.
 The Wiere Brothers
 invalid star: invalid dob stagenamen.a.
 invalid star: invalid dob stagename*
-invalid star: found duplicate star Star{id='nm0000245', stagename='Robin Williams', dateOfBirth=1951} Star{id='9606b87e-6a40-4d5c-a1e6-e4c2a6d16124', stagename='Robin Williams', dateOfBirth=1951}
-invalid star: found duplicate star Star{id='nm0000701', stagename='Kate Winslet', dateOfBirth=1975} Star{id='e366eafb-c2d8-4783-8d57-25ab6714095d', stagename='Kate Winslet', dateOfBirth=1975}
+invalid star: found duplicate star Star{id='nm0000245', stagename='Robin Williams', dateOfBirth=1951} Star{id='798f258b-cf69-47d1-bc78-60e823b2f7dc', stagename='Robin Williams', dateOfBirth=1951}
+invalid star: found duplicate star Star{id='nm0000701', stagename='Kate Winslet', dateOfBirth=1975} Star{id='4f1bdf72-77b5-46fe-8a33-fa71bf239720', stagename='Kate Winslet', dateOfBirth=1975}
 Edward D. Wood Jr.
-invalid star: found duplicate star Star{id='nm0000704', stagename='Elijah Wood', dateOfBirth=1981} Star{id='2398eba2-835e-4dfd-a379-28bdcba63136', stagename='Elijah Wood', dateOfBirth=1981}
+invalid star: found duplicate star Star{id='nm0000704', stagename='Elijah Wood', dateOfBirth=1981} Star{id='d1bb712c-e4b0-47be-aa8d-9b07ada59a1f', stagename='Elijah Wood', dateOfBirth=1981}
 Efrem Zimbalist Jr.
-Cast Parser summary:
-Stars parsed: 6668
 invalid movie: found duplicate cast The Man Who Knew Too Much,Hitchcock
 invalid movie: found duplicate cast Romeo and Juliet,Unknown2
 invalid movie: found duplicate cast Romeo and Juliet,Unknown2
@@ -294,11 +292,13 @@ invalid movie: found duplicate cast The Old Curiosity Shop,Bentley
 invalid movie: found duplicate cast Custer's Last Fight,Th.Ince
 invalid movie: found duplicate cast Within the Law,UnYear12
 invalid movie: found duplicate cast Within the Law,UnYear12
+Cast Parser summary:
 invalid movie: found duplicate cast The Squaw Man,DeMille
 invalid movie: found duplicate cast The Squaw Man,DeMille
 invalid movie: found duplicate cast The Ten Commandments,DeMille
 invalid movie: found duplicate cast Shoulder Arms,Chaplin
 invalid movie: found duplicate cast The Gold Rush,Chaplin
+Stars parsed: 6668
 invalid genre: unknown genre: impressionistic
 invalid genre: unknown genre: impressionistic
 invalid movie: found duplicate cast Napoleon,Gance
