@@ -348,11 +348,11 @@ public class MovieParser implements Runnable {
         var rs = q.executeQuery("SELECT id, name FROM genres");
 
         // lookup genre by name to id
-        Map<String, String> existingGenreIds = new HashMap<>();
+        Map<String, String> genres = new HashMap<>();
         while (rs.next()) {
             var id = rs.getString("id");
             var name = rs.getString("name");
-            existingGenreIds.put(name, id);
+            genres.put(name, id);
         }
 
 
@@ -364,14 +364,15 @@ public class MovieParser implements Runnable {
         for (var movie : movies) {
             Set<String> genreSet = new HashSet<>(movie.getGenres());
             for (var genre : genreSet) {
-                if (!existingGenreIds.containsKey(genre)) {
-                    var genreId = existingGenreIds.get(genre);
+                if (genres.containsKey(genre)) {
+                    var genreId = genres.get(genre);
                     System.out.printf("genre %s %s %s\n", genreId, genre, movie.getId());
                     stmt.setString(1, genreId);
                     stmt.setString(2, movie.getId());
                     stmt.addBatch();
+                } else {
+                    System.out.println("invalid genre: " + genre);
                 }
-
             }
         }
 
