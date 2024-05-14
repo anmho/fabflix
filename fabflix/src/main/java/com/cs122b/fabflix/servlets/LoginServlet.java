@@ -79,7 +79,7 @@ public class LoginServlet extends HttpServlet {
                     String storedPassword = rs.getString("password");
 
                     PasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
-                    if (passwordEncryptor...checkPassword(providedPassword, storedPassword)) {
+                    if (passwordEncryptor.checkPassword(providedPassword, storedPassword)) {
                         Customer customer = new Customer(
                                 rs.getInt("id"),
                                 rs.getString("firstName"),
