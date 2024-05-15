@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
         String providedEmail = request.getParameter("email");
         String providedPassword = request.getParameter("password");
 
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         try (Connection conn = db.getConnection()) {
             String sql = "SELECT * FROM customers WHERE email = ?";
             try (PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -120,7 +120,7 @@ public class LoginServlet extends HttpServlet {
         String providedEmail = request.getParameter("email");
         String providedPassword = request.getParameter("password");
 
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         try (Connection conn = db.getConnection()) {
             String sql = "SELECT * FROM employees WHERE email = ?";
             try (PreparedStatement statement = conn.prepareStatement(sql)) {

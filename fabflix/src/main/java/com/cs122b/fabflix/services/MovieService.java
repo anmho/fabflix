@@ -63,7 +63,7 @@ public class MovieService {
 
         List<MovieCompletion> movieCompletions = new ArrayList<>();
 
-        try (var conn = Database.getInstance().getConnection()) {
+        try (var conn = Database.getWriteInstance().getConnection()) {
             var stmt = conn.prepareStatement(
             "SELECT id, title, director, year " +
                 "FROM movies WHERE MATCH(title) AGAINST (? IN BOOLEAN MODE)");

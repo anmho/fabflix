@@ -2,7 +2,6 @@ package com.cs122b.fabflix.repository;
 
 import com.cs122b.fabflix.models.Star;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 
 public class StarRepository {
@@ -13,7 +12,7 @@ public class StarRepository {
                 "WHERE s.id = ?;"
                 ;
 
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         try (Connection conn = db.getConnection()) {{
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);
@@ -43,7 +42,7 @@ public class StarRepository {
 
     public Star getStarByNameAndYear(String name, Integer birthYear) throws SQLException {
         String query = "SELECT id, name, birthYear FROM stars WHERE name = ? AND (birthYear = ? OR (birthYear IS NULL AND ? IS NULL));";
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, name);
@@ -66,7 +65,7 @@ public class StarRepository {
 
     public void addStar(Star star) throws SQLException {
         String query = "INSERT INTO stars (id, name, birthYear) VALUES (?, ?, ?);";
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, star.getId());

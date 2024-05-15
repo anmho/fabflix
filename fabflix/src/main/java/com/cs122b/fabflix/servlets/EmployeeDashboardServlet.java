@@ -13,8 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,7 +99,7 @@ public class EmployeeDashboardServlet extends HttpServlet {
         return true;
     }
     private void getDatabaseSchema(HttpServletRequest request, HttpServletResponse response) {
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         List<Map<String, Object>> schemaList = new ArrayList<>();
 
         try (Connection conn = db.getConnection(); Statement stmt = conn.createStatement()) {

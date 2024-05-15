@@ -13,7 +13,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 
 public class MovieRepository {
@@ -50,7 +49,7 @@ public class MovieRepository {
                          "WHERE\n" +
                          "    m.id = ?\n" +
                          "LIMIT 1;\n";
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         try (Connection conn = db.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, movieId);
@@ -112,7 +111,7 @@ public class MovieRepository {
                 "ORDER BY\n" +
                 "    r.rating DESC;\n";
 
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         try (Connection conn = db.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, starId);
@@ -157,7 +156,7 @@ public class MovieRepository {
 
         StarParams star = movie.getStars().get(0);
 
-        try (var conn = Database.getInstance().getConnection()) {
+        try (var conn = Database.getWriteInstance().getConnection()) {
             // this is error prone lol
 //            USE moviedb;
 //            CALL add_movie (
@@ -201,7 +200,7 @@ public class MovieRepository {
         ) throws SQLException {
         var start = System.currentTimeMillis();
 
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
 
         try (Connection conn = db.getConnection()) {
             Query query = createFilterMoviesQuery(conn, filters, sortParams, pageParams);
