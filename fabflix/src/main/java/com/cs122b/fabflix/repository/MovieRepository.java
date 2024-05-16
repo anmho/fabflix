@@ -49,7 +49,7 @@ public class MovieRepository {
                          "WHERE\n" +
                          "    m.id = ?\n" +
                          "LIMIT 1;\n";
-        Database db = Database.getWriteInstance();
+        Database db = Database.getReadInstance();
         try (Connection conn = db.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, movieId);
@@ -111,7 +111,7 @@ public class MovieRepository {
                 "ORDER BY\n" +
                 "    r.rating DESC;\n";
 
-        Database db = Database.getWriteInstance();
+        Database db = Database.getReadInstance();
         try (Connection conn = db.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, starId);
@@ -200,7 +200,7 @@ public class MovieRepository {
         ) throws SQLException {
         var start = System.currentTimeMillis();
 
-        Database db = Database.getWriteInstance();
+        Database db = Database.getReadInstance();
 
         try (Connection conn = db.getConnection()) {
             Query query = createFilterMoviesQuery(conn, filters, sortParams, pageParams);
@@ -358,7 +358,6 @@ public class MovieRepository {
 
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {
-//            throw new IllegalStateException("null starsString");
             return new ArrayList<>();
         }
         String[] starPairs = starsString.split(";");

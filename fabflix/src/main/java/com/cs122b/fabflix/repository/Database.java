@@ -12,6 +12,7 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 public class Database {
     private static Connection connection;
+    private static final Logger dbLogger = LogManager.getLogger(Database.class.getName());
     private final Logger log = LogManager.getLogger(Database.class.getName());
     private final DataSource dataSource;
 
@@ -61,20 +62,24 @@ public class Database {
 
 
     public static Database getReadInstance() {
+        dbLogger.info("getting read instance");
         if (readInstance == null) {
-            String url = AppConfig.getProperty("db.primary_url");
-            String username = AppConfig.getProperty("db.primary_username");
-            String password = AppConfig.getProperty("db.primary_password");
+            String url = AppConfig.getProperty("db.secondary_url");
+            String username = AppConfig.getProperty("db.secondary_username");
+            String password = AppConfig.getProperty("db.secondary_password");
+
             readInstance = new Database(url, username, password);
         }
         return readInstance;
 
     }
     public static Database getWriteInstance() {
+        dbLogger.info("getting write instance");
         if (writeInstance == null) {
-            String url = AppConfig.getProperty("db.secondary_url");
-            String username = AppConfig.getProperty("db.secondary_username");
-            String password = AppConfig.getProperty("db.secondary_password");
+            String url = AppConfig.getProperty("db.primary_url");
+            String username = AppConfig.getProperty("db.primary_username");
+            String password = AppConfig.getProperty("db.primary_password");
+
             writeInstance = new Database(url, username, password);
         }
         return writeInstance;
