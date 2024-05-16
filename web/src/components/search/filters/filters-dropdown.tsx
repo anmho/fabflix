@@ -1,7 +1,4 @@
-// import { CaretSortIcon } from "@radix-ui/react-icons";
-import { CaretSortIcon } from "@radix-ui/react-icons";
-import { SlidersHorizontal } from "lucide-react";
-import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect, useRef } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -10,9 +7,25 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { MovieFilters } from "~/api/movies";
+import {
+  MovieFilters,
+  getSearchCompletions,
+  MovieCompletion,
+  AutoCompleteResponse,
+} from "~/api/movies";
 import { cn } from "~/utils/cn";
 import { useTheme } from "next-themes";
+import { SlidersHorizontal } from "lucide-react";
+import { useRouter } from "next/router";
+import { debounce } from "~/utils/debounce";
+import {
+  CommandInput,
+  CommandEmpty,
+  CommandItem,
+  CommandGroup,
+  CommandList,
+  Command,
+} from "~/components/ui/command";
 
 interface FiltersDropdownProps {
   className?: string;
@@ -26,50 +39,128 @@ export function FiltersDropdown({
   handleApplyFilters,
 }: FiltersDropdownProps) {
   const [filters, setFilters] = useState<MovieFilters>(initialFilters);
+  const [titleSuggestions, setTitleSuggestions] = useState<MovieCompletion[]>(
+    []
+  );
+  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const { theme } = useTheme();
+  const router = useRouter();
+  const [movieTitleInput, setMovieTitleInput] = useState<string>("");
+  const [canAutoComplete, setCanAutoComplete] = useState<boolean>(true);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+
+  const debouncedGetSearchCompletions = useRef(
+    debounce(async (title: string) => {
+      const response: AutoCompleteResponse = await getSearchCompletions(title);
+      console.log("AUTO COMPLETE RESPONSE: ", response.message);
+      setTitleSuggestions(response.response);
+    }, 300)
+  ).current;
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  useEffect(() => {
+    if (!canAutoComplete) {
+      return;
+    }
+    if (movieTitleInput.length >= 3) {
+      debouncedGetSearchCompletions(movieTitleInput);
+      setIsDropdownOpen(true);
+    } else {
+      setTitleSuggestions([]);
+      setIsDropdownOpen(false);
+    }
+  }, [movieTitleInput]);
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    setFilters((filters) => {
-      return { ...filters, title: e.target.value };
-    });
+    const value = e.target.value;
+    setMovieTitleInput(value);
+    setHighlightedIndex(null);
+  };
+
+  const handleSelectSuggestion = (suggestion: MovieCompletion) => {
+    setFilters((filters) => ({ ...filters, title: suggestion.title }));
+    setMovieTitleInput(suggestion.title);
+    setTitleSuggestions([]);
+    setIsDropdownOpen(false);
+    router.push(`/movies/${suggestion.id}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (titleSuggestions.length > 0) {
+      if (e.key === "ArrowDown") {
+        setCanAutoComplete(false);
+        setHighlightedIndex((prevIndex) => {
+          const newIndex =
+            prevIndex === null || prevIndex === titleSuggestions.length - 1
+              ? 0
+              : prevIndex + 1;
+          setMovieTitleInput(titleSuggestions[newIndex].title);
+          return newIndex;
+        });
+        e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        setCanAutoComplete(false);
+        setHighlightedIndex((prevIndex) => {
+          const newIndex =
+            prevIndex === null || prevIndex === 0
+              ? titleSuggestions.length - 1
+              : prevIndex - 1;
+          setMovieTitleInput(titleSuggestions[newIndex].title);
+          return newIndex;
+        });
+        e.preventDefault();
+      } else if (e.key === "Enter" && highlightedIndex !== null) {
+        handleSelectSuggestion(titleSuggestions[highlightedIndex]);
+        e.preventDefault();
+      } else {
+        setCanAutoComplete(true);
+      }
+    }
   };
 
   const handleChangeStar = (e: ChangeEvent<HTMLInputElement>) => {
-    // console.log(filters.star);
-    setFilters((filters) => {
-      return { ...filters, star: e.target.value };
-    });
+    setFilters((filters) => ({ ...filters, star: e.target.value }));
   };
 
   const handleChangeDirector = (e: ChangeEvent<HTMLInputElement>) => {
-    setFilters((filters) => {
-      return { ...filters, director: e.target.value };
-    });
+    setFilters((filters) => ({ ...filters, director: e.target.value }));
   };
 
   const handleChangeYear = (e: ChangeEvent<HTMLInputElement>) => {
-    setFilters((filters) => {
-      return { ...filters, year: parseInt(e.target.value) }; // handle
-    });
+    setFilters((filters) => ({ ...filters, year: parseInt(e.target.value) }));
   };
 
   const handleClear = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setFilters((filters) => {
-      return {
-        ...filters,
-        title: undefined,
-        star: undefined,
-        director: undefined,
-        year: undefined,
-      };
+    setFilters({
+      title: undefined,
+      star: undefined,
+      director: undefined,
+      year: undefined,
     });
-    // console.log("trying to clear filters", filters);
+    setMovieTitleInput("");
+    setIsDropdownOpen(false);
     handleApplyFilters(filters);
   };
 
   const handleApply = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setIsDropdownOpen(false);
     handleApplyFilters(filters);
   };
 
@@ -80,13 +171,11 @@ export function FiltersDropdown({
           variant="outline"
           className={cn(theme, "bg-background text-foreground")}
         >
-          {/* Filters */}
-          {/* <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
           <SlidersHorizontal className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className={cn(theme, "w-80 border-border bg-background")}>
-        <div className="grid gap-4">
+        <div className="grid gap-4" ref={dropdownRef}>
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Filters</h4>
             <p className="text-sm text-muted-foreground">
@@ -94,15 +183,55 @@ export function FiltersDropdown({
             </p>
           </div>
           <div className="grid gap-2">
-            <div className="grid grid-cols-3 items-center gap-4">
+            <div className="grid grid-cols-3 items-center gap-4 relative">
               <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
                 onChange={handleChangeTitle}
-                value={filters.title ?? ""}
+                onKeyDown={handleKeyDown}
+                value={movieTitleInput}
                 placeholder="The Terminator"
                 className="col-span-2 h-8"
+                autoComplete="off"
+                onFocus={() => {
+                  if (movieTitleInput.length >= 3) {
+                    setIsDropdownOpen(true);
+                  }
+                }}
               />
+
+              {isDropdownOpen && titleSuggestions.length > 0 && (
+                <div className="absolute inset-x-0 top-full z-10 mt-1 max-h-60">
+                  <Command
+                    className={cn(
+                      theme,
+                      "rounded-md border bg-white shadow-lg dark:border-gray-800 dark:bg-gray-950"
+                    )}
+                  >
+                    <CommandList>
+                      <CommandEmpty>No results found.</CommandEmpty>
+                      <CommandGroup>
+                        {titleSuggestions.map((suggestion, index) => (
+                          <CommandItem
+                            key={index}
+                            onClick={() => handleSelectSuggestion(suggestion)}
+                            className={`${
+                              index === highlightedIndex ? "bg-gray-200" : ""
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span>{suggestion.title}</span>
+                              <small className="text-gray-500 dark:text-gray-400">
+                                {suggestion.year} - {suggestion.director}
+                              </small>
+                            </div>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="star">Star</Label>
@@ -117,7 +246,7 @@ export function FiltersDropdown({
             <div className="grid grid-cols-3 items-center gap-4">
               <Label htmlFor="director">Director</Label>
               <Input
-                id="Director"
+                id="director"
                 onChange={handleChangeDirector}
                 value={filters.director ?? ""}
                 placeholder="James Cameron"
@@ -137,7 +266,6 @@ export function FiltersDropdown({
             </div>
           </div>
         </div>
-
         <div className="flex justify-between mt-4">
           <Button variant="default" onClick={handleApply}>
             Apply
