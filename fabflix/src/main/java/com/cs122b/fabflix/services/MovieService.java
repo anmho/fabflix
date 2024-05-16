@@ -59,7 +59,7 @@ public class MovieService {
         try (var conn = Database.getInstance().getConnection()) {
             var stmt = conn.prepareStatement(
                     "SELECT id, title, director, year " +
-                            "FROM movies WHERE MATCH(title) AGAINST (? IN BOOLEAN MODE)");
+                            "FROM movies WHERE MATCH(title) AGAINST (? IN BOOLEAN MODE) LIMIT 10");
             stmt.setString(1, match);
             var rs = stmt.executeQuery();
             while (rs.next()) {
