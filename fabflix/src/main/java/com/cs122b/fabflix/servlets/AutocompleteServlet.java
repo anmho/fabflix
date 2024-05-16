@@ -26,12 +26,20 @@ public class AutocompleteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String searchQuery = req.getParameter("q");
+        String searchQuery = req.getParameter("query");
 
+        if (searchQuery == null || searchQuery.length() < 3) {
+            log.warn("Search query too short: " + searchQuery);
+            ResponseBuilder.error(resp, HttpServletResponse.SC_BAD_REQUEST, "Query must be at least 3 characters long.");
+            return;
+        }
+
+        log.info("searchQuery " + searchQuery);
         var results = movieService.getSearchCompletions(searchQuery);
 
         log.info("Search query: {}", searchQuery);
 
         ResponseBuilder.json(resp, results, 200);
     }
+
 }
