@@ -12,7 +12,7 @@ public class StarRepository {
                 "WHERE s.id = ?;"
                 ;
 
-        Database db = Database.getWriteInstance();
+        Database db = Database.getReadInstance();
         try (Connection conn = db.getConnection()) {{
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);
@@ -42,7 +42,7 @@ public class StarRepository {
 
     public Star getStarByNameAndYear(String name, Integer birthYear) throws SQLException {
         String query = "SELECT id, name, birthYear FROM stars WHERE name = ? AND (birthYear = ? OR (birthYear IS NULL AND ? IS NULL));";
-        Database db = Database.getWriteInstance();
+        Database db = Database.getReadInstance();
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, name);
