@@ -16,10 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MovieService {
     private final MovieRepository movieRepository;
@@ -48,25 +45,21 @@ public class MovieService {
 
 
     public List<MovieCompletion> getSearchCompletions(String query) {
-        String[] tokens = query.split("[,-.]]");
+        String[] tokens = query.split("[,-.]");
 
-        StringBuilder sb = new StringBuilder();
+        StringJoiner joiner = new StringJoiner(" ", "+", "*");
         for (String token : tokens) {
-            sb.append("+");
-            sb.append(token);
-            sb.append("*");
-            sb.append(" ");
+            joiner.add(token);
         }
 
-        String match = sb.toString();
-
-
+        String match = joiner.toString();
+        log.info("match: " + match);
         List<MovieCompletion> movieCompletions = new ArrayList<>();
 
         try (var conn = Database.getInstance().getConnection()) {
             var stmt = conn.prepareStatement(
-            "SELECT id, title, director, year " +
-                "FROM movies WHERE MATCH(title) AGAINST (? IN BOOLEAN MODE)");
+                    "SELECT id, title, director, year " +
+                            "FROM movies WHERE MATCH(title) AGAINST (? IN BOOLEAN MODE)");
             stmt.setString(1, match);
             var rs = stmt.executeQuery();
             while (rs.next()) {
