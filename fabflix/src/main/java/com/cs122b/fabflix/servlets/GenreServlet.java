@@ -1,7 +1,5 @@
 package com.cs122b.fabflix.servlets;
 
-import java.io.*;
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,17 +13,11 @@ import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "genreServlet", value = "/genres")
 public class GenreServlet extends HttpServlet {
-    private Database db;
-
-    public void init() {
-        db = Database.getInstance();
-    }
-
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            try (var conn = db.getConnection()) {
+            try (var conn = Database.getReadInstance().getConnection()) {
                 var stmt = conn.prepareStatement("SELECT * FROM genres;");
 
                 ResultSet rs = stmt.executeQuery();

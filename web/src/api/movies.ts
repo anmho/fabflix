@@ -2,6 +2,7 @@ import { Movie, MovieSortDimension } from "~/interfaces/movie";
 import { PaginatedResult } from "~/interfaces/paginated-result";
 import { http } from "./http";
 import { MovieParams } from "~/validators/movies";
+import { List } from "postcss/lib/list";
 
 export interface MovieFilters {
   title?: string;
@@ -12,6 +13,17 @@ export interface MovieFilters {
   genre?: string;
 }
 
+export interface MovieCompletion {
+  id: string;
+  title: string;
+  director: string;
+  year: number;
+}
+
+export interface AutoCompleteResponse {
+  response: MovieCompletion[] | [];
+  message?: string;
+}
 export interface MovieSearchParams {
   filters?: MovieFilters;
   sortBy?: MovieSortDimension[];
@@ -113,4 +125,25 @@ export const createMovie = async (
 ): Promise<{ id: string }> => {
   const response = await http.post("/movies", params);
   return response.data;
+};
+
+export const getSearchCompletions = async (
+  query: string
+): Promise<AutoCompleteResponse> => {
+  if (query.length < 3) {
+    return { response: [], message: "Query too short" };
+  }
+
+  const cache = JSON.parse(localStorage.getItem("autocompleteCache") || "{}");
+
+  if (cache[query]) {
+    return { response: cache[query], message: "Cache hit" };
+  }
+
+  const response = await http.get(`/search?query=${query}`);
+
+  cache[query] = response.data;
+  localStorage.setItem("autocompleteCache", JSON.stringify(cache));
+
+  return { response: response.data, message: "Cache miss" };
 };

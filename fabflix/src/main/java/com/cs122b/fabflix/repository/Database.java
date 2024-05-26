@@ -12,17 +12,14 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 public class Database {
     private static Connection connection;
-    private Logger log = LogManager.getLogger(Database.class.getName());
-    private static DataSource dataSource;
+    private static final Logger dbLogger = LogManager.getLogger(Database.class.getName());
+    private final Logger log = LogManager.getLogger(Database.class.getName());
+    private final DataSource dataSource;
 
-    private static Database database;
+    private static Database writeInstance;
+    private static Database readInstance;
 
-
-    private Database() {
-        String url = AppConfig.getProperty("db.url");
-        String username = AppConfig.getProperty("db.username");
-        String password = AppConfig.getProperty("db.password");
-
+    private Database(String url, String username, String password) {
         log.info(String.format("mysql url %s", url));
         log.info(String.format("username: %s", username));
         log.info(String.format("password: %s", password));
@@ -48,7 +45,6 @@ public class Database {
         poolProperties.setTestWhileIdle(false);
         poolProperties.setTestOnBorrow(true);
         poolProperties.setValidationQuery("SELECT 1");
-//                poolProperties.setTestOnReturn(false);
         poolProperties.setValidationInterval(30000);
         poolProperties.setInitialSize(10);
         poolProperties.setMaxWait(10000);
@@ -56,18 +52,37 @@ public class Database {
 
         poolProperties.setJdbcInterceptors(
                 "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"+
-                        "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
+                "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer;" +
+                "org.apache.tomcat.jdbc.pool.interceptor.StatementCache"
+        );
         dataSource = new DataSource();
         dataSource.setPoolProperties(poolProperties);
 
     }
 
 
-    public static Database getInstance() {
-        if (database == null) {
-            database = new Database();
+    public static Database getReadInstance() {
+        dbLogger.info("getting read instance");
+        if (readInstance == null) {
+            String url = AppConfig.getProperty("db.secondary_url");
+            String username = AppConfig.getProperty("db.secondary_username");
+            String password = AppConfig.getProperty("db.secondary_password");
+
+            readInstance = new Database(url, username, password);
         }
-        return database;
+        return readInstance;
+
+    }
+    public static Database getWriteInstance() {
+        dbLogger.info("getting write instance");
+        if (writeInstance == null) {
+            String url = AppConfig.getProperty("db.primary_url");
+            String username = AppConfig.getProperty("db.primary_username");
+            String password = AppConfig.getProperty("db.primary_password");
+
+            writeInstance = new Database(url, username, password);
+        }
+        return writeInstance;
     }
 
     public Connection getConnection() throws SQLException {

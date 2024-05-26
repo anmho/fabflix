@@ -1,12 +1,13 @@
 package com.cs122b.fabflix.services;
 
 import com.cs122b.fabflix.models.Movie;
+import com.cs122b.fabflix.models.MovieCompletion;
 import com.cs122b.fabflix.models.PaginatedResults;
-import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.params.CreateMovieParams;
 import com.cs122b.fabflix.params.MovieFilterParams;
 import com.cs122b.fabflix.params.MovieSortParams;
 import com.cs122b.fabflix.params.PaginationParams;
+import com.cs122b.fabflix.repository.Database;
 import com.cs122b.fabflix.repository.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.apache.log4j.BasicConfigurator;
@@ -15,27 +16,19 @@ import org.apache.logging.log4j.Logger;
 
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MovieService {
     private final MovieRepository movieRepository;
     private final Logger log = LogManager.getLogger(MovieService.class.getName());
 
-
-
     public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
 
-
     public List<Movie> getMoviesWithStar(String starId) throws SQLException {
         return movieRepository.getMoviesWithStar(starId);
     }
-
-
 
     // should return a response object, sqlexceptions should not be leaky like that
     public String createMovie(CreateMovieParams params) throws SQLException {
@@ -49,6 +42,47 @@ public class MovieService {
         String movieId = movieRepository.createMovie(params);
         return movieId;
     }
+
+
+    public List<MovieCompletion> getSearchCompletions(String query) {
+        String[] tokens = query.split("[,-.]");
+
+        StringJoiner joiner = new StringJoiner(" ", "+", "*");
+        for (String token : tokens) {
+            joiner.add(token);
+        }
+
+        String match = joiner.toString();
+        log.info("match: " + match);
+        List<MovieCompletion> movieCompletions = new ArrayList<>();
+
+        try (var conn = Database.getReadInstance().getConnection()) {
+            var stmt = conn.prepareStatement(
+                    "SELECT id, title, director, year " +
+                            "FROM movies WHERE MATCH(title) AGAINST (? IN BOOLEAN MODE) LIMIT 10");
+            stmt.setString(1, match);
+            var rs = stmt.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String title = rs.getString("title");
+                int year = rs.getInt("year");
+                String director = rs.getString("director");
+
+                MovieCompletion completion = new MovieCompletion();
+                completion.setId(id);
+                completion.setTitle(title);
+                completion.setYear(year);
+                completion.setDirector(director);
+
+                movieCompletions.add(completion);
+            }
+            return movieCompletions;
+        } catch (SQLException e) {
+            log.error(e);
+            throw new RuntimeException(e);
+        }
+    }
+
     public Movie findMovieById(String id) throws SQLException {
         return movieRepository.getMovieById(id);
     }
