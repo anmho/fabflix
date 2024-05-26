@@ -13,17 +13,11 @@ import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "genreServlet", value = "/genres")
 public class GenreServlet extends HttpServlet {
-    private Database db;
-
-    public void init() {
-        db = Database.getWriteInstance();
-    }
-
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            try (var conn = db.getConnection()) {
+            try (var conn = Database.getReadInstance().getConnection()) {
                 var stmt = conn.prepareStatement("SELECT * FROM genres;");
 
                 ResultSet rs = stmt.executeQuery();
