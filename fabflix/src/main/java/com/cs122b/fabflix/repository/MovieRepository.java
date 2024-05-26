@@ -157,19 +157,6 @@ public class MovieRepository {
         StarParams star = movie.getStars().get(0);
 
         try (var conn = Database.getWriteInstance().getConnection()) {
-            // this is error prone lol
-//            USE moviedb;
-//            CALL add_movie (
-//                    'The Shawshank Redemption', 1
-//                    'Frank Darabont', 2
-//                    'Drama', 3
-//                    14.99, 4
-//                    1994,  5
-//                    NULL, 6
-//                    'Morgan Freeman', 7
-//                    1937, 8
-//            @movie_id 9
-//);
             CallableStatement proc = conn.prepareCall("{CALL add_movie(" +
                     "?,?,?,?,?,?,?,?,?)}");
             proc.setString(1, movie.getTitle());
