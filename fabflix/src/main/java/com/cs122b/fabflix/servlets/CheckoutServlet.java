@@ -5,15 +5,12 @@ import com.cs122b.fabflix.models.Cart;
 import com.cs122b.fabflix.models.Customer;
 import com.cs122b.fabflix.models.Movie;
 import com.cs122b.fabflix.repository.Database;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,7 +40,7 @@ public class CheckoutServlet extends HttpServlet {
         System.out.println("Last Name ==> " + lastName);
         System.out.println("Expiration Date ==> " + expirationDate);
 
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
 
         try (Connection conn = db.getConnection()) {
             if (!validateCreditCard(conn, creditCardId, firstName, lastName, expirationDate)) {

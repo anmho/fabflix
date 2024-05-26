@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
 @WebServlet(name = "CartServlet", urlPatterns = "/cart")
 public class CartServlet extends HttpServlet {
@@ -71,7 +70,7 @@ public class CartServlet extends HttpServlet {
         }
 
 
-        Database db = Database.getInstance();
+        Database db = Database.getWriteInstance();
         try (Connection conn = db.getConnection()) {
             String sql = "SELECT id, title, year, director, price FROM movies WHERE id = ?";
             try (PreparedStatement statement = conn.prepareStatement(sql)) {

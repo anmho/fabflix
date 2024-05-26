@@ -13,7 +13,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 
 public class MovieRepository {
@@ -50,7 +49,7 @@ public class MovieRepository {
                          "WHERE\n" +
                          "    m.id = ?\n" +
                          "LIMIT 1;\n";
-        Database db = Database.getInstance();
+        Database db = Database.getReadInstance();
         try (Connection conn = db.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, movieId);
@@ -112,7 +111,7 @@ public class MovieRepository {
                 "ORDER BY\n" +
                 "    r.rating DESC;\n";
 
-        Database db = Database.getInstance();
+        Database db = Database.getReadInstance();
         try (Connection conn = db.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, starId);
@@ -157,20 +156,7 @@ public class MovieRepository {
 
         StarParams star = movie.getStars().get(0);
 
-        try (var conn = Database.getInstance().getConnection()) {
-            // this is error prone lol
-//            USE moviedb;
-//            CALL add_movie (
-//                    'The Shawshank Redemption', 1
-//                    'Frank Darabont', 2
-//                    'Drama', 3
-//                    14.99, 4
-//                    1994,  5
-//                    NULL, 6
-//                    'Morgan Freeman', 7
-//                    1937, 8
-//            @movie_id 9
-//);
+        try (var conn = Database.getWriteInstance().getConnection()) {
             CallableStatement proc = conn.prepareCall("{CALL add_movie(" +
                     "?,?,?,?,?,?,?,?,?)}");
             proc.setString(1, movie.getTitle());
@@ -201,7 +187,7 @@ public class MovieRepository {
         ) throws SQLException {
         var start = System.currentTimeMillis();
 
-        Database db = Database.getInstance();
+        Database db = Database.getReadInstance();
 
         try (Connection conn = db.getConnection()) {
             Query query = createFilterMoviesQuery(conn, filters, sortParams, pageParams);
@@ -359,7 +345,6 @@ public class MovieRepository {
 
     private List<Star> parseStars(String starsString) {
         if (starsString == null) {
-//            throw new IllegalStateException("null starsString");
             return new ArrayList<>();
         }
         String[] starPairs = starsString.split(";");
