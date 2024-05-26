@@ -56,7 +56,7 @@ public class MovieService {
         log.info("match: " + match);
         List<MovieCompletion> movieCompletions = new ArrayList<>();
 
-        try (var conn = Database.getWriteInstance().getConnection()) {
+        try (var conn = Database.getReadInstance().getConnection()) {
             var stmt = conn.prepareStatement(
                     "SELECT id, title, director, year " +
                             "FROM movies WHERE MATCH(title) AGAINST (? IN BOOLEAN MODE) LIMIT 10");
