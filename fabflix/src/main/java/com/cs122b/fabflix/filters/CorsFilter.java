@@ -5,16 +5,38 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
 
 @WebFilter("/*")
 public class CorsFilter implements Filter {
+    private final Logger log = LogManager.getLogger(CorsFilter.class.getName());
 
    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
        HttpServletResponse response = (HttpServletResponse) res;
        HttpServletRequest request = (HttpServletRequest) req;
-//       System.out.println("CorsFilter");
-       response.setHeader("Access-Control-Allow-Origin", AppConfig.getProperty("app.client_url")); // Frontend URL
+
+       var allowedOrigins = Arrays.asList(AppConfig.getProperty("app.client_url"), "https://gcp.usefabflix.com");
+       String allowedOrigin = null;
+       var referer = request.getHeader("Referer");
+       log.debug(referer);
+       if (referer != null) {
+           for (var origin : allowedOrigins) {
+               var match = referer.equals(origin) || referer.equals(origin.substring(0, origin.length()-1)) || origin.equals(referer.substring(0, referer.length()-1));
+               log.debug(origin + ", " + referer);
+               if (match) {
+                   allowedOrigin = origin;
+                   break;
+               }
+           }
+       }
+       log.debug(allowedOrigin);
+
+       response.setHeader("Access-Control-Allow-Origin", allowedOrigin); // Frontend URL
        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
        response.setHeader("Access-Control-Allow-Credentials", "true");
