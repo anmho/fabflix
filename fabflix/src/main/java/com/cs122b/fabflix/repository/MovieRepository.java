@@ -25,7 +25,7 @@ public class MovieRepository {
         Movie movie = null;
 
         String query =
-                 "SELECT\n" +
+                         "SELECT\n" +
                          "m.id, " +
                          "m.title, " +
                          "m.year, " +
@@ -85,7 +85,8 @@ public class MovieRepository {
 
     public List<Movie> getMoviesWithStar(String starId) throws SQLException {
 
-        String query = "SELECT\n" +
+        String query = "" +
+                "SELECT\n" +
                 "    m.id,\n" +
                 "    m.title,\n" +
                 "    m.year,\n" +
@@ -225,7 +226,8 @@ public class MovieRepository {
             PaginationParams pageParams
     ) throws SQLException {
         Query.Builder queryBuilder = new Query.Builder(conn);
-        queryBuilder.select("SELECT DISTINCT " +
+        queryBuilder.select(
+                "SELECT DISTINCT " +
                 "m.id, " +
                 "m.title, " +
                 "m.year, " +
@@ -239,8 +241,8 @@ public class MovieRepository {
                 "(" +
                 "   SELECT GROUP_CONCAT(CONCAT(s.id, '#', s.name, '#', COALESCE(s.birthYear, 'N/A'), '#', nmsi.numMovies) SEPARATOR ';')\n" +
                 "   FROM stars s " +
-                "   JOIN stars_in_movies sim ON s.id = sim.starId " +
-                "   JOIN num_movies_starred_in nmsi ON s.id = nmsi.starId " +
+                "   LEFT JOIN stars_in_movies sim ON s.id = sim.starId " +
+                "   LEFT JOIN num_movies_starred_in nmsi ON s.id = nmsi.starId " +
                 "   WHERE sim.movieId = m.id\n" +
                 ") AS stars");
 

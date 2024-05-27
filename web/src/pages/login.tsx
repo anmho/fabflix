@@ -53,6 +53,7 @@ const LoginPage: React.FC = () => {
     if (result.success) {
       setErrorMsg("");
       // router.push("/browse");
+      window.location.href = "/browse";
       return;
     } else {
       setErrorMsg(result?.message || "Error login in");
