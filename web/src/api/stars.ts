@@ -2,32 +2,40 @@ import { StarDetail } from "~/interfaces/star";
 import { getApiClient } from "./http";
 
 export const fetchStarById = async (id: string): Promise<StarDetail | null> => {
-  const [starResponse, movieResponse] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/stars?id=${id}`, {
-      credentials: "include",
-    }),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies?starId=${id}`, {
-      credentials: "include",
-    }),
-  ]);
+  const api = getApiClient();
+  try {
+    const [starResponse, movieResponse] = await Promise.all([
+      api.get(`/stars?id=${id}`),
+      api.get(`/movies?starId=${id}`),
+      // fetch(`${process.env.NEXT_PUBLIC_API_URL}/stars?id=${id}`, {
+      //   credentials: "include",
+      // }),
+      // fetch(`${process.env.NEXT_PUBLIC_API_URL}/movies?starId=${id}`, {
+      //   credentials: "include",
+      // }),
+    ]);
 
-  if (!starResponse.ok || !movieResponse.ok) {
+    // if (!starResponse.ok || !movieResponse.ok) {
+    //   return null;
+    // }
+
+    // should use zod
+    const star: { id: string; name: string; birthYear: number | "N/A" } =
+      await starResponse.data;
+    const movies = await movieResponse.data;
+
+    star.birthYear = star.birthYear || "N/A";
+
+    const starDetails: StarDetail = {
+      ...star,
+      movies: movies,
+    };
+
+    return starDetails;
+  } catch (e) {
+    console.error(e);
     return null;
   }
-
-  // should use zod
-  const star: { id: string; name: string; birthYear: number | "N/A" } =
-    await starResponse.json();
-  const movies = await movieResponse.json();
-
-  star.birthYear = star.birthYear || "N/A";
-
-  const starDetails: StarDetail = {
-    ...star,
-    movies: movies,
-  };
-
-  return starDetails;
 };
 
 export interface StarParams {

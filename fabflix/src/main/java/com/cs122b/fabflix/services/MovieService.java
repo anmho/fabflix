@@ -44,8 +44,9 @@ public class MovieService {
     }
 
 
+
     public List<MovieCompletion> getSearchCompletions(String query) {
-        String[] tokens = query.split("[,-.]");
+        String[] tokens = query.split("[,-.\\s]");
 
         StringJoiner joiner = new StringJoiner(" ", "+", "*");
         for (String token : tokens) {
