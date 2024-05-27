@@ -22,8 +22,8 @@ const createApiClient = (baseUrl: string): AxiosInstance => {
   return http;
 };
 
-const gcpApiClient = createApiClient("https://gcp.usefabflix.com/api");
-const awsApiClient = createApiClient("https://gcp.usefabflix.com/api");
+const gcpApiClient = createApiClient("https://gcp.api.usefabflix.com/api");
+const awsApiClient = createApiClient("https://api.usefabflix.com/api");
 const devApiClient = createApiClient("http://localhost:8080/api");
 export const getApiClient = (): AxiosInstance => {
   const url = new URL(window.location.href);
