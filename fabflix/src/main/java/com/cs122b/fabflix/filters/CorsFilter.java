@@ -20,7 +20,7 @@ public class CorsFilter implements Filter {
        HttpServletResponse response = (HttpServletResponse) res;
        HttpServletRequest request = (HttpServletRequest) req;
 
-       var allowedOrigins = Arrays.asList(AppConfig.getProperty("app.client_url"), "https://gcp.usefabflix.com");
+       var allowedOrigins = Arrays.asList(AppConfig.getProperty("app.client_url"), "https://usefabflix.com", "https://gcp.usefabflix.com");
        String allowedOrigin = null;
        var referer = request.getHeader("Referer");
        log.debug(referer);
