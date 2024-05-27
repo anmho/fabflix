@@ -12,7 +12,7 @@
     
     - #### Project 5 Video Demo Link:
 
-    - #### Instruction of deployment:
+    - #### Instruction of deployment: https://docs.google.com/document/d/1i7r3no1IyH8cKCwSo3NyUrp3kauPoXQpjGOnk1GamLU/edit?usp=sharing
 
     - #### Collaborations and Work Distribution:
 
