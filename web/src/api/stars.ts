@@ -1,5 +1,5 @@
 import { StarDetail } from "~/interfaces/star";
-import { http } from "./http";
+import { getApiClient } from "./http";
 
 export const fetchStarById = async (id: string): Promise<StarDetail | null> => {
   const [starResponse, movieResponse] = await Promise.all([
@@ -44,13 +44,12 @@ export interface StarResponse {
   status: number;
 }
 
-export async function addStar(
-  starData: StarParams
-): Promise<StarResponse> {
+export async function addStar(starData: StarParams): Promise<StarResponse> {
   const { name, birthYear } = starData;
   const queryParams = new URLSearchParams();
   if (name) queryParams.append("name", name);
   if (birthYear) queryParams.append("birthYear", birthYear.toString());
+  const http = getApiClient();
 
   const response = await http.post("/addStar", starData, {
     headers: {

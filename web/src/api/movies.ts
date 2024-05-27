@@ -1,6 +1,6 @@
 import { Movie, MovieSortDimension } from "~/interfaces/movie";
 import { PaginatedResult } from "~/interfaces/paginated-result";
-import { http } from "./http";
+import { getApiClient } from "./http";
 import { MovieParams } from "~/validators/movies";
 import { List } from "postcss/lib/list";
 
@@ -94,6 +94,7 @@ export const findMovies = async ({
 
   params.append("limit", limit.toString());
   params.append("page", page.toString());
+  const http = getApiClient();
   const res = await http.get("/movies?", { params }).catch((error: unknown) => {
     // if (error.status === 401) {
     //   window.location.href = "/login";
@@ -115,6 +116,7 @@ export const fetchTopMovies = async (): Promise<Movie[]> => {
 };
 
 export const getMovieById = async (id: string): Promise<Movie> => {
+  const http = getApiClient();
   const movie = await http.get(`/movies?id=${id}`).then((res) => res.data);
   console.log(movie);
   return movie;
@@ -123,6 +125,7 @@ export const getMovieById = async (id: string): Promise<Movie> => {
 export const createMovie = async (
   params: MovieParams
 ): Promise<{ id: string }> => {
+  const http = getApiClient();
   const response = await http.post("/movies", params);
   return response.data;
 };
@@ -139,6 +142,7 @@ export const getSearchCompletions = async (
   if (cache[query]) {
     return { response: cache[query], message: "Cache hit" };
   }
+  const http = getApiClient();
 
   const response = await http.get(`/search?query=${query}`);
 

@@ -1,8 +1,9 @@
-import { http } from "./http";
+import { getApiClient } from "./http";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function logout(): Promise<{ success: boolean; message: string }> {
+  const http = getApiClient();
   const response = await http.post("/logout");
 
   return response.data;
