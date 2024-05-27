@@ -4,36 +4,30 @@
 [Demo Project 2](https://www.loom.com/share/8825fc9f871f4e20834d4b7e92305752)
 [Demo Project 3](https://www.youtube.com/watch?v=gwFAarzxbwI&ab_channel=MehmetNadi)
 
-## Project 4 Writeup
-- # General
-    - #### Team#:
-    
-    - #### Names:
-    
-    - #### Project 5 Video Demo Link:
 
-    - #### Instruction of deployment: https://docs.google.com/document/d/1i7r3no1IyH8cKCwSo3NyUrp3kauPoXQpjGOnk1GamLU/edit?usp=sharing
-
-    - #### Collaborations and Work Distribution:
+#### Project 4 Instruction of deployment: https://docs.google.com/document/d/1i7r3no1IyH8cKCwSo3NyUrp3kauPoXQpjGOnk1GamLU/edit?usp=sharing
 
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+    - Database.java, AppConfig.java, app.properties
     
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
+    - Create 2 connection pool for master and slave. Each one is a singleton. Connections are retrieved from the pool to save time.
     
     - #### Explain how Connection Pooling works with two backend SQL.
+    - Create 2 connection pool for master and slave and use the appropriate instance when performing read/write queries.
     
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
+    - Database.java, AppConfig.java, app.properties. /etc/nginx/*.usefabflix.com
 
     - #### How read/write requests were routed to Master/Slave SQL?
+    - nginx load balancing, sticky session,
 
 
 ## Contributions
-
-
 ### Project 4
 | Task | Entry | Assignee |
 |----------|-----------|--------------|
