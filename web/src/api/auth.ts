@@ -1,6 +1,5 @@
+import { AxiosError } from "axios";
 import { getApiClient } from "./http";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function logout(): Promise<{ success: boolean; message: string }> {
   const http = getApiClient();
@@ -35,25 +34,30 @@ export const login = async ({
     formData.append("email", email);
     formData.append("password", password);
     formData.append("g-recaptcha-response", recaptchaToken);
-    const response = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      credentials: "include",
-      body: formData,
+    // const response = await fetch(`${API_URL}/login`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/x-www-form-urlencoded",
+    //   },
+    //   credentials: "include",
+    //   body: formData,
+    // });
+    const api = getApiClient();
+    const response = api.post("/login", formData, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
     });
+    console.log(response);
 
-    if (response.ok) {
-      return { success: true };
-    } else {
-      const error = await response.json();
+    return { success: true };
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      const error = e.response?.data;
       console.error("Login error", error);
       return { success: false, message: error.message };
+    } else {
+      console.error("Failed to connect to the server.", e);
+      return { success: false, message: "Failed to connect to the server." };
     }
-  } catch (error) {
-    console.error("Failed to connect to the server.", error);
-    return { success: false, message: "Failed to connect to the server." };
   }
 };
 
@@ -63,21 +67,18 @@ export const isUserLoggedIn = async (): Promise<{
   message?: string;
 }> => {
   try {
-    const response = await fetch(`${API_URL}/isLoggedIn`, {
-      method: "GET",
-      credentials: "include",
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return { isLoggedIn: data.isLoggedIn, userType: data.userType };
-    } else {
+    const api = getApiClient();
+    const response = await api.get("/isLoggedIn");
+    const data = await response.data;
+    return { isLoggedIn: data.isLoggedIn, userType: data.userType };
+  } catch (error) {
+    if (error instanceof AxiosError) {
       return {
         isLoggedIn: false,
         userType: null,
         message: "Failed to check login status",
       };
     }
-  } catch (error) {
     console.error("Error checking login status", error);
     return {
       isLoggedIn: false,

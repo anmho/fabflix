@@ -3,8 +3,6 @@ import { AxiosError } from "axios";
 import { getApiClient } from "./http";
 import { Cart } from "~/interfaces/cart";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 // gets the cart for the current user
 export const fetchCart = async (): Promise<Cart> => {
   const http = getApiClient();
@@ -58,25 +56,37 @@ export const handleEditFromCart = async (
   updateMovies: () => void
 ) => {
   try {
-    const response = await fetch(`${API_URL}/cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        action: "edit",
-        movieId: movieId,
-        quantity: quantity,
-      }),
-      credentials: "include",
+    const api = getApiClient();
+    const response = await api.post("/cart", {
+      action: "edit",
+      movieId: movieId,
+      quantity: quantity,
     });
+    // const response = await fetch(`${API_URL}/cart`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     action: "edit",
+    //     movieId: movieId,
+    //     quantity: quantity,
+    //   }),
+    //   credentials: "include",
+    // });
     // if (response.status === 401) {
     //   window.location.href = "/login";
     // }
-    const data = await response.json();
-    // console.log("Delete Response:", data);
+    const data = await response.data;
+    console.log("Delete Response:", data);
     updateMovies(); // Update parent component's movie list
   } catch (error) {
-    console.error("Error deleting movie:", error);
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 401) {
+        window.localStorage.href = "/login";
+      }
+    } else {
+      console.error("Error deleting movie:", error);
+    }
   }
 };
