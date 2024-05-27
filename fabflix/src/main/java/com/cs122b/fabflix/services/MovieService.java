@@ -47,13 +47,14 @@ public class MovieService {
 
     public List<MovieCompletion> getSearchCompletions(String query) {
         String[] tokens = query.split("[,-.\\s]");
+        log.info(Arrays.toString(tokens));
 
-        StringJoiner joiner = new StringJoiner(" ", "+", "*");
+        StringBuilder sb = new StringBuilder();
         for (String token : tokens) {
-            joiner.add(token);
+            sb.append(String.format("+%s*", token));
         }
 
-        String match = joiner.toString();
+        String match = sb.toString();
         log.info("match: " + match);
         List<MovieCompletion> movieCompletions = new ArrayList<>();
 
@@ -61,6 +62,8 @@ public class MovieService {
             var stmt = conn.prepareStatement(
                     "SELECT id, title, director, year " +
                             "FROM movies WHERE MATCH(title) AGAINST (? IN BOOLEAN MODE) LIMIT 10");
+
+            log.debug(stmt.toString());
             stmt.setString(1, match);
             var rs = stmt.executeQuery();
             while (rs.next()) {

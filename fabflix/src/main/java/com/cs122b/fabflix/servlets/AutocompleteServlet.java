@@ -38,6 +38,7 @@ public class AutocompleteServlet extends HttpServlet {
         var results = movieService.getSearchCompletions(searchQuery);
 
         log.info("Search query: {}", searchQuery);
+        log.debug("search results: {}", results);
 
         ResponseBuilder.json(resp, results, 200);
     }
