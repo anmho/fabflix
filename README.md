@@ -21,7 +21,7 @@
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-    - Database.java, AppConfig.java, app.properties. /etc/nginx/*.usefabflix.com
+    - Database.java, AppConfig.java, app.properties. /etc/nginx/*.usefabflix.com. add frontend and backend domains to recaptcha console
 
     - #### How read/write requests were routed to Master/Slave SQL?
     - nginx load balancing, sticky session,
@@ -32,21 +32,21 @@
 | Task | Entry | Assignee |
 |----------|-----------|--------------|
 |Full-text search on the movie title|Use Full-text search on the movie title field, Jump to the corresponding Movie List Page and show correct results.|Mehmet Nadi, Andrew Ho|
-|Autocomplete UI|Up and Down keys navigation in dropdown list. Item is highlighted.|Andrew Ho|
-|Autocomplete UI|Input box text is updated along with Up and Down keys navigation.|Andrew Ho|
+|Autocomplete UI|Up and Down keys navigation in dropdown list. Item is highlighted.|Mehmet Nadi|
+|Autocomplete UI|Input box text is updated along with Up and Down keys navigation.|Mehmet Nadi|
 |Autocomplete UI	|Show suggestion list in 1 category: Movie (autocomplete search is on movie title).	|Mehmet Nadi|
 |Autocomplete UI	|No more than 10 items in total in the suggestion list.|Mehmet Nadi, Andrew Ho|
-|Autocomplete UI	|Autocomplete delay (300ms).	|Mehmet Nadi|
+|Autocomplete UI	|Autocomplete delay (300ms).	|Mehmet Nadi, Andrew Ho|
 |Autocomplete UI	|Enable Autocomplete only for >= 3 chars.		|Mehmet Nadi|
 |Search	|Full-text search should be implemented using AJAX (RESTful API).		|Mehmet Nadi|
 |Search	|Cache the suggestion lists in Front-end for past queries and reuse it when possible.		|Mehmet Nadi|
 |Jump Action	|Press "Enter" Key directly or click search button without choosing any item should do a normal Search (Full-text search).|Andrew Ho|
-|Jump Action	|Click on a suggession entry will jump to corresponding Single Movie Page.|Andrew Ho|
-|Jump Action	|Use the  Up/Down arrow key and press the "Enter" Key on a suggestion entry to jump to the corresponding Single Movie Page.|Andrew Ho|
-|Javascript Console Log	|Output a javascript console log when an Autocomplete query is initiated.|Mehmet Nadi, Andrew Ho|
-|Javascript Console Log	|Output a javascript console log to differenciate if the suggestion list is coming from Front-end cache or Backend server.|Andrew Ho|
-|Javascript Console Log	|Output a javascript console log of the used suggestion list (in a javascript array).	|Andrew Ho|
-|Reasonable speed	|Autocomplete should finish within a reasonable amount of time (delay + query time <= 2 secs).|Andrew Ho|
+|Jump Action	|Click on a suggession entry will jump to corresponding Single Movie Page.|Mehmet Nadi|
+|Jump Action	|Use the  Up/Down arrow key and press the "Enter" Key on a suggestion entry to jump to the corresponding Single Movie Page.|Mehmet Nadi|
+|Javascript Console Log	|Output a javascript console log when an Autocomplete query is initiated.|Mehmet Nadi|
+|Javascript Console Log	|Output a javascript console log to differenciate if the suggestion list is coming from Front-end cache or Backend server.|Mehmet Nadi|
+|Javascript Console Log	|Output a javascript console log of the used suggestion list (in a javascript array).	|Mehmet Nadi|
+|Reasonable speed	|Autocomplete should finish within a reasonable amount of time (delay + query time <= 2 secs).|Mehmet Nadi, Andrew Ho|
 |Connection Pooling	|Enable Connection Pooling for all servlets (both single and scaled versions).|Andrew Ho|
 |Connection Pooling|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
 |Master/slave|Enable MySQL replication on the scaled version.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
