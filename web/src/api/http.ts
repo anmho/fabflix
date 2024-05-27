@@ -31,7 +31,11 @@ export const getApiClient = (): AxiosInstance => {
   if (url.origin === "https://gcp.usefabflix.com") {
     // return "https://gcp.api.usefabflix.com/api";
     client = gcpApiClient;
-  } else if (url.origin === "https://usefabflix.com") {
+  } else if (
+    url.origin === "https://usefabflix.com" ||
+    url.origin === "http://13.52.113.32:3000" ||
+    url.origin === "http://13.57.128.187:3000"
+  ) {
     // return "https://api.usefabflix.com/api";
     client = awsApiClient;
   } else {
