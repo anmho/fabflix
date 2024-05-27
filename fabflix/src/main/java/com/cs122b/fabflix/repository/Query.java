@@ -56,8 +56,20 @@ public class Query {
 
         // For now all of them will be and logic
         public Builder where(String column, String operator, Object value) {
-            whereConditions.add(String.format("%s %s ?", column, operator));
-            params.add(value);
+            if (operator == null) {
+                throw new IllegalArgumentException("null operator");
+            }
+
+            if (operator.equals("MATCH")) {
+                whereConditions.add(String.format("MATCH(%s) AGAINST (? IN BOOLEAN MODE)", column));
+                params.add(value);
+            } else {
+                whereConditions.add(String.format("%s %s ?", column, operator));
+                params.add(value);
+
+            }
+
+
             return this;
         }
         public Builder setOffset(int value) {

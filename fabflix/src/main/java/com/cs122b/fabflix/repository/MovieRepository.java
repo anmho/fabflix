@@ -3,6 +3,7 @@ package com.cs122b.fabflix.repository;
 
 import com.cs122b.fabflix.models.Genre;
 import com.cs122b.fabflix.models.Movie;
+import com.cs122b.fabflix.models.MovieCompletion;
 import com.cs122b.fabflix.models.Star;
 import com.cs122b.fabflix.params.*;
 import com.cs122b.fabflix.services.MovieService;
@@ -13,6 +14,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 
 public class MovieRepository {
@@ -251,8 +253,20 @@ public class MovieRepository {
         if (filters != null) {
             if (filters.getTitle() != null) {
                 // fix this
-                String pattern = String.format("%%%s%%", filters.getTitle());
-                queryBuilder.where("title", "LIKE", pattern);
+//                String pattern = String.format("%%%s%%", filters.getTitle());
+                String[] tokens = filters.getTitle().split("[,-.\\s]");
+
+                StringBuilder sb = new StringBuilder();
+                for (String token : tokens) {
+                    sb.append("+");
+                    sb.append(token);
+                    sb.append("*");
+                    sb.append(" ");
+                }
+
+                String match = sb.toString();
+
+                queryBuilder.where("title", "MATCH", match);
             }
 
             if (filters.getYear() != null) {

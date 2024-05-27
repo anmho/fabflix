@@ -28,24 +28,35 @@ export const addMovieToCart = async (
   updateMovies: () => void
 ) => {
   try {
-    const response = await fetch(`${API_URL}/cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        action: "add",
-        movieId: movieId,
-      }),
-      credentials: "include",
+    const api = getApiClient();
+    const response = await api.post("/cart", {
+      action: "add",
+      movieId: movieId,
     });
+    // await fetch(`${API_URL}/cart`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     action: "add",
+    //     movieId: movieId,
+    //   }),
+    //   credentials: "include",
+    // });
     // if (response.status === 401) {
     //   window.location.href = "/login";
     // }
-    const data = await response.json();
+    // const data = await response.json();
+    const data = response.data;
     // console.log("Add to Cart Response:", data);
     updateMovies(); // Update parent component's movie list
   } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 401) {
+        window.localStorage.href = "/login";
+      }
+    }
     console.error("Error adding to cart:", error);
   }
 };

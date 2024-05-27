@@ -29,12 +29,12 @@ public class AutocompleteServlet extends HttpServlet {
         String searchQuery = req.getParameter("query");
 
         if (searchQuery == null || searchQuery.length() < 3) {
-            log.warn("Search query too short: " + searchQuery);
+            log.warn("Search query too short: {}", searchQuery);
             ResponseBuilder.error(resp, HttpServletResponse.SC_BAD_REQUEST, "Query must be at least 3 characters long.");
             return;
         }
 
-        log.info("searchQuery " + searchQuery);
+        log.info("searchQuery {}", searchQuery);
         var results = movieService.getSearchCompletions(searchQuery);
 
         log.info("Search query: {}", searchQuery);

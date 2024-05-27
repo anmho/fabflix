@@ -88,6 +88,7 @@ export function FiltersDropdown({
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    setFilters({ ...filters, title: value });
     setMovieTitleInput(value);
     setHighlightedIndex(null);
   };
