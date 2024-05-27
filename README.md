@@ -3,7 +3,39 @@
 [Demo Project 1](https://www.youtube.com/watch?v=IbJSeyeTfig&ab_channel=MehmetNadi)
 [Demo Project 2](https://www.loom.com/share/8825fc9f871f4e20834d4b7e92305752)
 [Demo Project 3](https://www.youtube.com/watch?v=gwFAarzxbwI&ab_channel=MehmetNadi)
+
 ## Contributions
+
+
+### Project 4
+| Task | Entry | Assignee |
+|----------|-----------|--------------|
+|Full-text search on the movie title|Use Full-text search on the movie title field, Jump to the corresponding Movie List Page and show correct results.|Mehmet Nadi, Andrew Ho|
+|Autocomplete UI|Up and Down keys navigation in dropdown list. Item is highlighted.|Andrew Ho|
+|Autocomplete UI|Input box text is updated along with Up and Down keys navigation.|Andrew Ho|
+|Autocomplete UI	|Show suggestion list in 1 category: Movie (autocomplete search is on movie title).	|Mehmet Nadi|
+|Autocomplete UI	|No more than 10 items in total in the suggestion list.|Mehmet Nadi, Andrew Ho|
+|Autocomplete UI	|Autocomplete delay (300ms).	|Mehmet Nadi|
+|Autocomplete UI	|Enable Autocomplete only for >= 3 chars.		|Mehmet Nadi|
+|Search	|Full-text search should be implemented using AJAX (RESTful API).		|Mehmet Nadi|
+|Search	|Cache the suggestion lists in Front-end for past queries and reuse it when possible.		|Mehmet Nadi|
+|Jump Action	|Press "Enter" Key directly or click search button without choosing any item should do a normal Search (Full-text search).|Andrew Ho|
+|Jump Action	|Click on a suggession entry will jump to corresponding Single Movie Page.|Andrew Ho|
+|Jump Action	|Use the  Up/Down arrow key and press the "Enter" Key on a suggestion entry to jump to the corresponding Single Movie Page.|Andrew Ho|
+|Javascript Console Log	|Output a javascript console log when an Autocomplete query is initiated.|Mehmet Nadi, Andrew Ho|
+|Javascript Console Log	|Output a javascript console log to differenciate if the suggestion list is coming from Front-end cache or Backend server.|Andrew Ho|
+|Javascript Console Log	|Output a javascript console log of the used suggestion list (in a javascript array).	|Andrew Ho|
+|Reasonable speed	|Autocomplete should finish within a reasonable amount of time (delay + query time <= 2 secs).|Andrew Ho|
+|Connection Pooling	|Enable Connection Pooling for all servlets (both single and scaled versions).|Andrew Ho|
+|Connection Pooling|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+|Master/slave|Enable MySQL replication on the scaled version.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+|Master/slave|Routing read/write queries correctly to Master/Slave MySQL.|Andrew Ho|
+|Master/slave|Answer questions from README.md template regarding Master/Slave.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+|Load balancing|Master/slave AWS instances are set up and accessible with HTTP on port 8080, (optional) HTTPS on port 8443.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+|Load balancing|AWS and GCP load balancers redirect traffic on port 80 to Master/Slave AWS instances.|Andrew Ho|
+|Load balancing|reCAPTCHA still works properly on website.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+
+
 ### Project 3
 | Task | Entry | Assignee |
 |----------|-----------|--------------|
