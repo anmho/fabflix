@@ -94,7 +94,7 @@ export const findMovies = async ({
 
   params.append("limit", limit.toString());
   params.append("page", page.toString());
-  const res = await http.get("/movies?", { params }).catch((error) => {
+  const res = await http.get("/movies?", { params }).catch((error: unknown) => {
     // if (error.status === 401) {
     //   window.location.href = "/login";
     // }
