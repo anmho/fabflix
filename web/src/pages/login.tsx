@@ -52,7 +52,6 @@ const LoginPage: React.FC = () => {
 
     if (result.success) {
       setErrorMsg("");
-      router.push("/browse");
       await new Promise((resolve) => setTimeout(resolve, 0.5));
       window.location.href = "/browse";
       return;

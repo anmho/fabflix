@@ -19,7 +19,6 @@ import { SlidersHorizontal } from "lucide-react";
 import { useRouter } from "next/router";
 import { debounce } from "~/utils/debounce";
 import {
-  CommandInput,
   CommandEmpty,
   CommandItem,
   CommandGroup,
@@ -45,7 +44,6 @@ export function FiltersDropdown({
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const { theme } = useTheme();
   const router = useRouter();
-  const [movieTitleInput, setMovieTitleInput] = useState<string>("");
   const [canAutoComplete, setCanAutoComplete] = useState<boolean>(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -53,7 +51,13 @@ export function FiltersDropdown({
   const debouncedGetSearchCompletions = useRef(
     debounce(async (title: string) => {
       const response: AutoCompleteResponse = await getSearchCompletions(title);
-      console.log("AUTO COMPLETE RESPONSE: ", response.message);
+      console.log(
+        "AUTO COMPLETE RESPONSE: ",
+        response.message,
+        "title",
+        title,
+        highlightedIndex
+      );
       setTitleSuggestions(response.response);
     }, 300)
   ).current;
@@ -77,25 +81,24 @@ export function FiltersDropdown({
     if (!canAutoComplete) {
       return;
     }
-    if (movieTitleInput.length >= 3) {
-      debouncedGetSearchCompletions(movieTitleInput);
+    if (filters.title?.length ?? 0 >= 3) {
+      debouncedGetSearchCompletions(filters.title);
       setIsDropdownOpen(true);
     } else {
       setTitleSuggestions([]);
       setIsDropdownOpen(false);
     }
-  }, [movieTitleInput]);
+  }, [filters.title]);
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+
     setFilters({ ...filters, title: value });
-    setMovieTitleInput(value);
     setHighlightedIndex(null);
   };
 
   const handleSelectSuggestion = (suggestion: MovieCompletion) => {
     setFilters((filters) => ({ ...filters, title: suggestion.title }));
-    setMovieTitleInput(suggestion.title);
     setTitleSuggestions([]);
     setIsDropdownOpen(false);
     router.push(`/movies/${suggestion.id}`);
@@ -110,7 +113,7 @@ export function FiltersDropdown({
             prevIndex === null || prevIndex === titleSuggestions.length - 1
               ? 0
               : prevIndex + 1;
-          setMovieTitleInput(titleSuggestions[newIndex].title);
+          setFilters({ ...filters, title: titleSuggestions[newIndex].title });
           return newIndex;
         });
         e.preventDefault();
@@ -121,13 +124,17 @@ export function FiltersDropdown({
             prevIndex === null || prevIndex === 0
               ? titleSuggestions.length - 1
               : prevIndex - 1;
-          setMovieTitleInput(titleSuggestions[newIndex].title);
+          setFilters({ ...filters, title: titleSuggestions[newIndex].title });
           return newIndex;
         });
         e.preventDefault();
-      } else if (e.key === "Enter" && highlightedIndex !== null) {
-        handleSelectSuggestion(titleSuggestions[highlightedIndex]);
-        e.preventDefault();
+      } else if (e.key === "Enter") {
+        if (highlightedIndex !== null) {
+          handleSelectSuggestion(titleSuggestions[highlightedIndex]);
+          e.preventDefault();
+        } else {
+          handleApplyFilters(filters)
+        }
       } else {
         setCanAutoComplete(true);
       }
@@ -154,7 +161,7 @@ export function FiltersDropdown({
       director: undefined,
       year: undefined,
     });
-    setMovieTitleInput("");
+    setFilters({ ...filters, title: filters.title });
     setIsDropdownOpen(false);
     handleApplyFilters(filters);
   };
@@ -190,12 +197,12 @@ export function FiltersDropdown({
                 id="title"
                 onChange={handleChangeTitle}
                 onKeyDown={handleKeyDown}
-                value={movieTitleInput}
+                value={filters.title}
                 placeholder="The Terminator"
                 className="col-span-2 h-8"
                 autoComplete="off"
                 onFocus={() => {
-                  if (movieTitleInput.length >= 3) {
+                  if (filters.title?.length ?? 0 >= 3) {
                     setIsDropdownOpen(true);
                   }
                 }}
