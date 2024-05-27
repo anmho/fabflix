@@ -7,7 +7,9 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // gets the cart for the current user
 export const fetchCart = async (): Promise<Cart> => {
-  const response = await http.get("/cart").catch((e) => {
+  const http = getApiClient();
+  
+  const response = await http.get("/cart").catch((e: unknown) => {
     if (e instanceof AxiosError) {
       if (e.response?.status === 401) {
         return { data: null };
@@ -78,3 +80,7 @@ export const handleEditFromCart = async (
     console.error("Error deleting movie:", error);
   }
 };
+function getApiClient() {
+  throw new Error('Function not implemented.');
+}
+
