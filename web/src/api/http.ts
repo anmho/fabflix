@@ -13,21 +13,23 @@ const createApiClient = (baseUrl: string): AxiosInstance => {
 
 const gcpApiClient = createApiClient("https://gcp.api.usefabflix.com/api");
 const awsApiClient = createApiClient("https://api.usefabflix.com/api");
+const instance1ApiClient = createApiClient("http://13.52.113.32:8080/api");
+const instance2ApiClient = createApiClient("http://13.57.128.187:8080/api");
 const devApiClient = createApiClient("http://localhost:8080/api");
 export const getApiClient = (): AxiosInstance => {
   const url = new URL(window.location.href);
   let client: AxiosInstance;
   if (url.origin.startsWith("https://gcp.usefabflix.com")) {
     client = gcpApiClient;
-  } else if (
-    url.origin.startsWith("https://usefabflix.com") ||
-    url.origin.startsWith("http://13.52.113.32:3000") ||
-    url.origin.startsWith("http://13.57.128.187:3000")
-  ) {
+  } else if (url.origin.startsWith("https://usefabflix.com")) {
     // return "https://api.usefabflix.com/api";
     client = awsApiClient;
-  } else {
+  } else if (url.origin.startsWith("http://13.52.113.32:3000")) {
     // return "http://localhost:8080/api";
+    client = instance1ApiClient;
+  } else if (url.origin.startsWith("http://13.57.128.187:3000")) {
+    client = instance2ApiClient;
+  } else {
     client = devApiClient;
   }
 

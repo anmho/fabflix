@@ -145,6 +145,7 @@ export const getSearchCompletions = async (
   const http = getApiClient();
 
   const response = await http.get(`/search?query=${query}`);
+  
 
   cache[query] = response.data;
   localStorage.setItem("autocompleteCache", JSON.stringify(cache));
