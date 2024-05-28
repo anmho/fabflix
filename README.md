@@ -49,7 +49,7 @@
 |Reasonable speed	|Autocomplete should finish within a reasonable amount of time (delay + query time <= 2 secs).|Mehmet Nadi, Andrew Ho|
 |Connection Pooling	|Enable Connection Pooling for all servlets (both single and scaled versions).|Andrew Ho|
 |Connection Pooling|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
-|Master/slave|Enable MySQL replication on the scaled version.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+|Master/slave|Enable MySQL replication on the scaled version.|Andrew Ho|
 |Master/slave|Routing read/write queries correctly to Master/Slave MySQL.|Andrew Ho|
 |Master/slave|Answer questions from README.md template regarding Master/Slave.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
 |Load balancing|Master/slave AWS instances are set up and accessible with HTTP on port 8080, (optional) HTTPS on port 8443.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
