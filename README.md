@@ -51,10 +51,10 @@
 |Connection Pooling|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
 |Master/slave|Enable MySQL replication on the scaled version.|Andrew Ho|
 |Master/slave|Routing read/write queries correctly to Master/Slave MySQL.|Andrew Ho|
-|Master/slave|Answer questions from README.md template regarding Master/Slave.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
-|Load balancing|Master/slave AWS instances are set up and accessible with HTTP on port 8080, (optional) HTTPS on port 8443.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+|Master/slave|Answer questions from README.md template regarding Master/Slave.|Andrew Ho|
+|Load balancing|Master/slave AWS instances are set up and accessible with HTTP on port 8080, (optional) HTTPS on port 8443.|Andrew Ho|
 |Load balancing|AWS and GCP load balancers redirect traffic on port 80 to Master/Slave AWS instances.|Andrew Ho|
-|Load balancing|reCAPTCHA still works properly on website.|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+|Load balancing|reCAPTCHA still works properly on website.|Andrew Ho|
 
 
 ### Project 3
