@@ -1,4 +1,7 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+import { AxiosError } from "axios";
+import { getApiClient } from "./http";
 
 export interface LoginParams {
   email: string;
@@ -10,21 +13,32 @@ export const handleLogin = async (
   formData: URLSearchParams
 ): Promise<{ success: boolean; message?: string }> => {
   try {
-    const response = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      credentials: "include",
-      body: formData,
-    });
+    // const response = await fetch(`${API_URL}/login`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/x-www-form-urlencoded",
+    //   },
+    //   credentials: "include",
+    //   body: formData,
+    // });
 
-    if (response.ok) {
+    const api = getApiClient();
+
+    try {
+      const response = await api.post("/login", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
       return { success: true };
-    } else {
-      const error = await response.json();
-      console.error("Login error", error);
-      return { success: false, message: error.message };
+    } catch (e: unknown) {
+      console.error("Login error", e);
+
+      if (e instanceof AxiosError) {
+        return { success: false, message: e.response?.data };
+      } else {
+        return { success: false, message: e?.toString() ?? "unknown error" };
+      }
     }
   } catch (error) {
     console.error("Failed to connect to the server.", error);
@@ -38,14 +52,18 @@ export const isUserLoggedIn = async (): Promise<{
   message?: string;
 }> => {
   try {
-    const response = await fetch(`${API_URL}/isLoggedIn`, {
-      method: "GET",
-      credentials: "include",
-    });
-    if (response.ok) {
-      const data = await response.json();
+    // const response = await fetch(`${API_URL}/isLoggedIn`, {
+    //   method: "GET",
+    //   credentials: "include",
+    // });
+
+    const api = await getApiClient();
+    try {
+      const response = await api.get("/isLoggedIn");
+      const data = response.data;
       return { isLoggedIn: data.isLoggedIn, userType: data.userType };
-    } else {
+    } catch (e) {
+      console.error("Error checking login status", e);
       return {
         isLoggedIn: false,
         userType: null,
@@ -78,30 +96,61 @@ export const employeeLogin = async ({
 
   // console.log(email, password, recaptchaToken);
   try {
-    const response = await fetch(`${API_URL}/employeeLogin`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      credentials: "include",
-      body: formData,
-    });
+    // const response = await fetch(`${API_URL}/employeeLogin`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/x-www-form-urlencoded",
+    //   },
+    //   credentials: "include",
+    //   body: formData,
+    // });
 
-    const data = await response.json();
+    try {
+      const api = await getApiClient();
+      const response = await api.post("/employeeLogin", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+      const data = response.data;
 
-    if (response.ok) {
       return {
         success: true,
         message: "Employee logged in successfully",
         employeeData: data,
       };
-    } else {
-      console.error("Login error", data);
-      return {
-        success: false,
-        message: data.message || "An error occurred during login.",
-      };
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        const data = await e.response?.data;
+        console.error("Login error", data);
+        return {
+          success: false,
+          message: data.message || "An error occurred during login.",
+        };
+      } else {
+        console.error(e);
+        return {
+          success: false,
+          message: "An error occurred during login.",
+        };
+      }
     }
+
+    // const data = await response.json();
+
+    // if (response.ok) {
+    //   return {
+    //     success: true,
+    //     message: "Employee logged in successfully",
+    //     employeeData: data,
+    //   };
+    // } else {
+    //   console.error("Login error", data);
+    //   return {
+    //     success: false,
+    //     message: data.message || "An error occurred during login.",
+    //   };
+    // }
   } catch (error) {
     console.error("Failed to connect to the server.", error);
     return {
