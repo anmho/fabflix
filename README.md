@@ -13,10 +13,10 @@
     - Database.java, AppConfig.java, app.properties
     
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
-    - Create 2 connection pool for master and slave. Each one is a singleton. Connections are retrieved from the pool to save time.
+    - Create 2 connection pool for master and slave. Each one is a singleton. Connections are retrieved from the pool to save time during requests and allow concurrent requests.
     
     - #### Explain how Connection Pooling works with two backend SQL.
-    - Create 2 connection pool for master and slave and use the appropriate instance when performing read/write queries.
+    - Create 2 connection pool for master and slave and use the appropriate instance when performing read/write queries. Replication allows the slave to be kept in sync with the master. All writes will go to the master since the synchronization is only one way.
     
 
 - # Master/Slave
@@ -24,7 +24,7 @@
     - Database.java, AppConfig.java, app.properties. /etc/nginx/*.usefabflix.com. add frontend and backend domains to recaptcha console
 
     - #### How read/write requests were routed to Master/Slave SQL?
-    - nginx load balancing, sticky session,
+    - To route Master/Slave requests we ensured that only the master was used for reads in the application.
 
 
 ## Contributions
@@ -35,8 +35,8 @@
 |Autocomplete UI|Up and Down keys navigation in dropdown list. Item is highlighted.|Mehmet Nadi|
 |Autocomplete UI|Input box text is updated along with Up and Down keys navigation.|Mehmet Nadi|
 |Autocomplete UI	|Show suggestion list in 1 category: Movie (autocomplete search is on movie title).	|Mehmet Nadi|
-|Autocomplete UI	|No more than 10 items in total in the suggestion list.|Mehmet Nadi, Andrew Ho|
-|Autocomplete UI	|Autocomplete delay (300ms).	|Mehmet Nadi, Andrew Ho|
+|Autocomplete UI	|No more than 10 items in total in the suggestion list.|Mehmet Nadi|
+|Autocomplete UI	|Autocomplete delay (300ms).	|Mehmet Nadi|
 |Autocomplete UI	|Enable Autocomplete only for >= 3 chars.		|Mehmet Nadi|
 |Search	|Full-text search should be implemented using AJAX (RESTful API).		|Mehmet Nadi|
 |Search	|Cache the suggestion lists in Front-end for past queries and reuse it when possible.		|Mehmet Nadi|
