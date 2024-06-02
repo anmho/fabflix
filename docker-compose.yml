@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   web:
     build:
@@ -6,8 +6,8 @@ services:
     platform: linux/amd64
     ports:
       - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8080/api
+    env_file:
+      - .env
 
   api:
     build:
@@ -15,15 +15,8 @@ services:
     platform: linux/amd64
     ports:
       - "8080:8080"
-    environment:
-      - DB_PRIMARY_URL=jdbc:mysql://host.docker.internal:3306/moviedb
-      - DB_PRIMARY_USER=admin
-      - DB_PRIMARY_PASS=admin
-      - DB_SECONDARY_URL=jdbc:mysql://host.docker.internal:3306/moviedb
-      - DB_SECONDARY_USER=admin
-      - DB_SECONDARY_PASS=admin
-      - CLIENT_URL=http://localhost:3000
-      - RECAPTCHA_V2_SECRET_KEY=6LddyNEpAAAAAFA_ha188GwN3_cvb7hXpkUyPEFi
+    env_file:
+      - .env
 
 volumes:
   mysql-data:
