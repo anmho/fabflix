@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:8
+    restart: always
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: 'moviedb'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'admin'
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
