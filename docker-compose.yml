@@ -11,14 +11,24 @@ services:
       MYSQL_USER: 'admin'
       MYSQL_PASSWORD: 'admin'
     volumes:
-      - ./fabfkuxdb:/docker-entrypoint-initdb.d
+      - ./docker/data:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
 
   fabflix:
-    build: .
+    build:
+      context: ./fabflix
     ports:
-      - '8081:8080'
+      - '8080:8080'
     container_name: fabflix
+    environment:
+      - CLIENT_URL=http://localhost:3000
+      - DB_PRIMARY_PASS=admin
+      - DB_PRIMARY_URL=jdbc:mysql://db:3306/moviedb
+      - DB_PRIMARY_USER=admin
+      - DB_SECONDARY_PASS=admin
+      - DB_SECONDARY_URL=jdbc:mysql://db:3306/moviedb
+      - DB_SECONDARY_USER=admin
+      - RECAPTCHA_V2_SECRET_KEY=6LddyNEpAAAAAFA_ha188GwN3_cvb7hXpkUyPEFi
   web:
     build:
       context: ./web
