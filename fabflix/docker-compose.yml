@@ -11,20 +11,8 @@ services:
       MYSQL_USER: 'admin'
       MYSQL_PASSWORD: 'admin'
     volumes:
-      - ./fabfkuxdb:/docker-entrypoint-initdb.d
+      - ./db:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
-
-  fabflix:
-    build: .
-    ports:
-      - '8081:8080'
-    container_name: fabflix
-  web:
-    build:
-      context: ./web
-    platform: linux/amd64
-    ports:
-      - '3000:3000'
 
 volumes:
   db_data:

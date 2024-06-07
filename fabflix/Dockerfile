@@ -56,12 +56,12 @@ COPY docker/tomcat/conf/tomcat-users.xml /usr/local/tomcat/conf/
 COPY docker/tomcat/conf/web.xml /usr/local/tomcat/conf/
 
 # Set environment variables for database credentials
-ENV DB_PRIMARY_URL=jdbc:mysql://host.docker.internal:3306/moviedb
-ENV DB_PRIMARY_USER=admin
-ENV DB_PRIMARY_PASS=admin
-ENV DB_SECONDARY_URL=jdbc:mysql://host.docker.internal:3306/moviedb
-ENV DB_SECONDARY_USER=admin
-ENV DB_SECONDARY_PASS=admin
+#ENV DB_PRIMARY_URL=jdbc:mysql://host.docker.internal:3306/moviedb
+#ENV DB_PRIMARY_USER=admin
+#ENV DB_PRIMARY_PASS=admin
+#ENV DB_SECONDARY_URL=jdbc:mysql://host.docker.internal:3306/moviedb
+#ENV DB_SECONDARY_USER=admin
+#ENV DB_SECONDARY_PASS=admin
 
 # Expose the necessary port
 EXPOSE 8080
