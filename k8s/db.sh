@@ -17,12 +17,12 @@ curl https://github.com/UCI-Chenli-teaching/cs122b-s24-team-420/raw/main/fabflix
 curl https://github.com/UCI-Chenli-teaching/cs122b-s24-team-420/raw/main/fabflix/db/9-full-text-search.sql
 
 
-mysql -u admin -0-init.sql
-mysql -u admin -1-schema.sql
-mysql -u admin -3-movie-price.sql
-mysql -u admin -4-num-starred-in.sql
-mysql -u admin -6-extend-id-length.sql
-mysql -u admin -6-extend-id-length.sql
-mysql -u admin -7-stored-procedure.sql
-mysql -u admin -8-add-indexes.sql
-mysql -u admin -9-full-text-search.sql
+mysql -u admin -p < 0-init.sql
+mysql -u admin -p < 1-schema.sql
+mysql -u admin -p < 3-movie-price.sql
+mysql -u admin -p < 4-num-starred-in.sql
+mysql -u admin -p < 6-extend-id-length.sql
+mysql -u admin -p < 6-extend-id-length.sql
+mysql -u admin -p < 7-stored-procedure.sql
+mysql -u admin -p < 8-add-indexes.sql
+mysql -u admin -p < 9-full-text-search.sql
