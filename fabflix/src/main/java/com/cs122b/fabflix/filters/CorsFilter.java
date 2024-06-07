@@ -20,23 +20,23 @@ public class CorsFilter implements Filter {
        HttpServletResponse response = (HttpServletResponse) res;
        HttpServletRequest request = (HttpServletRequest) req;
 
-       var allowedOrigins = Arrays.asList(AppConfig.getProperty("app.client_url"), "https://usefabflix.com", "https://gcp.usefabflix.com", "http://13.52.113.32:3000", "http://13.57.128.187:3000");
-       String allowedOrigin = null;
-       var referer = request.getHeader("Referer");
-       log.debug(referer);
-       if (referer != null) {
-           for (var origin : allowedOrigins) {
-               var match = referer.equals(origin) || referer.equals(origin.substring(0, origin.length()-1)) || origin.equals(referer.substring(0, referer.length()-1));
-               log.debug("{}, {}", origin, referer);
-               if (match) {
-                   allowedOrigin = origin;
-                   break;
-               }
-           }
-       }
-       log.debug(allowedOrigin);
+//       var allowedOrigins = Arrays.asList(AppConfig.getProperty("app.client_url"), "https://usefabflix.com", "https://gcp.usefabflix.com", "http://13.52.113.32:3000", "http://13.57.128.187:3000");
+//       String allowedOrigin = null;
+//       var referer = request.getHeader("Referer");
+//       log.debug(referer);
+//       if (referer != null) {
+//           for (var origin : allowedOrigins) {
+//               var match = referer.equals(origin) || referer.equals(origin.substring(0, origin.length()-1)) || origin.equals(referer.substring(0, referer.length()-1));
+//               log.debug("{}, {}", origin, referer);
+//               if (match) {
+//                   allowedOrigin = origin;
+//                   break;
+//               }
+//           }
+//       }
+//       log.debug(allowedOrigin);
 
-       response.setHeader("Access-Control-Allow-Origin", allowedOrigin); // Frontend URL
+       response.setHeader("Access-Control-Allow-Origin", AppConfig.getProperty("app.client_url")); // Frontend URL
        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
        response.setHeader("Access-Control-Allow-Credentials", "true");
