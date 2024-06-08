@@ -73,6 +73,7 @@ public class LoginServlet extends HttpServlet {
     private void handleCustomerLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String providedEmail = request.getParameter("email");
         String providedPassword = request.getParameter("password");
+        
 
         Database db = Database.getReadInstance();
         try (Connection conn = db.getConnection()) {
