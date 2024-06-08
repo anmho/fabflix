@@ -56,17 +56,17 @@ spec:
           env:
             - name: CLIENT_URL
               value: 'https://app.usefabflix.com'
-            - name: DB_PRIMARY_PASS
-              value: admin
             - name: DB_PRIMARY_URL
               value: jdbc:mysql://a9e82f53890ee4094b50a7ecc5612061-b9c16929559942e2.elb.us-west-1.amazonaws.com:3306/moviedb
             - name: DB_PRIMARY_USER
-              value: cs122b
-            - name: DB_SECONDARY_PASS
               value: admin
+            - name: DB_PRIMARY_PASS
+              value: cs122b
             - name: DB_SECONDARY_URL
               value: jdbc:mysql://a8df8707b6ac24ee39931792fa1a6a84-0afd48a9dbe9da32.elb.us-west-1.amazonaws.com:3306/moviedb
             - name: DB_SECONDARY_USER
+              value: admin
+            - name: DB_SECONDARY_PASS
               value: cs122b
             - name: RECAPTCHA_V2_SECRET_KEY
               value: ''
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
         - name: fabflix-web
-          image: docker.io/anmho/fabflix-web:k8s-0f33a35
+          image: docker.io/anmho/fabflix-web:k8s-c6c2c84
           ports:
             - containerPort: 3000
 ---
