@@ -55,7 +55,7 @@ spec:
             - containerPort: 8080
           env:
             - name: CLIENT_URL
-              value: 'https://usefabflix.com'
+              value: 'https://app.usefabflix.com'
             - name: DB_PRIMARY_PASS
               value: admin
             - name: DB_PRIMARY_URL
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
         - name: fabflix-web
-          image: docker.io/anmho/fabflix-web:main-ca4b4c6
+          image: docker.io/anmho/fabflix-web:k8s-0f33a35
           ports:
             - containerPort: 3000
 ---
