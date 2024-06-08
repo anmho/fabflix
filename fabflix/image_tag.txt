@@ -1,1 +1,1 @@
-anmho/fabflix:docker-1ce5779
+anmho/fabflix:docker-4ccf4d5

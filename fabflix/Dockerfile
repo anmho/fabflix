@@ -24,9 +24,10 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=builder /app/target/api.war /usr/local/tomcat/webapps/api.war
 
 # Copy Tomcat configuration files if needed
-COPY docker/tomcat/conf/context.xml /usr/local/tomcat/conf/
-COPY docker/tomcat/conf/tomcat-users.xml /usr/local/tomcat/conf/
-COPY docker/tomcat/conf/web.xml /usr/local/tomcat/conf/
+#COPY docker/tomcat/conf/context.xml /usr/local/tomcat/conf/
+COPY apache-tomcat-10.1.20/conf/tomcat-users.xml /usr/local/tomcat/conf/
+COPY apache-tomcat-10.1.20/conf/web.xml /usr/local/tomcat/conf/
+#COPY docker/tomcat/conf/web.xml /usr/local/tomcat/conf/
 
 # Expose the necessary port (annotation)
 EXPOSE 8080

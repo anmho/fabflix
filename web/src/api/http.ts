@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosInstance } from "axios";
+import { env } from "~/utils/env";
 
 const createApiClient = (baseUrl: string): AxiosInstance => {
   const http = axios.create({
@@ -10,36 +11,12 @@ const createApiClient = (baseUrl: string): AxiosInstance => {
   http.interceptors.response.use(undefined, errorHandler);
   return http;
 };
-
-const gcpApiClient = createApiClient("https://gcp.api.usefabflix.com/api");
-const awsApiClient = createApiClient("https://api.usefabflix.com/api");
-const devApiClient = createApiClient("http://localhost:8080/api");
+const client = createApiClient(env.NEXT_PUBLIC_API_URL);
 export const getApiClient = (): AxiosInstance => {
-  const url = new URL(window.location.href);
-  let client: AxiosInstance;
-  if (url.origin.startsWith("https://gcp.usefabflix.com")) {
-    client = gcpApiClient;
-  } else if (
-    url.origin.startsWith("https://usefabflix.com") ||
-    url.origin.startsWith("http://13.52.113.32:3000") ||
-    url.origin.startsWith("http://13.57.128.187:3000")
-  ) {
-    // return "https://api.usefabflix.com/api";
-    client = awsApiClient;
-  } else {
-    // return "http://localhost:8080/api";
-    client = devApiClient;
-  }
+  console.log(process.env.NEXT_PUBLIC_API_URL);
 
   return client;
 };
-
-// export const http = axios.create({
-//   baseURL: getBaseUrl(),
-//   withCredentials: true,
-// });
-
-// http.interceptors.response.use(undefined, errorHandler);
 
 export const queryClient = new QueryClient();
 
