@@ -40,6 +40,7 @@ public class LoginServlet extends HttpServlet {
         String path = request.getServletPath();
 
 
+        log.debug("app.recaptcha_enabled: {}", AppConfig.getProperty("app.recaptcha_enabled"))
         if (AppConfig.getProperty("app.recaptcha_enabled") != null && AppConfig.getProperty("app.recaptcha_enabled").equals("true")) {
             String recaptchaToken = request.getParameter("g-recaptcha-response");
             if (recaptchaToken == null) {

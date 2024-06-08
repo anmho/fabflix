@@ -16,8 +16,25 @@ spec:
       targetPort: 3306 # Port on which pods are listening
   type: LoadBalancer # Internal load balancer
   externalTrafficPolicy: Local
-# ---
-# apiVersion: v1
-# kind: Deployment
-# metadata:
-#   app: fabflix
+---
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: fabflix
+  labels:
+    app: fabflix
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fabflix
+  template: # Attributes for each pod in the deployment
+    metadata:
+      labels:
+        app: fabflix
+    spec:
+      containers:
+        - name: fabflix
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 8080
