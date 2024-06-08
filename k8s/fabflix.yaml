@@ -6,11 +6,9 @@ metadata:
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-eip-allocations: eipalloc-0b5deea23007c0579
     service.beta.kubernetes.io/aws-load-balancer-type: nlb
-
 spec:
   selector:
     app.kubernetes.io/name: mysql # Target pods with label app: my-app
-
   ports:
     - port: 3306 # Service port (can be different from pod port)
       targetPort: 3306 # Port on which pods are listening
@@ -18,6 +16,23 @@ spec:
   externalTrafficPolicy: Local
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-write-balancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-eip-allocations: eipalloc-0f7dcd7a3b5156f5f
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+  selector:
+    app.kubernetes.io/name: mysql # Target pods with label app: my-app
+    statefulset.kubernetes.io/pod-name: mysql-primary-0
+  ports:
+    - port: 3306 # Service port (can be different from pod port)
+      targetPort: 3306 # Port on which pods are listening
+  type: LoadBalancer # Internal load balancer
+  externalTrafficPolicy: Local
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fabflix
@@ -35,6 +50,71 @@ spec:
     spec:
       containers:
         - name: fabflix
-          image: nginx:1.14.2
+          image: docker.io/anmho/fabflix:k8s-af3f2d7
           ports:
             - containerPort: 8080
+          env:
+            - name: CLIENT_URL
+              value: 'https://usefabflix.com'
+            - name: DB_PRIMARY_PASS
+              value: admin
+            - name: DB_PRIMARY_URL
+              value: jdbc:mysql://a9e82f53890ee4094b50a7ecc5612061-b9c16929559942e2.elb.us-west-1.amazonaws.com:3306/moviedb
+            - name: DB_PRIMARY_USER
+              value: cs122b
+            - name: DB_SECONDARY_PASS
+              value: admin
+            - name: DB_SECONDARY_URL
+              value: jdbc:mysql://a8df8707b6ac24ee39931792fa1a6a84-0afd48a9dbe9da32.elb.us-west-1.amazonaws.com:3306/moviedb
+            - name: DB_SECONDARY_USER
+              value: cs122b
+            - name: RECAPTCHA_V2_SECRET_KEY
+              value: ''
+            - name: RECAPTCHA_ENABLED
+              value: 'false'
+---
+apiVersion: v1
+kind: Service # Specifies that this resource is a Service, which defines a logical set of pods and a policy to access them.
+metadata:
+  name: fabflix-service # Names this Service as "murphy-movies-service".
+spec:
+  selector:
+    app: fabflix # The selector specifies that this Service targets pods with the label "app: murphy-movies".
+  ports:
+    - name: http
+      port: 8080 # Exposes the service on port 8080.
+  type: ClusterIP # Specifies that the service is of type ClusterIP, making it accessible only within the cluster.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fabflix-web
+  labels:
+    app: fabflix-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fabflix-web
+  template: # Attributes for each pod in the deployment
+    metadata:
+      labels:
+        app: fabflix-web
+    spec:
+      containers:
+        - name: fabflix-web
+          image: docker.io/anmho/fabflix-web:main-ca4b4c6
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service # Specifies that this resource is a Service, which defines a logical set of pods and a policy to access them.
+metadata:
+  name: fabflix-web-service # Names this Service as "murphy-movies-service".
+spec:
+  selector:
+    app: fabflix-web # The selector specifies that this Service targets pods with the label "app: murphy-movies".
+  ports:
+    - name: http
+      port: 3000 # Exposes the service on port 8080.
+  type: ClusterIP # Specifies that the service is of type ClusterIP, making it accessible only within the cluster.
