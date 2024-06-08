@@ -29,5 +29,3 @@ docker push "$IMAGE_TAG_LATEST"
 
 # Push the Docker image to Docker Hub
 echo "Docker image $IMAGE_TAG has been pushed to Docker Hub."
-
-echo "$IMAGE_TAG" > image_tag.txt
