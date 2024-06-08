@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: fabflix
-          image: docker.io/anmho/fabflix:k8s-57f8924
+          image: docker.io/anmho/fabflix:k8s-a015881
           ports:
             - containerPort: 8080
           env:
