@@ -3,7 +3,60 @@
 [Demo Project 1](https://www.youtube.com/watch?v=IbJSeyeTfig&ab_channel=MehmetNadi)
 [Demo Project 2](https://www.loom.com/share/8825fc9f871f4e20834d4b7e92305752)
 [Demo Project 3](https://www.youtube.com/watch?v=gwFAarzxbwI&ab_channel=MehmetNadi)
+[Demo Project 4](https://www.loom.com/share/487c726e7c8a4a379cc938349990990f)
+
+#### Project 4 Instruction of deployment: https://docs.google.com/document/d/1i7r3no1IyH8cKCwSo3NyUrp3kauPoXQpjGOnk1GamLU/edit?usp=sharing
+
+
+- # Connection Pooling
+    - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+    - Database.java, AppConfig.java, app.properties
+    
+    - #### Explain how Connection Pooling is utilized in the Fabflix code.
+    - Create 2 connection pool for master and slave. Each one is a singleton. Connections are retrieved from the pool to save time during requests and allow concurrent requests.
+    
+    - #### Explain how Connection Pooling works with two backend SQL.
+    - Create 2 connection pool for master and slave and use the appropriate instance when performing read/write queries. Replication allows the slave to be kept in sync with the master. All writes will go to the master since the synchronization is only one way.
+    
+
+- # Master/Slave
+    - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
+    - Database.java, AppConfig.java, app.properties. /etc/nginx/*.usefabflix.com. add frontend and backend domains to recaptcha console
+
+    - #### How read/write requests were routed to Master/Slave SQL?
+    - To route Master/Slave requests we ensured that only the master was used for reads in the application.
+
+
 ## Contributions
+### Project 4
+| Task | Entry | Assignee |
+|----------|-----------|--------------|
+|Full-text search on the movie title|Use Full-text search on the movie title field, Jump to the corresponding Movie List Page and show correct results.|Mehmet Nadi, Andrew Ho|
+|Autocomplete UI|Up and Down keys navigation in dropdown list. Item is highlighted.|Mehmet Nadi|
+|Autocomplete UI|Input box text is updated along with Up and Down keys navigation.|Mehmet Nadi|
+|Autocomplete UI	|Show suggestion list in 1 category: Movie (autocomplete search is on movie title).	|Mehmet Nadi|
+|Autocomplete UI	|No more than 10 items in total in the suggestion list.|Mehmet Nadi|
+|Autocomplete UI	|Autocomplete delay (300ms).	|Mehmet Nadi|
+|Autocomplete UI	|Enable Autocomplete only for >= 3 chars.		|Mehmet Nadi|
+|Search	|Full-text search should be implemented using AJAX (RESTful API).		|Mehmet Nadi|
+|Search	|Cache the suggestion lists in Front-end for past queries and reuse it when possible.		|Mehmet Nadi|
+|Jump Action	|Press "Enter" Key directly or click search button without choosing any item should do a normal Search (Full-text search).|Andrew Ho|
+|Jump Action	|Click on a suggession entry will jump to corresponding Single Movie Page.|Mehmet Nadi|
+|Jump Action	|Use the  Up/Down arrow key and press the "Enter" Key on a suggestion entry to jump to the corresponding Single Movie Page.|Mehmet Nadi|
+|Javascript Console Log	|Output a javascript console log when an Autocomplete query is initiated.|Mehmet Nadi|
+|Javascript Console Log	|Output a javascript console log to differenciate if the suggestion list is coming from Front-end cache or Backend server.|Mehmet Nadi|
+|Javascript Console Log	|Output a javascript console log of the used suggestion list (in a javascript array).	|Mehmet Nadi|
+|Reasonable speed	|Autocomplete should finish within a reasonable amount of time (delay + query time <= 2 secs).|Mehmet Nadi, Andrew Ho|
+|Connection Pooling	|Enable Connection Pooling for all servlets (both single and scaled versions).|Andrew Ho|
+|Connection Pooling|Answer questions from README.md template regarding Connection Pooling.|Andrew Ho|
+|Master/slave|Enable MySQL replication on the scaled version.|Andrew Ho|
+|Master/slave|Routing read/write queries correctly to Master/Slave MySQL.|Andrew Ho|
+|Master/slave|Answer questions from README.md template regarding Master/Slave.|Andrew Ho|
+|Load balancing|Master/slave AWS instances are set up and accessible with HTTP on port 8080, (optional) HTTPS on port 8443.|Andrew Ho|
+|Load balancing|AWS and GCP load balancers redirect traffic on port 80 to Master/Slave AWS instances.|Andrew Ho|
+|Load balancing|reCAPTCHA still works properly on website.|Andrew Ho|
+
+
 ### Project 3
 | Task | Entry | Assignee |
 |----------|-----------|--------------|

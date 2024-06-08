@@ -13,11 +13,6 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
-# fabflix:
-#   build: .
-#   ports:
-#     - '8081:8080'
-#   container_name: fabflix
 
 volumes:
   db_data:
