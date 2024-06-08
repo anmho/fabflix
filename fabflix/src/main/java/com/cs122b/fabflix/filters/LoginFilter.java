@@ -1,5 +1,6 @@
 package com.cs122b.fabflix.filters;
 
+import com.cs122b.fabflix.AppConfig;
 import com.cs122b.fabflix.models.User;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -10,14 +11,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Order;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
+@WebFilter(filterName = "LoginFilter")
 public class LoginFilter implements Filter {
     private final Set<String> allowedURIs = new HashSet<>();
     private  final Set<String> employeeOnlyURIs = new HashSet<>();
@@ -36,33 +37,45 @@ public class LoginFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        String requestURI = httpRequest.getRequestURI();
-        log.debug("LoginFilter: " + requestURI);
+        // for some reason loginfilter executes first in docker container
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+//        response.setHeader("Access-Control-Allow-Origin", AppConfig.getProperty("app.client_url")); // Frontend URL
+//       response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//       response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//       response.setHeader("Access-Control-Allow-Credentials", "true");
 
-        HttpSession session = httpRequest.getSession();
+//       if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+//           response.setStatus(HttpServletResponse.SC_OK);
+//       } else {
+//           chain.doFilter(request, response);
+//       }
+
+        String requestURI = request.getRequestURI();
+        log.debug("LoginFilter: {}", requestURI);
+
+        HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        log.debug("session.getId==> " + session.getId());
-        log.debug("user ==> " + (user != null ? user.toString() : "null"));
+        log.debug("session.getId==> {}", session.getId());
+        log.debug("user ==> {}", user != null ? user.toString() : "null");
 
         if (user != null && isEmployeeOnlyURIs(requestURI) && user.getUserType().equals("employee")) {
             log.debug("employee only URI. employee logged in. go ahead.");
             chain.doFilter(request, response);
         } else if (isUrlAllowedWithoutLogin(requestURI) || user != null) { // assuming employee can access pages that customers can bc of https://youtu.be/ZEyUdp5jVrg?si=qyoXi8NEtIAWC4eW&t=477
             log.debug("Allowed URI or session hit.");
-            log.debug("requestURI => " + requestURI);
+            log.debug("requestURI => {}", requestURI);
             log.debug("isUrlAllowedWithoutLogin(requestURI) => " + isUrlAllowedWithoutLogin(requestURI));
             chain.doFilter(request, response);
         } else {
-            log.debug("requestURI NOT Allowed: " + requestURI);
+            log.debug("requestURI NOT Allowed: {}", requestURI);
             log.debug("isUrlAllowedWithoutLogin(requestURI) => " + isUrlAllowedWithoutLogin(requestURI));
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            httpResponse.getWriter().write("Access Denied: User is not logged in.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Access Denied: User is not logged in.");
         }
     }
 

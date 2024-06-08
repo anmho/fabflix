@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.sql.*;
 @WebServlet(name = "EmployeeDashboardServlet", value = {"/addStar", "/getDatabaseSchema"})
 public class EmployeeDashboardServlet extends HttpServlet {
-    private final Logger log = LogManager.getLogger(LoginFilter.class.getName());
+    private final Logger log = LogManager.getLogger(EmployeeDashboardServlet.class.getName());
 
     private StarRepository starRepository;
 
