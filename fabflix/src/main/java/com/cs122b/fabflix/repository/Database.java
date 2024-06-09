@@ -46,7 +46,7 @@ public class Database {
         poolProperties.setTestOnBorrow(true);
         poolProperties.setValidationQuery("SELECT 1");
         poolProperties.setValidationInterval(30000);
-        poolProperties.setInitialSize(200);
+        poolProperties.setInitialSize(32);
         poolProperties.setMaxWait(10000);
         poolProperties.setLogAbandoned(true);
 
