@@ -152,7 +152,7 @@ public class Query {
                 }
             }
 
-            log.debug("Query to be executed: \n" + stmt.toString());
+            log.debug("Query to be executed: \n{}", stmt.toString());
 
             return new Query(stmt);
         }

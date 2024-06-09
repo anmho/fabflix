@@ -39,7 +39,7 @@ metadata:
   labels:
     app: fabflix
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: fabflix
@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: fabflix
-          image: docker.io/anmho/fabflix:k8s-a015881
+          image: docker.io/anmho/fabflix:k8s-2003ead
           ports:
             - containerPort: 8080
           env:
