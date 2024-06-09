@@ -256,56 +256,57 @@ public class MovieRepository {
             .join("LEFT", "stars s", "sim.starId = s.id" )
             .join("LEFT", "num_movies_starred_in nmsi", "s.id = nmsi.starId")
             ;
-//                "WHERE MATCH(title) AGAINST ('+Batman* ' IN BOOLEAN MODE) " +
-//                "GROUP BY m.id" +
 
 
+        Set<String> stops = new HashSet<>();
+
+
+        stops.add("a");
+        stops.add("about");
+        stops.add("an");
+        stops.add("are");
+        stops.add("as");
+        stops.add("at");
+        stops.add("be");
+        stops.add("by");
+        stops.add("com");
+        stops.add("de");
+        stops.add("en");
+        stops.add("for");
+        stops.add("from");
+        stops.add("how");
+        stops.add("i");
+        stops.add("in");
+        stops.add("is");
+        stops.add("it");
+        stops.add("la");
+        stops.add("of");
+        stops.add("on");
+        stops.add("or");
+        stops.add("that");
+        stops.add("the");
+        stops.add("this");
+        stops.add("to");
+        stops.add("was");
+        stops.add("what");
+        stops.add("when");
+        stops.add("where");
+        stops.add("who");
+        stops.add("will");
+        stops.add("with");
+        stops.add("und");
+        stops.add("www");
         if (filters != null) {
             if (filters.getTitle() != null) {
                 // fix this
 //                String pattern = String.format("%%%s%%", filters.getTitle());
                 String[] tokens = filters.getTitle().split("[,-.\\s]");
-                Set<String> stops = new HashSet<>();
-
-                stops.add("a");
-                stops.add("about");
-                stops.add("an");
-                stops.add("are");
-                stops.add("as");
-                stops.add("at");
-                stops.add("be");
-                stops.add("by");
-                stops.add("com");
-                stops.add("de");
-                stops.add("en");
-                stops.add("for");
-                stops.add("from");
-                stops.add("how");
-                stops.add("i");
-                stops.add("in");
-                stops.add("is");
-                stops.add("it");
-                stops.add("la");
-                stops.add("of");
-                stops.add("on");
-                stops.add("or");
-                stops.add("that");
-                stops.add("the");
-                stops.add("this");
-                stops.add("to");
-                stops.add("was");
-                stops.add("what");
-                stops.add("when");
-                stops.add("where");
-                stops.add("who");
-                stops.add("will");
-                stops.add("with");
-                stops.add("und");
-                stops.add("www");
 
                 StringBuilder sb = new StringBuilder();
                 for (String token : tokens) {
-                    if (!stops.contains(token)) {
+                    if (!stops.contains(token) && !token.isEmpty()) {
+                        token = token.replace("+", "");
+                        token = token.replace("*", "");
                         sb.append("+");
                         sb.append(token);
                         sb.append("*");
@@ -314,6 +315,7 @@ public class MovieRepository {
                 }
 
                 String match = sb.toString();
+
 
                 queryBuilder.where("title", "MATCH", match);
             }
