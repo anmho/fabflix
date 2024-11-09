@@ -11,10 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 
 public class MovieRepository {
@@ -118,7 +115,7 @@ public class MovieRepository {
         try (Connection conn = db.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, starId);
-                log.info("Star id " + starId);
+                log.debug("Star id " + starId);
                 ResultSet rs = stmt.executeQuery();
 
                 List<Movie> movies = new ArrayList<>();
@@ -225,33 +222,80 @@ public class MovieRepository {
             MovieSortParams sortParams,
             PaginationParams pageParams
     ) throws SQLException {
+//        Query.Builder queryBuilder = new Query.Builder(conn);
+//        queryBuilder.select(
+//                "SELECT DISTINCT " +
+//                "m.id, " +
+//                "m.title, " +
+//                "m.year, " +
+//                "m.director, " +
+//                "m.price, " +
+//                "r.rating, " +
+//                "(" +
+//                "   SELECT GROUP_CONCAT(CONCAT(g.id, '#', g.name) SEPARATOR ';') " +
+//                "   FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
+//                "   WHERE gim.movieId = m.id) AS genres, " +
+//                "(" +
+//                "   SELECT GROUP_CONCAT(CONCAT(s.id, '#', s.name, '#', COALESCE(s.birthYear, 'N/A'), '#', nmsi.numMovies) SEPARATOR ';')\n" +
+//                "   FROM stars s " +
+//                "   LEFT JOIN stars_in_movies sim ON s.id = sim.starId " +
+//                "   LEFT JOIN num_movies_starred_in nmsi ON s.id = nmsi.starId " +
+//                "   WHERE sim.movieId = m.id\n" +
+//                ") AS stars");
+
         Query.Builder queryBuilder = new Query.Builder(conn);
-        queryBuilder.select(
-                "SELECT DISTINCT " +
-                "m.id, " +
-                "m.title, " +
-                "m.year, " +
-                "m.director, " +
-                "m.price, " +
-                "r.rating, " +
-                "(" +
-                "   SELECT GROUP_CONCAT(CONCAT(g.id, '#', g.name) SEPARATOR ';') " +
-                "   FROM genres g JOIN genres_in_movies gim ON g.id = gim.genreId " +
-                "   WHERE gim.movieId = m.id) AS genres, " +
-                "(" +
-                "   SELECT GROUP_CONCAT(CONCAT(s.id, '#', s.name, '#', COALESCE(s.birthYear, 'N/A'), '#', nmsi.numMovies) SEPARATOR ';')\n" +
-                "   FROM stars s " +
-                "   LEFT JOIN stars_in_movies sim ON s.id = sim.starId " +
-                "   LEFT JOIN num_movies_starred_in nmsi ON s.id = nmsi.starId " +
-                "   WHERE sim.movieId = m.id\n" +
-                ") AS stars");
+        queryBuilder
+            .select("SELECT m.id, m.title, m.year, m.director, m.price, r.rating, " +
+                "GROUP_CONCAT(CONCAT(g.id, '#', g.name) SEPARATOR ';') AS genres, " +
+                "GROUP_CONCAT(CONCAT(s.id, '#', s.name, '#', COALESCE(s.birthYear, 'N/A'), '#', nmsi.numMovies) SEPARATOR ';') AS stars")
+            .from("movies m")
+            .join("LEFT", "ratings r", "m.id = r.movieId")
+            .join("LEFT", "genres_in_movies gim", "m.id = gim.movieId")
+            .join("LEFT", "genres g", "gim.genreId = g.id")
+            .join("LEFT", "stars_in_movies sim", "m.id = sim.movieId" )
+            .join("LEFT", "stars s", "sim.starId = s.id" )
+            .join("LEFT", "num_movies_starred_in nmsi", "s.id = nmsi.starId")
+            ;
 
 
+        Set<String> stops = new HashSet<>();
 
 
-        queryBuilder.from("movies m");
-        queryBuilder.join("LEFT", "ratings r", "m.id=r.movieId");
-
+        stops.add("a");
+        stops.add("about");
+        stops.add("an");
+        stops.add("are");
+        stops.add("as");
+        stops.add("at");
+        stops.add("be");
+        stops.add("by");
+        stops.add("com");
+        stops.add("de");
+        stops.add("en");
+        stops.add("for");
+        stops.add("from");
+        stops.add("how");
+        stops.add("i");
+        stops.add("in");
+        stops.add("is");
+        stops.add("it");
+        stops.add("la");
+        stops.add("of");
+        stops.add("on");
+        stops.add("or");
+        stops.add("that");
+        stops.add("the");
+        stops.add("this");
+        stops.add("to");
+        stops.add("was");
+        stops.add("what");
+        stops.add("when");
+        stops.add("where");
+        stops.add("who");
+        stops.add("will");
+        stops.add("with");
+        stops.add("und");
+        stops.add("www");
         if (filters != null) {
             if (filters.getTitle() != null) {
                 // fix this
@@ -260,13 +304,18 @@ public class MovieRepository {
 
                 StringBuilder sb = new StringBuilder();
                 for (String token : tokens) {
-                    sb.append("+");
-                    sb.append(token);
-                    sb.append("*");
-                    sb.append(" ");
+                    if (!stops.contains(token) && !token.isEmpty()) {
+                        token = token.replace("+", "");
+                        token = token.replace("*", "");
+                        sb.append("+");
+                        sb.append(token);
+                        sb.append("*");
+                        sb.append(" ");
+                    }
                 }
 
                 String match = sb.toString();
+
 
                 queryBuilder.where("title", "MATCH", match);
             }
@@ -298,8 +347,8 @@ public class MovieRepository {
                 String pattern = String.format("%%%s%%", filters.getStar()); // THIS IS UNSAFE. MUST FIX
                 // "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                 // "JOIN stars s ON s.id = sim.starId " +
-                queryBuilder.join("", "stars_in_movies sim", "m.id = sim.movieId");
-                queryBuilder.join("", "stars s", "s.id = sim.starId");
+//                queryBuilder.join("", "stars_in_movies sim", "m.id = sim.movieId");
+//                queryBuilder.join("", "stars s", "s.id = sim.starId");
                 queryBuilder.where("s.name", "LIKE", pattern);
 
             }
@@ -307,12 +356,12 @@ public class MovieRepository {
             if (filters.getGenre() != null) {
                 // "JOIN genres_in_movies gim ON m.id = gim.movieId " +
                 // "JOIN genres g ON gim.genreId = g.id ";
-                queryBuilder.join("", "genres_in_movies gim", "m.id = gim.movieId");
-                queryBuilder.join("", "genres g", "gim.genreId = g.id");
+//                queryBuilder.join("", "genres_in_movies gim", "m.id = gim.movieId");
+//                queryBuilder.join("", "genres g", "gim.genreId = g.id");
                 queryBuilder.where("g.name", "=", filters.getGenre());
             }
         }
-
+        queryBuilder.groupBy("m.id");
         if (sortParams != null) {
             var dimensions = sortParams.getDimensions();
             if (dimensions != null) {
@@ -328,7 +377,7 @@ public class MovieRepository {
         int page = pageParams.getPage();
         int offset = Math.max(limit * (page-1), 0);
 
-//        log.("offset:" + offset);
+
         queryBuilder.setLimit(limit+1);
         queryBuilder.setOffset(offset);
 
@@ -367,7 +416,7 @@ public class MovieRepository {
         List<Star> stars = new ArrayList<>();
         for (String pair : starPairs) {
             String[] parts = pair.split("#");
-            log.info("Star piece: " + Arrays.toString(parts));
+            log.debug("Star piece: " + Arrays.toString(parts));
 
             if (parts.length != 4) {
                 throw new IllegalStateException("expected 4 parts returned from star string (id, First Last, DOB, num_movies: " + Arrays.toString(parts));

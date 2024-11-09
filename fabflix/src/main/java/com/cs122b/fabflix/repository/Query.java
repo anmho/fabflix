@@ -66,7 +66,6 @@ public class Query {
             } else {
                 whereConditions.add(String.format("%s %s ?", column, operator));
                 params.add(value);
-
             }
 
 
@@ -152,7 +151,7 @@ public class Query {
                 }
             }
 
-            log.debug("Query to be executed: \n" + stmt.toString());
+            log.debug("Query to be executed: \n{}", stmt.toString());
 
             return new Query(stmt);
         }

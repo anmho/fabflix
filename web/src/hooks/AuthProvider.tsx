@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { login, LoginParams, LoginResponse, logout } from "~/api/auth";
 import { fetchCart } from "~/api/cart";
-import { employeeLogin, handleLogin, isUserLoggedIn } from "~/api/login";
+import { employeeLogin, isUserLoggedIn } from "~/api/login";
 import { ErrorPage } from "~/components/error";
 import { Loading } from "~/components/navigation/loading";
 import { Cart } from "~/interfaces/cart";

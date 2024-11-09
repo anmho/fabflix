@@ -24,5 +24,3 @@ ALTER TABLE genres_in_movies
 ;
 COMMIT;
 
-DESCRIBE genres_in_movies
-

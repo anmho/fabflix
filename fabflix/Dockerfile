@@ -1,4 +1,4 @@
-FROM amazoncorretto:11.0.22 AS builder
+FROM --platform=linux/amd64 amazoncorretto:11.0.22 AS builder
 WORKDIR /app
 
 # Install dependencies and build the application to cache dependencies
@@ -15,7 +15,7 @@ RUN ./mvnw clean package
 RUN mv $(find target -name '*.war') target/api.war
 
 # Stage 2: Prepare the Tomcat image with the built application
-FROM tomcat:10-jdk11-openjdk-slim
+FROM --platform=linux/amd64 tomcat:10-jdk11-openjdk-slim
 
 # Remove default webapps to clean up the image
 RUN rm -rf /usr/local/tomcat/webapps/*

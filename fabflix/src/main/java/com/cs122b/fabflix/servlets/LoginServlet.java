@@ -1,5 +1,6 @@
 package com.cs122b.fabflix.servlets;
 
+import com.cs122b.fabflix.AppConfig;
 import com.cs122b.fabflix.ResponseBuilder;
 import com.cs122b.fabflix.models.Cart;
 import com.cs122b.fabflix.models.Customer;
@@ -38,18 +39,22 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getServletPath();
 
-        String recaptchaToken = request.getParameter("g-recaptcha-response");
-        if (recaptchaToken == null) {
-            ResponseBuilder.error(response, HttpServletResponse.SC_FORBIDDEN, "recaptcha token required");
-            return;
-        }
-        log.debug("recaptchaToken: {}", recaptchaToken);
 
-        boolean success = recaptchaService.verifyRecaptcha(recaptchaToken);
+        log.debug("app.recaptcha_enabled: {}", AppConfig.getProperty("app.recaptcha_enabled"));
+        if (AppConfig.getProperty("app.recaptcha_enabled") != null && AppConfig.getProperty("app.recaptcha_enabled").equals("true")) {
+            String recaptchaToken = request.getParameter("g-recaptcha-response");
+            if (recaptchaToken == null) {
+                ResponseBuilder.error(response, HttpServletResponse.SC_FORBIDDEN, "recaptcha token required");
+                return;
+            }
+            log.debug("recaptchaToken: {}", recaptchaToken);
 
-        if (!success) {
-            ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "invalid recaptcha token");
-            return;
+            boolean success = recaptchaService.verifyRecaptcha(recaptchaToken);
+
+            if (!success) {
+                ResponseBuilder.error(response, HttpServletResponse.SC_UNAUTHORIZED, "invalid recaptcha token");
+                return;
+            }
         }
 
 
@@ -68,6 +73,7 @@ public class LoginServlet extends HttpServlet {
     private void handleCustomerLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String providedEmail = request.getParameter("email");
         String providedPassword = request.getParameter("password");
+        
 
         Database db = Database.getReadInstance();
         try (Connection conn = db.getConnection()) {
